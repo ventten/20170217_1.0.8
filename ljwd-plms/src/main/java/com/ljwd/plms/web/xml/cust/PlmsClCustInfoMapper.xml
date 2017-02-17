@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClCustInfoMapper">
+    
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClCustInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
+    <result column="BIRTHDAY" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="MARRIAGE" property="marriage" jdbcType="VARCHAR" />
+    <result column="DOCTYPE" property="doctype" jdbcType="VARCHAR" />
+    <result column="DOCNO" property="docno" jdbcType="VARCHAR" />
+    <result column="BIRTH_PLACE" property="birthPlace" jdbcType="VARCHAR" />
+    <result column="EDUCATION" property="education" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="custName != null and custName != ''">
+            and T.CUST_NAME = #{custName}
+        </if>
+        <if test="docno != null and docno != ''">
+            and T.DOCNO = #{docno}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+    
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+        <if test="example.custName != null and example.custName != ''">
+            and T.CUST_NAME = #{example.custName}
+        </if>
+        <if test="example.docno != null and example.docno != ''">
+            and T.DOCNO = #{example.docno}
+        </if>
+        <if test="example.id != null">
+            and T.ID = #{example.id}
+        </if>
+    </where>
+  </sql>
+    
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CUST_NAME,
+    T.GENDER,
+    T.BIRTHDAY,
+    T.MARRIAGE,
+    T.DOCTYPE,
+    T.DOCNO,
+    T.BIRTH_PLACE,
+    T.EDUCATION,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+    
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_CUST_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+    
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_CUST_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_CUST_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+    
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfoExample" >
+    delete from PLMS_CL_CUST_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+    
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_cust_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_CUST_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{custName,jdbcType=VARCHAR},
+      #{gender,jdbcType=VARCHAR},
+      #{birthday,jdbcType=TIMESTAMP},
+      #{marriage,jdbcType=VARCHAR},
+      #{doctype,jdbcType=VARCHAR},
+      #{docno,jdbcType=VARCHAR},
+      #{birthPlace,jdbcType=VARCHAR},
+      #{education,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+    
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfo">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_cust_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_CUST_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="custName != null" >
+          T.CUST_NAME,
+      </if>
+      <if test="gender != null" >
+          T.GENDER,
+      </if>
+      <if test="birthday != null" >
+          T.BIRTHDAY,
+      </if>
+      <if test="marriage != null" >
+          T.MARRIAGE,
+      </if>
+      <if test="doctype != null" >
+          T.DOCTYPE,
+      </if>
+      <if test="docno != null" >
+          T.DOCNO,
+      </if>
+      <if test="birthPlace != null" >
+          T.BIRTH_PLACE,
+      </if>
+      <if test="education != null" >
+          T.EDUCATION,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="marriage != null" >
+        #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="doctype != null" >
+        #{doctype,jdbcType=VARCHAR},
+      </if>
+      <if test="docno != null" >
+        #{docno,jdbcType=VARCHAR},
+      </if>
+      <if test="birthPlace != null" >
+        #{birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+        #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+    
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_CUST_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_CUST_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.custName != null" >
+          T.CUST_NAME = #{record.custName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null" >
+          T.GENDER = #{record.gender,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null" >
+          T.BIRTHDAY = #{record.birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.marriage != null" >
+          T.MARRIAGE = #{record.marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctype != null" >
+          T.DOCTYPE = #{record.doctype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.docno != null" >
+          T.DOCNO = #{record.docno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthPlace != null" >
+          T.BIRTH_PLACE = #{record.birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.education != null" >
+          T.EDUCATION = #{record.education,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+    
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_CUST_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CUST_NAME = #{record.custName,jdbcType=VARCHAR},
+      T.GENDER = #{record.gender,jdbcType=VARCHAR},
+      T.BIRTHDAY = #{record.birthday,jdbcType=TIMESTAMP},
+      T.MARRIAGE = #{record.marriage,jdbcType=VARCHAR},
+      T.DOCTYPE = #{record.doctype,jdbcType=VARCHAR},
+      T.DOCNO = #{record.docno,jdbcType=VARCHAR},
+      T.BIRTH_PLACE = #{record.birthPlace,jdbcType=VARCHAR},
+      T.EDUCATION = #{record.education,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+    
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfo" >
+    update PLMS_CL_CUST_INFO T
+    <set >
+      <if test="custName != null" >
+          T.CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+          T.GENDER = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+          T.BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="marriage != null" >
+          T.MARRIAGE = #{marriage,jdbcType=VARCHAR},
+      </if>
+      <if test="doctype != null" >
+          T.DOCTYPE = #{doctype,jdbcType=VARCHAR},
+      </if>
+      <if test="docno != null" >
+          T.DOCNO = #{docno,jdbcType=VARCHAR},
+      </if>
+      <if test="birthPlace != null" >
+          T.BIRTH_PLACE = #{birthPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null" >
+          T.EDUCATION = #{education,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+    
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfo" >
+    update PLMS_CL_CUST_INFO T
+    set
+      T.CUST_NAME = #{custName,jdbcType=VARCHAR},
+      T.GENDER = #{gender,jdbcType=VARCHAR},
+      T.BIRTHDAY = #{birthday,jdbcType=TIMESTAMP},
+      T.MARRIAGE = #{marriage,jdbcType=VARCHAR},
+      T.DOCTYPE = #{doctype,jdbcType=VARCHAR},
+      T.DOCNO = #{docno,jdbcType=VARCHAR},
+      T.BIRTH_PLACE = #{birthPlace,jdbcType=VARCHAR},
+      T.EDUCATION = #{education,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClCustInfo" extends="BaseResultMap">
+        <result column="APPLY_ID" property="applId" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_CUST_INFO T
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 分页条件查询客户信息管理页 -->
+    <select id="selectIndexAndPage" resultType="com.ljwd.plms.web.vo.cust.PageCustDto" parameterType="com.ljwd.plms.web.model.cust.PlmsClCustInfoExample">
+        select  T.id,
+                T.cust_name,
+                T.docno,
+                NVL(T1.validCount,0) as validCount,
+                NVL(T1.transitCount,0) as transitCount,
+                NVL(T2.overCount,0) as overCount,
+                NVL(T2.overDays,0) as overDays,
+                NVL(T3.applCount,0) as applCount,
+                NVL(T3.rejectCount,0) as rejectCount
+        from plms_cl_cust_info T
+        left join (select  cust.docno as docno,
+                            count(appl.id) as validCount,
+                            sum(case when appl.loan_state = 'TRANSIT' then 1 else 0 end) as transitCount
+                    from plms_ln_appl_info appl
+                    inner join plms_cl_cust_info cust on appl.cl_cust_id = cust.id
+                    group by cust.docno
+        ) T1 on T.Docno = T1.docno
+        left join (select  cu.id_card_no,
+                            sum(case when (re.status &lt;&gt; 'PAID' and trunc(sysdate) - trunc(re.max_rpmnt_date) &gt;= 1) then 1
+                                     when (re.status = 'PAID' and trunc(re.actual_rpmnt_date) - trunc(re.max_rpmnt_date)&gt;=1) then 1
+                                     else 0 end) overCount,
+                            sum(case when (re.status &lt;&gt; 'PAID' and trunc(sysdate) - trunc(re.max_rpmnt_date) &gt;= 1) then trunc(sysdate) - trunc(re.rpmnt_date)
+                                     when (re.status = 'PAID' and trunc(re.actual_rpmnt_date) - trunc(re.max_rpmnt_date)&gt;=1) then trunc(re.actual_rpmnt_date) - trunc(re.rpmnt_date)
+                                     else 0 end) overDays
+                    from lf_reciv re
+                    inner join cl_cust cu on re.appl_id = cu.appl_id
+                    where re.is_deleted = 'N'
+                    group by cu.id_card_no
+        ) T2 on T.Docno = T2.id_card_no
+        left join (select  cust.id_card_no,
+                           count(appl.id) as applCount,
+                   sum(case when wf.status = 'REJECTED' then 1 else 0 end) as rejectCount
+                   from ln_appl_info appl
+                   inner join cl_cust cust on cust.appl_id = appl.id
+                   left join wf_workflow_info wf on wf.id = appl.wf_id
+                   group by cust.id_card_no
+        ) T3 on T.Docno = T3.id_card_no
+        where 1 = 1
+        <if test="transitCount != null">
+            <choose>
+                <when test="transitCount == 2">
+                    AND T1.transitCount = 2
+                </when>
+                <when test="transitCount == 3">
+                    AND T1.transitCount = 3
+                </when>
+                <when test="transitCount == 4">
+                    AND T1.transitCount = 4
+                </when>
+                <when test="transitCount == 5">
+                    AND T1.transitCount &gt;= 5
+                </when>
+            </choose>
+        </if>
+        <if test="mobile != null and mobile !=''">
+            AND T.ID IN (select distinct CONTACT.Cl_Cust_Id from PLMS_CL_CONTACTOR_INFO CONTACT where CONTACT.tel = #{mobile} and CONTACT.Tel_Type='MOBPHONE')
+        </if>
+        <if test="custName != null and custName != ''">
+            and T.CUST_NAME = #{custName}
+        </if>
+        <if test="docno != null and docno != ''">
+            and T.DOCNO = #{docno}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by T.ID DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 个案查询 -->
+    <select id="selectCustCaseAndPage" resultType="com.ljwd.plms.web.vo.cust.CustCaseDto" parameterType="com.ljwd.plms.web.vo.cust.CustCaseExample">
+        select cu.id as custId,                                                       <!--微贷客户ID-->
+               max(re.appl_id) as applId,                                             <!--借款ID-->
+               max(cn.cntrct_no) as cntrctNo,                                         <!--合同编号-->
+               max(cu.cust_name) as custName,                                         <!--主贷人-->
+               max(cu.id_card_no) as idCardNo,                                        <!--证件号-->
+               max(cn.appr_amt) as apprAmt,                                           <!--批核金额-->
+               max(cn.loan_period) as loanPeriod,                                     <!--贷款期数-->
+               sum(case when re.status = 'PAID' then 1 else 0 end) as paidPeriod,     <!--已还期数-->
+               <![CDATA[
+               sum(case when (re.status &lt;&gt; 'PAID' and trunc(sysdate) - trunc(re.max_rpmnt_date) >= 1)
+                          or (re.status = 'PAID' and trunc(re.actual_rpmnt_date) - trunc(re.max_rpmnt_date)>=1) then 1
+                        else 0 end) as overCount,]]>                                  <!--逾期期数-->
+               <![CDATA[
+               sum(case when (re.status &lt;&gt; 'PAID' and trunc(sysdate) - trunc(re.max_rpmnt_date) >= 1) then trunc(sysdate) - trunc(re.rpmnt_date)
+                        when (re.status = 'PAID' and trunc(re.actual_rpmnt_date) - trunc(re.max_rpmnt_date)>=1) then trunc(re.actual_rpmnt_date) - trunc(re.rpmnt_date)
+                        else 0 end) as overDays,]]>                                   <!--逾期天数-->
+               max(app.prd_id) as prdId,                                              <!--贷款产品ID-->
+               max(prd.prd_name) as prdName,                                          <!--贷款产品名字-->
+               max(app.input_site_code) as inputSiteCode,                             <!--所属网点code-->
+               max(site.site_name) as siteName,                                       <!--所属网点名字-->
+               max(app.biz_category) as bizCategory                                   <!--业务类型-->
+        from lf_reciv re
+        inner join ln_appl_info app on re.appl_id = app.id
+        inner join cl_cust cu on re.appl_id = cu.appl_id
+        inner join ln_cntrct cn on re.appl_id = cn.appl_id
+        inner join sys_prd prd on app.prd_id = prd.id
+        inner join sys_site site on app.input_site_code = site.site_code
+        left join ln_payment pa on re.appl_id = pa.appl_id
+        <![CDATA[
+        where re.is_deleted = 'N' and re.period_num <= nvl(pa.clear_period,10000)
+        ]]>
+        <if test="cntrctNo != null and cntrctNo != ''">
+            and cn.cntrct_no = #{cntrctNo}
+        </if>
+        <if test="custName != null and custName != ''">
+            and cu.cust_name = #{custName}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            and cu.id_card_no = #{idCardNo}
+        </if>
+        <if test="tel != null and tel != ''">
+            and cu.id in ( select cu.id from cl_cust cu where cu.mobile = #{tel} or cu.mobile2 = #{tel} or cu.mobile3 = #{tel}
+                           union all
+                           select con.cl_cust_id from cl_contactor con where con.tel = #{tel} or con.mobile = #{tel} or con.unit_tel = #{tel} )
+        </if>
+        group by cu.id
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 查询微贷系统逾期客户的信息,刷新缓存flushCache="true" -->
+    <select id="findMfbmsOverDueCust" resultMap="BaseResultMap_Ext" parameterType="int" flushCache="true">
+      <![CDATA[
+      SELECT TMP.* FROM (
+            SELECT
+                c.id_card_no as docno,
+                max(c.id_type_code) as doctype,
+                max(c.appl_id) as appl_id,
+                max(c.cust_name) as cust_name,
+                max(c.birthday) as birthday,
+                max(c.birth_place) as birth_place,
+                max(c.gender) as gender,
+                max(c.marriage) as marriage,
+                max(c.education) as education,
+                max(pc.id) as id,
+                max(rownum) as num
+            FROM LF_RECIV r
+            INNER JOIN CL_CUST c on r.appl_id=c.appl_id
+            LEFT JOIN LN_PAYMENT pa on r.appl_id = pa.appl_id
+            LEFT JOIN PLMS_CL_CUST_INFO pc on c.id_card_no= pc.docno
+            WHERE TRUNC(SYSDATE) - TRUNC(r.max_rpmnt_date) >= 1
+                  and r.is_deleted = 'N'
+                  and r.STATUS <> 'PAID'
+                  and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = r.appl_id)
+            GROUP BY c.id_card_no
+      ) TMP WHERE TMP.num <= #{value,jdbcType=INTEGER}
+     ]]>
+    </select>
+
+    <!-- 根据微贷借款申请ID查询贷后客户ID -->
+    <select id="selectClCustIdByApplId" resultType="long" parameterType="long" >
+        select APPL.CL_CUST_ID
+        from PLMS_LN_APPL_INFO APPL
+        where APPL.APPL_ID = #{value,jdbcType=BIGINT}
+    </select>
+
+    <!-- 联金催收APP数据 根据微贷客户ID查询微贷客户信息 -->
+    <select id="selectClCustById" resultType="com.ljwd.plms.mapp.vo.customer.APPCustInfoVo" parameterType="long" >
+        SELECT
+        cust.ID, cust.CUST_NAME, cust.ID_CARD_NO, cust.MOBILE
+        ,DECODE(cust.MARRIAGE,'MARRIED',1,0) AS MARRIAGE, cust.SPOUSE_NAME, cust.SPOUSE_TEL
+        ,profession.UNIT_NAME, profession.TEL AS UNIT_TEL, profession.POSITION
+        ,house.TEL AS houseTel
+        ,education.VAL AS EDUCATION
+        FROM CL_CUST cust
+        LEFT JOIN CL_HOUSE_INFO house ON house.CUST_ID = cust.ID
+        LEFT JOIN CL_PROFESSION profession ON profession.CUST_ID = cust.ID
+        LEFT JOIN L_EDUCATION education ON education.CODE = cust.EDUCATION AND education.IS_ACTIVE = 'Y'
+        WHERE cust.ID = #{id}
+    </select>
+
+</mapper>

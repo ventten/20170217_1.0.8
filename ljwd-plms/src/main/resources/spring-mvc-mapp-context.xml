@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 扫描controller（controller层注入） -->
+    <context:component-scan base-package="com.ljwd.plms.mapp.controller" use-default-filters="false">
+        <!-- 只扫描controller包极其子包下含有@Controller注解的类并实例化它们 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <!-- RestController = Controller + ResponseBody Spring4.0新增注解 -->
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+    </context:component-scan>
+
+    <!-- 注解请求映射 -->
+    <bean id="mappAESStringHttpMessageConverter" class="com.ljwd.plms.mapp.converter.AESStringHttpMessageConverter">
+        <constructor-arg index="0" value="UTF-8"/><!-- 解决添加ResponseBody注解后返回中文乱码 -->
+        <property name="writeAcceptCharset" value="false"/><!-- 不在响应头写入所有支持编码,减少网络开销 -->
+    </bean>
+    <bean id="mappAESMappingJackson2HttpMessageConverter" class="com.ljwd.plms.mapp.converter.AESMappingJackson2HttpMessageConverter">
+        <constructor-arg index="0" ref="mappAESStringHttpMessageConverter"/>
+    </bean>
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <ref bean="mappAESStringHttpMessageConverter"/>
+            <ref bean="mappAESMappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 视图解析器策略 和 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 返回视图时,将视图对应的路径前加上prefix,在其后加上suffix组成视图全路径 -->
+        <property name="prefix" value="/WEB-INF/mapp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!-- 视图解释 end -->
+
+    <!-- 配置springMVC处理上传文件的信息 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxUploadSize" value="52428800"/>
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+
+    <!-- 启用shrio授权注解拦截方式 -->
+    <aop:config proxy-target-class="true"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="mappSecurityManager"/>
+    </bean>
+
+</beans>

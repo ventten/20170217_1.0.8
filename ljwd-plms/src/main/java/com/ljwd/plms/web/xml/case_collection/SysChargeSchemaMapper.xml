@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.SysChargeSchemaMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.SysChargeSchema">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="SCHEMA_CODE" jdbcType="VARCHAR" property="schemaCode" />
+    <result column="SCHEMA_NAME" jdbcType="VARCHAR" property="schemaName" />
+    <result column="SCHEMA_DESC" jdbcType="VARCHAR" property="schemaDesc" />
+    <result column="RPMNT_MTHD" jdbcType="VARCHAR" property="rpmntMthd" />
+    <result column="INT_RATE" jdbcType="DECIMAL" property="intRate" />
+    <result column="INT_RATE_YEAR" jdbcType="DECIMAL" property="intRateYear" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="CALC_INT_TYPE" jdbcType="VARCHAR" property="calcIntType" />
+    <result column="DECIMAL_PLACE" jdbcType="INTEGER" property="decimalPlace" />
+    <result column="BASE_DAYS" jdbcType="INTEGER" property="baseDays" />
+    <result column="ROUND_MODE" jdbcType="VARCHAR" property="roundMode" />
+    <result column="ADJUST_INT_DECIMAL" jdbcType="CHAR" property="adjustIntDecimal" />
+    <result column="ADJUST_PRINCIPAL_DECIMAL" jdbcType="CHAR" property="adjustPrincipalDecimal" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.SCHEMA_CODE,
+    T.SCHEMA_NAME,
+    T.SCHEMA_DESC,
+    T.RPMNT_MTHD,
+    T.INT_RATE,
+    T.INT_RATE_YEAR,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.CALC_INT_TYPE,
+    T.DECIMAL_PLACE,
+    T.BASE_DAYS,
+    T.ROUND_MODE,
+    T.ADJUST_INT_DECIMAL,
+    T.ADJUST_PRINCIPAL_DECIMAL
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.SysChargeSchemaExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_CHARGE_SCHEMA T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_CHARGE_SCHEMA T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.SysChargeSchemaExample" resultType="java.lang.Integer">
+    select count(*) from SYS_CHARGE_SCHEMA T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

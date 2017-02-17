@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClAccountInfoMapper" >
+
+    <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClAccountInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="CARDNO" property="cardno" jdbcType="VARCHAR" />
+    <result column="BANKNAME" property="bankname" jdbcType="VARCHAR" />
+    <result column="BANKNAMEREMARK" property="banknameremark" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="type != null and type != ''">
+            and T.TYPE = #{type}
+        </if>
+        <if test="bankname != null and bankname != ''">
+            and T.BANKNAME = #{bankname}
+        </if>
+        <if test="cardno != null and cardno != ''">
+            and T.CARDNO = #{cardno}
+        </if>
+        <if test="name != null and name != ''">
+            and T.NAME = #{name}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+        <if test="example.srcCode != null and example.srcCode != ''">
+            and T.SRC_CODE = #{example.srcCode}
+        </if>
+        <if test="example.noThisId != null">
+            and T.ID &lt;&gt; #{example.noThisId}
+        </if>
+        <if test="example.type != null and example.type != ''">
+            and T.TYPE = #{example.type}
+        </if>
+        <if test="example.bankname != null and example.bankname != ''">
+            and T.BANKNAME = #{example.bankname}
+        </if>
+        <if test="example.cardno != null and example.cardno != ''">
+            and T.CARDNO = #{example.cardno}
+        </if>
+        <if test="example.name != null and example.name != ''">
+            and T.NAME = #{example.name}
+        </if>
+        <if test="example.clCustId != null">
+            and T.CL_CUST_ID = #{example.clCustId}
+        </if>
+    </where>
+  </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.TYPE,
+    T.NAME,
+    T.CARDNO,
+    T.BANKNAME,
+    T.BANKNAMEREMARK,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_ACCOUNT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_ACCOUNT_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_ACCOUNT_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfoExample" >
+    delete from PLMS_CL_ACCOUNT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfo">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_account_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_ACCOUNT_INFO T ( <include refid="Base_Column_List" /> )
+    values (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{type,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{cardno,jdbcType=VARCHAR},
+      #{bankname,jdbcType=VARCHAR},
+      #{banknameremark,jdbcType=VARCHAR},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_account_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_ACCOUNT_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="type != null" >
+          T.TYPE,
+      </if>
+      <if test="name != null" >
+          T.NAME,
+      </if>
+      <if test="cardno != null" >
+          T.CARDNO,
+      </if>
+      <if test="bankname != null" >
+          T.BANKNAME,
+      </if>
+      <if test="banknameremark != null" >
+          T.BANKNAMEREMARK,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null" >
+        #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="banknameremark != null" >
+        #{banknameremark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_ACCOUNT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_ACCOUNT_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.type != null" >
+          T.TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+          T.NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardno != null" >
+          T.CARDNO = #{record.cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bankname != null" >
+          T.BANKNAME = #{record.bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.banknameremark != null" >
+          T.BANKNAMEREMARK = #{record.banknameremark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_ACCOUNT_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.TYPE = #{record.type,jdbcType=VARCHAR},
+      T.NAME = #{record.name,jdbcType=VARCHAR},
+      T.CARDNO = #{record.cardno,jdbcType=VARCHAR},
+      T.BANKNAME = #{record.bankname,jdbcType=VARCHAR},
+      T.BANKNAMEREMARK = #{record.banknameremark,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfo" >
+    update PLMS_CL_ACCOUNT_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+          T.TYPE = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+          T.NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null" >
+          T.CARDNO = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankname != null" >
+          T.BANKNAME = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="banknameremark != null" >
+          T.BANKNAMEREMARK = #{banknameremark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfo" >
+    update PLMS_CL_ACCOUNT_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.TYPE = #{type,jdbcType=VARCHAR},
+      T.NAME = #{name,jdbcType=VARCHAR},
+      T.CARDNO = #{cardno,jdbcType=VARCHAR},
+      T.BANKNAME = #{bankname,jdbcType=VARCHAR},
+      T.BANKNAMEREMARK = #{banknameremark,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClAccountInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClAccountInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_ACCOUNT_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的流水信息 -->
+    <select id="findMfbmsAccountByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select (ai.id) as appl_id,
+               (a.type) as type,
+               (a.name) as name,
+               (a.cardno) as cardno,
+               (a.bankname) as bankname,
+               (a.banknameremark) as banknameremark,
+               (c.id_card_no) as docno
+        from cl_account_info a
+        inner join cl_cust c on a.cust_id = c.id
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_account_info account
+            inner join plms_cl_cust_info cust on account.cl_cust_id = cust.id
+            where account.type = a.type
+                and account.name = a.name
+                and account.bankname = a.bankname
+                and account.cardno = a.cardno
+                and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_ACCOUNT_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_account_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+                #{item.clCustId,jdbcType=BIGINT},
+                #{item.srcCode,jdbcType=VARCHAR},
+                #{item.applId,jdbcType=BIGINT},
+                #{item.type,jdbcType=VARCHAR},
+                #{item.name,jdbcType=VARCHAR},
+                #{item.cardno,jdbcType=VARCHAR},
+                #{item.bankname,jdbcType=VARCHAR},
+                #{item.banknameremark,jdbcType=VARCHAR},
+                #{item.isActive,jdbcType=CHAR},
+                #{item.createdBy,jdbcType=VARCHAR},
+                #{item.createTime,jdbcType=TIMESTAMP},
+                #{item.updatedBy,jdbcType=VARCHAR},
+                #{item.updateTime,jdbcType=TIMESTAMP},
+                #{item.recVer,jdbcType=BIGINT},
+                #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+</mapper>

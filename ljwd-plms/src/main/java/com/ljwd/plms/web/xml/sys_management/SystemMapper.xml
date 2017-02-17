@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.SystemMapper">
+
+    <!-- 查找大于等于系统时间的节假日 -->
+	<select id="selectHoliday" resultType="com.ljwd.plms.web.vo.sys_management.HolidayDto">
+        select  holiday.id as id,
+                holiday.year as year,
+                TRUNC(holiday.day) as day,
+                holiday.is_working_day as isWorkingDay
+        from sys_holiday holiday
+        where TRUNC(holiday.day) &gt;= TRUNC(sysdate)
+        order by holiday.year asc ,holiday.day asc
+	</select>
+
+    <!-- 根据参数code从贷后系统参数表获取参数val -->
+	<select id="selectParamValByCode" resultType="string" parameterType="string">
+        select param.param_val from PLMS_SYS_PARAM param where param.param_code = #{value,jdbcType=VARCHAR}
+	</select>
+
+</mapper>

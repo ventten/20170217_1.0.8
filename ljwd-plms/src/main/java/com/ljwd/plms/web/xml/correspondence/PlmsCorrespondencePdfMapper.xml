@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.correspondence.PlmsCorrespondencePdfMapper" >
+
+    <sql id="Base_Column_List" >
+    t.id,
+    t.doc_code,
+    t.doc_name,
+    t.gen_time,
+    t.gen_by,
+    t.cntrct_id,
+    t.cutoff_date,
+    t.principal,
+    t.int,
+    t.broker_fee,
+    t.overdue_int,
+    t.fail_collect_fee,
+    t.collect_cost,
+    t.ttl_amt,
+    t.overdue_day,
+    t.param,
+    t.remark,
+    t.created_by,
+    t.create_time,
+    t.updated_by,
+    t.update_time,
+    t.rec_ver,
+    t.tag_seq,
+    t.corres_status,
+    t.addrtype,
+    t.addres,
+    t.clearamount,
+    t.corres_code,
+    t.COLLECTOR,
+    t.COLLECTOR_APPELL,
+    t.COLLECTOR_ID,
+    t.COLLECT_PHONE,
+    t.GENDER,
+    t.CLIENT_NAME,
+    t.LOAN_NAME,
+    t.CLIENT_ID_CARD,
+    t.CLIENT_ADDR,
+    t.CLIENT_ADDR_TYPE,
+    t.APPL_ID,
+    t.CREATEDIT_FEE
+  </sql>
+  <!-- 查询被勾选的信函数据，然后生成信函 -->
+    <select id="findSelectDataByContractNo" resultType="com.ljwd.plms.web.model.correspondence.PlmsOverdueClientLetterGenerateDto" parameterType="List">
+                SELECT DISTINCT
+				 APPL.ID AS APPLYID,
+				 CASE
+				   WHEN CUSTOMER.ADDR_CITY_ID = '2151' THEN
+				    '深圳'
+				   ELSE
+				    '其他'
+				 END AS SITENAME,
+				 APPL.PAYMENT_TYPE AS PAYMENTTYPE,
+				 PAYMENTTYPE.TYPE_NAME AS PAYMENTTYPENAME,
+				 CUSTOMER.CUST_NAME AS CLIENTNAME,
+				 CUSTOMER.ID_CARD_NO AS IDCARDNO,
+				 CUSTOMER.ADDR AS CLIENTADDR,
+				 CUSTOMER.ADDRTYPE AS ADDRTYPE,
+				 CONTRACT.CNTRCT_NO AS CONTRACTNO,
+				 CONTRACT.LOAN_AMT AS LOANAMOUNT,
+				 PAYMENT.ID AS PAYMENTID,
+				 CONTRACT.ID AS CONTRACTID,
+				 SUMRECEIVABEOVERDUE.RPMNT_DATE AS REPAYMENTDATE,
+				 SUMRECEIVABEOVERDUE.OVERDUEDAY AS OVERDUEDAY
+				  FROM (SELECT OVERDUEREC.ID,
+               OVERDUEREC.CNTRCT_ID,
+               OVERDUEREC.APPL_ID,
+               OVERDUEREC.RPMNT_DATE,
+               OVERDUEREC.MAX_RPMNT_DATE,
+               OVERDUEREC.PAYMENT_ID,
+               OVERDUEREC.PERIOD_NUM,
+               CASE
+                 WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) &gt; RPMNT_DATE THEN
+                  TRUNC(SYSDATE) - RPMNT_DATE
+                 ELSE
+                  TRUNC(SYSDATE) - RPMNT_DATE
+               END OVERDUEDAY
+          FROM LF_RECIV OVERDUEREC
+         WHERE OVERDUEREC.STATUS != 'PAID'
+           AND OVERDUEREC.MAX_RPMNT_DATE &lt;= (SYSDATE - 1)
+           AND OVERDUEREC.IS_DELETED = 'N'
+           <!-- AND OVERDUEREC.TTL_WAIVED_AMT = 0 -->
+           AND OVERDUEREC.PERIOD_NUM =
+               (SELECT MIN(PERIOD_NUM)
+                  FROM LF_RECIV REC
+                 WHERE REC.IS_DELETED = 'N'
+                   AND REC.PAYMENT_ID = OVERDUEREC.PAYMENT_ID
+                   AND REC.STATUS != 'PAID')) SUMRECEIVABEOVERDUE
+					 INNER JOIN LN_CNTRCT CONTRACT
+					    ON SUMRECEIVABEOVERDUE.CNTRCT_ID = CONTRACT.ID
+					 INNER JOIN LN_APPL_INFO APPL
+					    ON APPL.ID = CONTRACT.APPL_ID
+					 INNER JOIN LN_PAYMENT PAYMENT
+					    ON PAYMENT.ID = SUMRECEIVABEOVERDUE.PAYMENT_ID
+					 INNER JOIN WF_WORKFLOW_INFO WF
+					    ON WF.ID = APPL.WF_ID
+					   AND WF.STATUS != 'CLEAR'
+					 INNER JOIN CL_CUST CUST
+					    ON CUST.APPL_ID = CONTRACT.APPL_ID
+					  LEFT JOIN (SELECT T3.CUST_NAME CUST_NAME,
+                    T3.DOCNO ID_CARD_NO,
+                    T4.ADDR ADDR,
+                    T4.ADDR_CITY_ID,
+                    CASE
+                      WHEN T4.ADDR_TYPE = 'COMPANY' THEN
+                       '公司地址'
+                      WHEN T4.ADDR_TYPE = 'HOUSE' THEN
+                       '住宅地址'
+                      WHEN T4.ADDR_TYPE = 'REGISTER' THEN
+                       '户口地址'
+                    END ADDRTYPE
+               FROM PLMS_CL_CUST_INFO T3
+               LEFT JOIN PLMS_CL_ADDRESS_INFO T4
+                 ON T3.ID = T4.CL_CUST_ID
+              WHERE 1 = 1
+                AND T4.IS_ACTIVE = 'Y'
+                AND T4.ADDR_TYPE IN ('COMPANY', 'REGISTER', 'HOUSE')
+                AND T4.RLTNSHP IN ('12')
+             ) CUSTOMER
+			    ON CUST.ID_CARD_NO = CUSTOMER.ID_CARD_NO
+			  LEFT JOIN SYS_PAYMENT_TYPE PAYMENTTYPE
+			    ON PAYMENTTYPE.CODE = APPL.PAYMENT_TYPE
+			  <!-- LEFT JOIN SYS_SITE SITE
+			    ON SITE.SITE_CODE = APPL.SITE_CODE -->
+			  LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+			    ON COLLECTALLOC.PAYMENT_ID = PAYMENT.ID
+			   AND COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+			   AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR
+			       SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+			   AND COLLECTALLOC.IS_ACTIVE = 'Y'
+			  LEFT JOIN PLMS_WORK_ORDER_POOL ORPOOL
+			    ON ORPOOL.APPL_ID = APPL.ID
+			  LEFT JOIN LF_WAIVE_REQ WAIVE
+			    ON WAIVE.APPL_ID = APPL.ID
+			 WHERE PAYMENT.IS_WRITE_OFF = 'N'
+			 AND APPL.ID NOT IN (SELECT TRED.APPL_ID FROM LF_WAIVE_REQ TRED WHERE TRED.STATUS = 'SUBMITTED')
+			  and ORPOOL.STATUS &lt;&gt; (SELECT T.STATUS
+			         FROM PLMS_COLLECTION_RULE_SET T
+			         WHERE T.CIRCU_RULE_CODE = 'OUTSOURC'
+			         AND T.IS_ACTIVE = 'Y') 
+			   AND CUSTOMER.ADDR IS NOT NULL                 
+			         AND CONTRACT.CNTRCT_NO IN
+    <foreach item="item" index="index" collection="list" 
+                         open="(" separator="," close=")">
+                        #{item}
+     </foreach>
+      ORDER BY SUMRECEIVABEOVERDUE.OVERDUEDAY
+    </select>
+     <insert id="insertPlmsDocumentGenLogDto" parameterType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogDto">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+      SELECT seq_PLMS_LN_DOC_GEN_LOG.NEXTVAL FROM DUAL
+      </selectKey>  
+      insert into PLMS_LN_DOC_GEN_LOG T ( <include refid="Base_Column_List" /> )
+    values (
+      #{id,jdbcType=BIGINT},
+      #{documentCode,jdbcType=VARCHAR},
+      #{documentName,jdbcType=VARCHAR},
+      #{genTime,jdbcType=TIMESTAMP},
+      #{genBy,jdbcType=VARCHAR},
+      #{contractId,jdbcType=BIGINT},
+      #{cutoffDate,jdbcType=DATE},
+      #{principal,jdbcType=BIGINT},
+      #{interest,jdbcType=BIGINT},
+      #{brokerFee,jdbcType=BIGINT},
+      #{overdueInterest,jdbcType=BIGINT},    
+      #{failCollectFee,jdbcType=BIGINT},
+      #{collectCost,jdbcType=BIGINT},
+      #{totalAmount,jdbcType=BIGINT},
+      #{overdueDay,jdbcType=BIGINT},
+      #{parameter,jdbcType=VARCHAR},   
+      #{remark,jdbcType=VARCHAR},
+      #{genByName,jdbcType=VARCHAR},
+      sysdate,
+      #{genByName,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0,
+      0,
+      #{addrType,jdbcType=VARCHAR},
+      #{addres,jdbcType=VARCHAR},
+      #{clearAmount,jdbcType=BIGINT},
+      #{corresCode,jdbcType=VARCHAR},
+      #{collector,jdbcType=VARCHAR},
+      #{collectorApell,jdbcType=VARCHAR},
+      #{collectorId,jdbcType=VARCHAR},
+      #{collectPhone,jdbcType=VARCHAR},
+      #{gender,jdbcType=VARCHAR},
+      #{clientName,jdbcType=VARCHAR},
+      #{loanName,jdbcType=VARCHAR},
+      #{idCardNo,jdbcType=VARCHAR},
+      #{addres,jdbcType=VARCHAR},
+      #{addrType,jdbcType=VARCHAR},
+      #{applyId,jdbcType=BIGINT},
+      #{creaditFee,jdbcType=VARCHAR}
+      )
+  </insert>
+</mapper>

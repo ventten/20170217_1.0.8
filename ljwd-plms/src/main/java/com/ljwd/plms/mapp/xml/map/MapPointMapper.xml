@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.mapp.dao.map.MapPointMapper">
+
+    <resultMap id="BaseResultMap" type="com.ljwd.plms.mapp.model.PlmsAppMapPoint">
+        <id column="ID" property="id" jdbcType="BIGINT"/>
+        <result column="LNG" property="lng" jdbcType="DOUBLE"/>
+        <result column="LAT" property="lat" jdbcType="DOUBLE"/>
+        <result column="ACCURACY" property="accuracy" jdbcType="DOUBLE"/>
+        <result column="OPTIONS" property="options" jdbcType="INTEGER"/>
+        <result column="DATE_TIME" property="dateTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="REC_VER" property="recVer" jdbcType="BIGINT"/>
+        <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!-- 单独的ID字段 -->
+    <sql id="ID_Column_List">
+        ID
+    </sql>
+    <!-- 表除ID之外的所有字段 -->
+    <sql id="NO_ID_Column_List">
+        LNG,
+        LAT,
+        ACCURACY,
+        OPTIONS,
+        DATE_TIME,
+        CREATED_BY,
+        CREATE_TIME,
+        UPDATED_BY,
+        UPDATE_TIME,
+        REC_VER,
+        TAG_SEQ
+    </sql>
+    <!-- 表所有字段 -->
+    <sql id="Base_Column_List">
+        <include refid="ID_Column_List"/>,
+        <include refid="NO_ID_Column_List"/>
+    </sql>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO PLMS_APP_MAP_POINT (
+        <include refid="Base_Column_List"/>
+        )
+        SELECT SEQ_PLMS_APP_MAP_POINT.NEXTVAL,
+        <include refid="NO_ID_Column_List"/>
+        FROM (
+        <foreach collection="list" item="item" index="index" separator="UNION ALL">
+            SELECT
+            #{item.lng,jdbcType=DOUBLE} AS LNG,
+            #{item.lat,jdbcType=DOUBLE} AS LAT,
+            #{item.accuracy,jdbcType=DOUBLE} AS ACCURACY,
+            #{item.options,jdbcType=INTEGER} AS OPTIONS,
+            #{item.dateTime,jdbcType=TIMESTAMP} AS DATE_TIME,
+            #{item.createdBy,jdbcType=VARCHAR} AS CREATED_BY,
+            #{item.createTime,jdbcType=TIMESTAMP} AS CREATE_TIME,
+            #{item.updatedBy,jdbcType=TIMESTAMP} AS UPDATED_BY,
+            #{item.updateTime,jdbcType=TIMESTAMP} AS UPDATE_TIME,
+            0 AS REC_VER,
+            0 AS TAG_SEQ
+            FROM DUAL
+        </foreach>
+        ) TEMP
+    </insert>
+
+    <!--获取所有创建人信息 TODO 仅测试使用-->
+    <select id="selectAllGroup" resultType="java.lang.String">
+        SELECT CREATED_BY FROM (
+            SELECT CREATED_BY, MAX(CREATE_TIME) AS CREATE_TIME FROM PLMS_APP_MAP_POINT
+            GROUP BY CREATED_BY
+        ) ORDER BY CREATE_TIME DESC
+    </select>
+
+    <!--获取创建人所有坐标信息 TODO 仅测试使用-->
+    <select id="selectByCreatedUser" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM PLMS_APP_MAP_POINT
+        WHERE CREATED_BY = #{userId}
+        ORDER BY ID ASC
+    </select>
+    
+    <!--根据外访员和外访日期查询外访路线  -->
+    <select id="selectByOutVisitRouteParamDto" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitRouteParamDto" resultType="com.ljwd.plms.web.vo.outVisit.PlmsAppMapPointResult">
+    	select mapPoint.*,rownum as rowNo from
+    	(SELECT <include refid="Base_Column_List"/>
+        FROM PLMS_APP_MAP_POINT
+        WHERE CREATED_BY = #{outVisiter} and trunc(DATE_TIME)=trunc(#{outVisitDate}) 
+        ORDER BY DATE_TIME ASC)mapPoint
+    </select>
+    
+</mapper>

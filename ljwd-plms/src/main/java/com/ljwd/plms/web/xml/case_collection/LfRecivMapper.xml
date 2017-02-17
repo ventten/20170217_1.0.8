@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfRecivMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfReciv">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CNTRCT_ID" jdbcType="BIGINT" property="cntrctId" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="PAYMENT_ID" jdbcType="BIGINT" property="paymentId" />
+    <result column="PERIOD_NUM" jdbcType="INTEGER" property="periodNum" />
+    <result column="TTL_RECIV_AMT" jdbcType="DECIMAL" property="ttlRecivAmt" />
+    <result column="TTL_ACTUAL_AMT" jdbcType="DECIMAL" property="ttlActualAmt" />
+    <result column="TTL_WAIVED_AMT" jdbcType="DECIMAL" property="ttlWaivedAmt" />
+    <result column="ACTUAL_RPMNT_DATE" jdbcType="TIMESTAMP" property="actualRpmntDate" />
+    <result column="IS_OVERDUE" jdbcType="CHAR" property="isOverdue" />
+    <result column="IS_ADV_CLEAR" jdbcType="CHAR" property="isAdvClear" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="RPMNT_DATE" jdbcType="TIMESTAMP" property="rpmntDate" />
+    <result column="MAX_RPMNT_DATE" jdbcType="TIMESTAMP" property="maxRpmntDate" />
+    <result column="FAIL_COLLECT_NUM" jdbcType="INTEGER" property="failCollectNum" />
+    <result column="RE_COLLECT_DATE" jdbcType="TIMESTAMP" property="reCollectDate" />
+    <result column="RE_COLLECT_AMT" jdbcType="DECIMAL" property="reCollectAmt" />
+    <result column="LAST_CALC_TIME" jdbcType="TIMESTAMP" property="lastCalcTime" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="RE_COLLECT_IS_ADV_CLEAR" jdbcType="CHAR" property="reCollectIsAdvClear" />
+    <result column="IS_DELETED" jdbcType="CHAR" property="isDeleted" />
+    <result column="RETURN_AMT" jdbcType="DECIMAL" property="returnAmt" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isRemoveAdvClear != null and isRemoveAdvClear == true">
+            and T.PERIOD_NUM &lt;= NVL(payment.CLEAR_PERIOD,1000)
+        </if>
+        <if test="isDeleted != null and isDeleted != ''">
+            and T.IS_DELETED = #{isDeleted}
+        </if>
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.CNTRCT_ID,
+    T.APPL_ID,
+    T.PAYMENT_ID,
+    T.PERIOD_NUM,
+    T.TTL_RECIV_AMT,
+    T.TTL_ACTUAL_AMT,
+    T.TTL_WAIVED_AMT,
+    T.ACTUAL_RPMNT_DATE,
+    T.IS_OVERDUE,
+    T.IS_ADV_CLEAR,
+    T.START_DATE,
+    T.END_DATE,
+    T.RPMNT_DATE,
+    T.MAX_RPMNT_DATE,
+    T.FAIL_COLLECT_NUM,
+    T.RE_COLLECT_DATE,
+    T.RE_COLLECT_AMT,
+    T.LAST_CALC_TIME,
+    T.STATUS,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.RE_COLLECT_IS_ADV_CLEAR,
+    T.IS_DELETED,
+    T.RETURN_AMT
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LF_RECIV T
+    inner join ln_payment payment on T.PAYMENT_ID = payment.id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LF_RECIV T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivExample" resultType="java.lang.Integer">
+    select count(*) from LF_RECIV T
+    inner join ln_payment payment on T.PAYMENT_ID = payment.id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <!--根据借款ID和还款日期反算出外包费用(能找到外包催收费用的费率说明需要计算外包催收费）-->
+  <select id="selectApplOutsourceFeeRate" parameterType="map" resultType="java.math.BigDecimal">
+      SELECT OUTSRC.FEE_RATE
+      FROM LA_APPL_OUTSRC OUTSRC
+      WHERE OUTSRC.STATUS in ('APPROVED','ENDED')
+          AND OUTSRC.START_DATE &lt;= #{repaymentDate,jdbcType=TIMESTAMP} AND (OUTSRC.ACUTAL_END_DATE = null OR OUTSRC.ACUTAL_END_DATE &gt;= #{repaymentDate,jdbcType=TIMESTAMP} )
+          AND OUTSRC.APPL_ID = #{applId,jdbcType=BIGINT}
+  </select>
+
+  <!--根据借款ID查询应收记录明细-->
+  <select id="selectReceivableByApplId" parameterType="long" resultType="com.ljwd.plms.web.vo.case_collection.LfRecivDto">
+      SELECT receivable.ID as recivId,
+             contract.ID as contractId,
+             appl.ID as applId,
+             payment.ID as paymentId,
+             rplan.ID as repaymentPlanId,
+             receivable.PERIOD_NUM as periodNum,
+             receivable.TTL_RECIV_AMT as ttlRecivAmt,
+             receivable.TTL_ACTUAL_AMT as ttlActualAmt,
+             receivable.TTL_WAIVED_AMT as ttlWaivedAmt,
+             receivable.ACTUAL_RPMNT_DATE as actualRpmntDate,
+             receivable.IS_OVERDUE as isOverdue,
+             receivable.START_DATE as startDate,
+             payment.END_DATE as endDate,
+             receivable.FAIL_COLLECT_NUM as failCollectNum,
+             receivable.RE_COLLECT_DATE as reCollectDate,
+             receivable.LAST_CALC_TIME as lastCalcTime,
+             receivable.STATUS as status,
+             contract.CNTRCT_NO as contractNo,
+             contract.LOAN_AMT as loanAmount,
+             receivable.RPMNT_DATE as rpmntDate,
+             receivable.MAX_RPMNT_DATE as maxRpmntDate,
+             payment.PAY_DATE as payDate,
+             cust.CUST_NAME as custName,
+             cust.ID_CARD_NO as idCardNo,
+             appl.BIZ_CATEGORY as bizCategory
+      FROM LF_RECIV receivable
+      INNER JOIN LN_APPL_INFO appl ON appl.ID = receivable.APPL_ID
+      INNER JOIN LN_PAYMENT payment ON payment.ID = receivable.PAYMENT_ID
+      INNER JOIN LN_CNTRCT contract ON contract.ID = receivable.CNTRCT_ID
+      INNER JOIN LN_RPMNT_PLAN rplan ON rplan.PAYMENT_ID = receivable.PAYMENT_ID and rplan.PERIOD_NUM = receivable.PERIOD_NUM
+      INNER JOIN CL_CUST cust ON cust.APPL_ID = receivable.APPL_ID
+      WHERE receivable.IS_DELETED = 'N' AND receivable.APPL_ID = #{applId,jdbcType=BIGINT}
+      ORDER BY receivable.ID ASC
+  </select>
+
+  <!--根据借款ID查询最小的逾期期数-->
+  <select id="selectMinOverduePeriodByApplId" resultType="int" parameterType="long">
+      SELECT
+      MIN(rec.PERIOD_NUM)
+      FROM LF_RECIV rec
+      WHERE rec.STATUS != 'PAID' AND rec.IS_DELETED = 'N' AND rec.APPL_ID = #{applId,jdbcType=BIGINT}
+  </select>
+
+</mapper>

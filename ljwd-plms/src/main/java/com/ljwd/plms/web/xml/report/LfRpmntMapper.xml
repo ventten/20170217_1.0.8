@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.report.LfRpmntMapper">
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.report.LfRpmnt">
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="PAYMENT_ID" jdbcType="DECIMAL" property="paymentId" />
+    <result column="APPL_ID" jdbcType="DECIMAL" property="applId" />
+    <result column="CNTRCT_ID" jdbcType="DECIMAL" property="cntrctId" />
+    <result column="RPMNT_MTHD" jdbcType="VARCHAR" property="rpmntMthd" />
+    <result column="OFFER_REPLY_DTL_ID" jdbcType="DECIMAL" property="offerReplyDtlId" />
+    <result column="TX_DATE" jdbcType="TIMESTAMP" property="txDate" />
+    <result column="TX_AMT" jdbcType="DECIMAL" property="txAmt" />
+    <result column="POST_AMT" jdbcType="DECIMAL" property="postAmt" />
+    <result column="REFUND_AMT" jdbcType="DECIMAL" property="refundAmt" />
+    <result column="DEPOSITE_DATE" jdbcType="TIMESTAMP" property="depositeDate" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="INPUT_BY" jdbcType="VARCHAR" property="inputBy" />
+    <result column="INPUT_TIME" jdbcType="TIMESTAMP" property="inputTime" />
+    <result column="REVERSED_BY" jdbcType="VARCHAR" property="reversedBy" />
+    <result column="REVERSE_TIME" jdbcType="TIMESTAMP" property="reverseTime" />
+    <result column="REVERSE_REASON" jdbcType="VARCHAR" property="reverseReason" />
+    <result column="RENEW_PAYMENT_ID" jdbcType="DECIMAL" property="renewPaymentId" />
+    <result column="REFUND_RPMNT_ID" jdbcType="DECIMAL" property="refundRpmntId" />
+    <result column="REFUND_BY" jdbcType="VARCHAR" property="refundBy" />
+    <result column="REFUND_TIME" jdbcType="TIMESTAMP" property="refundTime" />
+    <result column="REFUND_REASON" jdbcType="VARCHAR" property="refundReason" />
+    <result column="IS_LOCK" jdbcType="CHAR" property="isLock" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="DECIMAL" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="DECIMAL" property="tagSeq" />
+    <result column="ADJUST_WAIVE_REQ_ID" jdbcType="DECIMAL" property="adjustWaiveReqId" />
+    <result column="IS_WRITE_OFF" jdbcType="CHAR" property="isWriteOff" />
+    <result column="ORIGIN_RPMNT_ID" jdbcType="DECIMAL" property="originRpmntId" />
+    <result column="BANK_AC_ID" jdbcType="DECIMAL" property="bankAcId" />
+    <result column="REFUND_BANK_AC_ID" jdbcType="DECIMAL" property="refundBankAcId" />
+    <result column="POST_TYPE" jdbcType="VARCHAR" property="postType" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    lr.ID, 
+    lr.PAYMENT_ID, 
+    lr.APPL_ID, 
+    lr.CNTRCT_ID, 
+    lr.RPMNT_MTHD, 
+    lr.OFFER_REPLY_DTL_ID, 
+    lr.TX_DATE, 
+    lr.TX_AMT, 
+    lr.POST_AMT, 
+    lr.REFUND_AMT, 
+    lr.DEPOSITE_DATE, 
+    lr.STATUS, 
+    lr.INPUT_BY, 
+    lr.INPUT_TIME, 
+    lr.REVERSED_BY, 
+    lr.REVERSE_TIME, 
+    lr.REVERSE_REASON, 
+    lr.RENEW_PAYMENT_ID, 
+    lr.REFUND_RPMNT_ID, 
+    lr.REFUND_BY, 
+    lr.REFUND_TIME, 
+    lr.REFUND_REASON, 
+    lr.IS_LOCK, 
+    lr.REMARK, 
+    lr.CREATED_BY, 
+    lr.CREATE_TIME, 
+    lr.UPDATED_BY, 
+    lr.UPDATE_TIME, 
+    lr.REC_VER, 
+    lr.TAG_SEQ, 
+    lr.ADJUST_WAIVE_REQ_ID, 
+    lr.IS_WRITE_OFF, 
+    lr.ORIGIN_RPMNT_ID, 
+    lr.BANK_AC_ID, 
+    lr.REFUND_BANK_AC_ID, 
+    lr.POST_TYPE
+  </sql>
+  
+  
+  <!-- 根据map中的查询条件查询  -->
+  <select id="selectByMap" parameterType="map" resultMap="BaseResultMap">
+  	select lr.* 
+  		from lf_rpmnt lr 
+  		where lr.appl_id = #{applId}
+  		and lr.INPUT_TIME >= #{startTime} and lr.INPUT_TIME &lt;= #{endTime}
+  </select>
+  
+  
+  
+</mapper>

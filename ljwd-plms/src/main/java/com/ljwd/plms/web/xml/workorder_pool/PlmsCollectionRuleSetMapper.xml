@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.workorder_pool.PlmsCollectionRuleSetMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSet" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="VAL" property="val" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CIRCU_RULE_CODE" property="circuRuleCode" jdbcType="VARCHAR" />
+    <result column="ASSIGN_METHOD_CODE" property="assignMethodCode" jdbcType="VARCHAR" />
+    <result column="ASSIGN_RULE_CODE" property="assignRuleCode" jdbcType="VARCHAR" />
+    <result column="IS_RUNNING" property="isRunning" jdbcType="CHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="ORDER_TYPE" property="orderType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, VAL, NAME, STATUS, CIRCU_RULE_CODE, ASSIGN_METHOD_CODE, ASSIGN_RULE_CODE, IS_RUNNING, 
+    IS_ACTIVE, REMARK, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ, 
+    ORDER_TYPE
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_COLLECTION_RULE_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_COLLECTION_RULE_SET
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_COLLECTION_RULE_SET
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSetExample" >
+    delete from PLMS_COLLECTION_RULE_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSet" >
+    insert into PLMS_COLLECTION_RULE_SET (ID, VAL, NAME, 
+      STATUS, CIRCU_RULE_CODE, ASSIGN_METHOD_CODE, 
+      ASSIGN_RULE_CODE, IS_RUNNING, IS_ACTIVE, 
+      REMARK, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, REC_VER, 
+      TAG_SEQ, ORDER_TYPE)
+    values (#{id,jdbcType=BIGINT}, #{val,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{circuRuleCode,jdbcType=VARCHAR}, #{assignMethodCode,jdbcType=VARCHAR}, 
+      #{assignRuleCode,jdbcType=VARCHAR}, #{isRunning,jdbcType=CHAR}, #{isActive,jdbcType=CHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, 
+      #{tagSeq,jdbcType=BIGINT}, #{orderType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSet" >
+   	<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_COLLECTION_RULE_SET.Nextval as ID from DUAL  
+	</selectKey> 
+    insert into PLMS_COLLECTION_RULE_SET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="val != null" >
+        VAL,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="id != null" >
+        STATUS,
+      </if>
+      <if test="circuRuleCode != null" >
+        CIRCU_RULE_CODE,
+      </if>
+      <if test="assignMethodCode != null" >
+        ASSIGN_METHOD_CODE,
+      </if>
+      <if test="assignRuleCode != null" >
+        ASSIGN_RULE_CODE,
+      </if>
+      <if test="isRunning != null" >
+        IS_RUNNING,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+      <if test="orderType != null" >
+        ORDER_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="val != null" >
+        #{val,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="circuRuleCode != null" >
+        #{circuRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assignMethodCode != null" >
+        #{assignMethodCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assignRuleCode != null" >
+        #{assignRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isRunning != null" >
+        #{isRunning,jdbcType=CHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="orderType != null" >
+        #{orderType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSetExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_COLLECTION_RULE_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_COLLECTION_RULE_SET
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.val != null" >
+        VAL = #{record.val,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.circuRuleCode != null" >
+        CIRCU_RULE_CODE = #{record.circuRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignMethodCode != null" >
+        ASSIGN_METHOD_CODE = #{record.assignMethodCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignRuleCode != null" >
+        ASSIGN_RULE_CODE = #{record.assignRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isRunning != null" >
+        IS_RUNNING = #{record.isRunning,jdbcType=CHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.orderType != null" >
+        ORDER_TYPE = #{record.orderType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_COLLECTION_RULE_SET
+    set ID = #{record.id,jdbcType=BIGINT},
+      VAL = #{record.val,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      CIRCU_RULE_CODE = #{record.circuRuleCode,jdbcType=VARCHAR},
+      ASSIGN_METHOD_CODE = #{record.assignMethodCode,jdbcType=VARCHAR},
+      ASSIGN_RULE_CODE = #{record.assignRuleCode,jdbcType=VARCHAR},
+      IS_RUNNING = #{record.isRunning,jdbcType=CHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      ORDER_TYPE = #{record.orderType,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSet" >
+    update PLMS_COLLECTION_RULE_SET
+    <set >
+      <if test="val != null" >
+        VAL = #{val,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="circuRuleCode != null" >
+        CIRCU_RULE_CODE = #{circuRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assignMethodCode != null" >
+        ASSIGN_METHOD_CODE = #{assignMethodCode,jdbcType=VARCHAR},
+      </if>
+      <if test="assignRuleCode != null" >
+        ASSIGN_RULE_CODE = #{assignRuleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isRunning != null" >
+        IS_RUNNING = #{isRunning,jdbcType=CHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="orderType != null" >
+        ORDER_TYPE = #{orderType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsCollectionRuleSet" >
+    update PLMS_COLLECTION_RULE_SET
+    set VAL = #{val,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CIRCU_RULE_CODE = #{circuRuleCode,jdbcType=VARCHAR},
+      ASSIGN_METHOD_CODE = #{assignMethodCode,jdbcType=VARCHAR},
+      ASSIGN_RULE_CODE = #{assignRuleCode,jdbcType=VARCHAR},
+      IS_RUNNING = #{isRunning,jdbcType=CHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      ORDER_TYPE = #{orderType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  	 <select id="selectDtoList" resultType="PlmsCollectionRuleSetDto">
+  	select 
+  	   coll.ID as id,
+       coll.VAL as val,
+       coll.NAME as name,
+       coll.STATUS as status,
+       coll.CIRCU_RULE_CODE as circuRuleCode,
+       circu.VAL as circuRuleVal,
+       coll.ASSIGN_METHOD_CODE as assignMethodCode,
+       amethod.VAL as assignMethodVal,
+       coll.ASSIGN_RULE_CODE as assignRuleCode,
+       assignrule.VAL as assignRuleVal,
+       coll.IS_RUNNING as isRunning,
+       coll.IS_ACTIVE as isActive,
+       coll.REMARK as remark,
+       coll.CREATED_BY as createdBy,
+       coll.CREATE_TIME as createTime,
+       coll.UPDATED_BY as updatedBy,
+       coll.UPDATE_TIME as updateTime,
+       coll.REC_VER as recVer,
+       coll.TAG_SEQ as tagSeq 
+      from PLMS_COLLECTION_RULE_SET coll
+      left join PLMS_L_CIRCU_RULE circu on circu.CODE = coll.CIRCU_RULE_CODE and circu.IS_ACTIVE='Y'
+      left join PLMS_L_ASSIGN_METHOD  amethod on coll.ASSIGN_METHOD_CODE = amethod.CODE and amethod.IS_ACTIVE = 'Y'
+      left join PLMS_L_ASSIGN_RULE assignrule on coll.ASSIGN_RULE_CODE = assignrule.CODE and assignrule.IS_ACTIVE = 'Y'
+      order by coll.is_active desc,coll.VAL
+  
+  </select>
+  
+  <!-- 查询有逾期天数限制（上限或下限）的区间  -->
+  <select id="selectworkOrderPoolRulesList" resultType="PlmsCollectionRuleSetDto">
+  	select 
+  	   coll.ID as id,
+       coll.VAL as val,
+       coll.NAME as name,
+       coll.STATUS as status,
+       coll.CIRCU_RULE_CODE as circuRuleCode,
+       circu.VAL as circuRuleVal,
+       coll.ASSIGN_METHOD_CODE as assignMethodCode,
+       amethod.VAL as assignMethodVal,
+       coll.ASSIGN_RULE_CODE as assignRuleCode,
+       assignrule.VAL as assignRuleVal,
+       nvl(cset.OVERDUEDAYS_FROM,0) as overduedaysFrom,
+       nvl(cset.OVERDUEDAYS_TO,9999) as overduedaysTo,
+	   assignrule.UPPER_LIMIT as upperLimit
+      from PLMS_COLLECTION_RULE_SET coll
+      left join PLMS_L_CIRCU_RULE circu on circu.CODE = coll.CIRCU_RULE_CODE and circu.IS_ACTIVE='Y'
+      left join PLMS_CIRCU_RULE_SET cset on cset.code = circu.code and cset.IS_ACTIVE='Y'
+      left join PLMS_L_ASSIGN_METHOD  amethod on coll.ASSIGN_METHOD_CODE = amethod.CODE and amethod.IS_ACTIVE = 'Y'
+      left join PLMS_L_ASSIGN_RULE assignrule on coll.ASSIGN_RULE_CODE = assignrule.CODE and assignrule.IS_ACTIVE = 'Y'
+	  where coll.IS_ACTIVE = 'Y' and  (cset.OVERDUEDAYS_FROM is not null or cset.OVERDUEDAYS_TO is not null)
+      order by coll.val
+  </select>
+  <!-- 具有上限并具有下限的区间  -->
+  <select id="hasOverduedaysScope" resultType="PlmsCollectionRuleSetDto">
+  	Select 
+       	coll.id as id,
+       	Coll.Name As Name,
+       	Coll.status As status
+      From Plms_Collection_Rule_Set Coll
+      inner join PLMS_CIRCU_RULE_SET cset on cset.code = coll.CIRCU_RULE_CODE and cset.IS_ACTIVE='Y' And  (Cset.Overduedays_From Is Not Null And Cset.Overduedays_To Is Not Null)
+      Where Coll.Is_Active = 'Y' 
+      order by coll.val 
+  </select>
+  
+  <!-- 根据用户id查找此用户的数据区间 -->
+  <select id="selectScopeByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  select rset.* 
+  	from plms_sys_user_data_range range
+	inner join plms_org_scope_relation relation on range.org_id = relation.org_id
+	inner join plms_collection_rule_set rset on rset.id = relation.collection_rule_id
+	<where>
+		<if test='userId !=null and userId !=""'>
+			and range.user_id = #{userId}
+		</if>
+	</where>  
+  </select>
+
+  <!-- 查找有效的区间且流转规则overduedays_from不为空的数据 -->
+  <select id="selectCollectionCircu" resultType="com.ljwd.plms.web.vo.workorder_pool.CollectionCircuDto">
+      select collection.val,
+             collection.name,
+             collection.status,
+             collection.circu_rule_code as circuRuleCode,
+             circu.overduedays_from as overduedaysFrom,
+             nvl(circu.overduedays_to,999999) as overduedaysTo
+      from plms_collection_rule_set collection
+      inner join plms_circu_rule_set circu on collection.circu_rule_code = circu.code
+      where collection.is_active = 'Y' and circu.overduedays_from is not null
+      <if test='circuCode !=null and circuCode !=""'>
+      	and collection.circu_rule_code = #{circuCode}
+      </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.PlmsSysBranchManageMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManage" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="SITE_CODE" property="siteCode" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  
+  <sql id="Where_Clause">
+        <if test="userId != null and userId != ''">
+            and user_id = #{userId}
+        </if>
+   </sql>
+  
+  <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+  </sql>
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, SITE_CODE, IS_ACTIVE, REMARK, CREATE_TIME, CREATED_BY, UPDATE_TIME, 
+    UPDATED_BY, REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManageExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_BRANCH_MANAGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_BRANCH_MANAGE
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_SYS_BRANCH_MANAGE
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManageExample" >
+    delete from PLMS_SYS_BRANCH_MANAGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManage" >
+    insert into PLMS_SYS_BRANCH_MANAGE (ID, USER_ID, SITE_CODE, 
+      IS_ACTIVE, REMARK, CREATE_TIME, 
+      CREATED_BY, UPDATE_TIME, UPDATED_BY, 
+      REC_VER, TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{siteCode,jdbcType=VARCHAR}, 
+      #{isActive,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createdBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManage" >
+     <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_SYS_BRANCH_MANAGE.nextval FROM dual
+      </selectKey>
+    insert into PLMS_SYS_BRANCH_MANAGE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+        REC_VER,
+        TAG_SEQ
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      0,1
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManageExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_SYS_BRANCH_MANAGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_SYS_BRANCH_MANAGE
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteCode != null" >
+        SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_SYS_BRANCH_MANAGE
+    set ID = #{record.id,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManage" >
+    update PLMS_SYS_BRANCH_MANAGE
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysBranchManage" >
+    update PLMS_SYS_BRANCH_MANAGE
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 分行监管分页查询  -->
+  <select id="selectByExampleAndPage" parameterType="com.ljwd.plms.web.vo.sys_management.PlmsEmpCollectorParam" resultType="com.ljwd.plms.web.vo.sys_management.BranchManageResult">
+		select 
+        temp.userid as userId,  
+        sysemp.emp_name as userName,
+        temp.sitenames as branchSiteNames,
+        temp.sitecodes as branchSiteCodes,
+        temp.isActive as isActive,
+        temp.updateTime as updateTime,
+        temp.updatedBy as updatedBy,
+        sysuser2.user_name as updatedUserName,
+        sysEmp.org_id as orgId, 
+        sysorg.org_name as orgName 
+		from 
+		(select          coll.user_id as userid,
+		                max(coll.is_active) as isActive,
+		                max(coll.UPDATE_TIME) as updateTime,
+		                max(coll.UPDATED_BY) as updatedBy,
+		                listagg(coll.site_code,',') within group (order by  user_Id) as sitecodes,
+		                listagg(coll.sitename,',') within group (order by  user_Id) as sitenames
+		          from
+		            ( select collect.*,rset.site_name as sitename from PLMS_SYS_BRANCH_MANAGE collect
+		            left join sys_site rset on rset.site_code = collect.site_code
+		            )coll
+		          group by coll.user_id
+		)temp
+		left join sys_user sysuser on sysuser.user_id = temp.userid
+		left join sys_emp sysemp on  sysuser.emp_id = sysemp.id
+		left join sys_org sysOrg  on sysOrg.id = sysemp.org_id 
+		left join sys_user sysuser2 on sysuser2.user_id = temp.updatedBy
+		where 1=1
+		<if test='userId !=null and userId !=""'>
+			and sysuser.user_name  = #{userId}
+		</if>
+		<if test='orgId !=null and orgId !=""'>
+			and sysOrg.id = #{orgId}
+		</if>
+  </select>
+</mapper>

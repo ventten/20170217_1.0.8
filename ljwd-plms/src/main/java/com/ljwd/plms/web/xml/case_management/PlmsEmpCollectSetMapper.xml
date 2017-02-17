@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_management.PlmsEmpCollectSetMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="GROUP_ID" property="groupId" jdbcType="BIGINT" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="MESSAGE_NAME" property="messageName" jdbcType="VARCHAR" />
+    <result column="ISLEADER" property="isleader" jdbcType="CHAR" />
+    <result column="IS_ALLOC" property="isAlloc" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, GROUP_ID, REMARK, IS_ACTIVE, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+    REC_VER, TAG_SEQ, MESSAGE_NAME, ISLEADER,IS_ALLOC
+  </sql>
+  
+  
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_EMP_COLLECT_SET 
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_EMP_COLLECT_SET 
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_EMP_COLLECT_SET
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSetExample" >
+    delete from PLMS_EMP_COLLECT_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" >
+    insert into PLMS_EMP_COLLECT_SET (ID, USER_ID, GROUP_ID, 
+      REMARK, IS_ACTIVE, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ, MESSAGE_NAME, 
+      ISLEADER,IS_ALLOC)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{groupId,jdbcType=BIGINT}, 
+      #{remark,jdbcType=VARCHAR}, #{isActive,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT}, #{messageName,jdbcType=VARCHAR}, 
+      #{isleader,jdbcType=CHAR},#{isAlloc,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" >
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_EMP_COLLECT_SET.Nextval as ID from DUAL  
+	</selectKey> 
+    insert into PLMS_EMP_COLLECT_SET
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ,
+      <if test="messageName != null" >
+        MESSAGE_NAME,
+      </if>
+      <if test="isleader != null" >
+        ISLEADER,
+      </if>
+      <if test="isAlloc != null" >
+        IS_ALLOC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <!-- <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if> -->
+      0,1,
+      <if test="messageName != null" >
+        #{messageName,jdbcType=VARCHAR},
+      </if>
+      <if test="isleader != null" >
+        #{isleader,jdbcType=CHAR},
+      </if>
+      <if test="isAlloc != null" >
+        #{isAlloc,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSetExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_EMP_COLLECT_SET
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_EMP_COLLECT_SET
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.groupId != null" >
+        GROUP_ID = #{record.groupId,jdbcType=BIGINT},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.messageName != null" >
+        MESSAGE_NAME = #{record.messageName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isleader != null" >
+        ISLEADER = #{record.isleader,jdbcType=CHAR},
+      </if>
+      <if test="record.isAlloc != null" >
+        IS_ALLOC = #{record.isAlloc,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_EMP_COLLECT_SET
+    set ID = #{record.id,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      GROUP_ID = #{record.groupId,jdbcType=BIGINT},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      MESSAGE_NAME = #{record.messageName,jdbcType=VARCHAR},
+      ISLEADER = #{record.isleader,jdbcType=CHAR},
+      IS_ALLOC = #{record.isAlloc,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" >
+    update PLMS_EMP_COLLECT_SET
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="messageName != null" >
+        MESSAGE_NAME = #{messageName,jdbcType=VARCHAR},
+      </if>
+      <if test="isleader != null" >
+        ISLEADER = #{isleader,jdbcType=CHAR},
+      </if>
+      <if test="isAlloc != null" >
+        IS_ALLOC = #{isAlloc,jdbcType=CHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" >
+    update PLMS_EMP_COLLECT_SET
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      GROUP_ID = #{groupId,jdbcType=BIGINT},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      MESSAGE_NAME = #{messageName,jdbcType=VARCHAR},
+      ISLEADER = #{isleader,jdbcType=CHAR},
+      IS_ALLOC = #{isAlloc,jdbcType=CHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  	<!-- 查询某区间的催收员 -->
+    <!--  <select id="selectByGroupId" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDto">
+  			select empset.id as id,
+  				   empset.USER_ID as userId,
+				   empset.GROUP_ID as groupId,
+  				   sysemp.org_id as orgId,
+  				   sysRole.roleid as roleIds
+  			 from plms_emp_collect_set empset
+				inner join sys_user sysUser on sysuser.user_id = empset.user_id and sysuser.is_active='Y'
+				left join sys_emp sysemp on sysuser.emp_id = sysemp.id
+		left join(
+		    select 
+		          listagg(userrole.role_id,',') within group (order by  user_id) as roleId,
+		          userrole.user_id
+		      from    plms_user_role userrole 
+		      group by userrole.user_id
+		    )sysRole on sysRole.user_id = empset.user_id
+        where empset.is_active='Y' and empset.group_id = #{groupId} 
+  	 </select> -->
+  
+  
+   <!--平均分配方式 先按【月新增累计库存】升序排序，再按【月新增累计库存剩余本金】升序排序 -->
+   <select id="selectDtoByExampleList" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDto">
+	  SELECT EMPSET.ID AS id,
+		     EMPSET.USER_ID AS userId,
+	         EMPSET.GROUP_ID AS groupId,
+	         EMPSET.ISLEADER AS isLeader,
+	         sysemp.org_id as orgId,
+  			 sysRole.roleid as roleIds,
+       <choose>
+       	<when test='circuRuleCode=="OPERD" or circuRuleCode=="CUSTS"'>
+       		Nvl(Alloc.Monthcasecount,0)+Nvl(Agent.Monthcasecount,0) As Monthcasecount,
+      		NVL(ALLOC.MONTHREMAININGPRINCIPAL,0)+NVL(AGENT.MONTHREMAININGPRINCIPAL,0) AS monthremainingprincipal
+       	</when>
+        <otherwise>
+       		NVL(ALLOC.MONTHCASECOUNT,0) AS monthcasecount,
+	        NVL(ALLOC.MONTHREMAININGPRINCIPAL,0) AS monthremainingprincipal
+        </otherwise>
+       </choose>     
+		FROM       
+		(SELECT ESET.ID,ESET.USER_ID,ESET.GROUP_ID,ESET.ISLEADER,ESET.is_alloc
+		FROM PLMS_EMP_COLLECT_SET ESET
+		WHERE ESET.GROUP_ID = #{groupId,jdbcType=BIGINT} AND ESET.IS_ACTIVE = 'Y') EMPSET
+		Inner Join Sys_User Sysuser On Sysuser.User_Id = EMPSET.User_Id and Sysuser.Is_Active = 'Y'
+		left join sys_emp sysemp on sysuser.emp_id = sysemp.id and sysemp.IS_QUIT = 'N'
+		inner join sys_org sysorg on sysorg.id = sysemp.org_id
+		<if test='siteCode !=null and siteCode !=""'>
+		  	and  sysorg.site_code = #{siteCode}
+		</if>
+		left join(
+		    select 
+		          listagg(userrole.role_id,',') within group (order by  user_id) as roleId,
+		          userrole.user_id
+		      from    plms_user_role userrole 
+		      group by userrole.user_id
+		    )sysRole on sysRole.user_id = empset.user_id
+	  <choose>
+       	<when test='circuRuleCode=="OPERD" or circuRuleCode=="CUSTS"'>
+       		 left JOIN 
+		 <!-- 未结清库存 -->
+		(Select Allo.Collector ,
+				Count(Allo.Id) Monthcasecount,
+				Sum(Allo.Remaining_Principal) Monthremainingprincipal 
+			From Plms_La_Collect_Alloc  Allo 
+			Where  Trunc(Allo.Alloc_Begin_Date)>=Trunc(Sysdate, 'MM') And Trunc(Allo.Assign_Time)>=Trunc(Sysdate, 'MM') 
+				And Allo.Is_Active = 'Y' and Not Exists (Select 1 From Plms_La_Collect_Rec Rec Where Rec.Status=#{status} And Allo.Payment_Id = Rec.Payment_Id And Trunc(Rec.Rec_Date)>=Trunc(Sysdate, 'MM')) 
+		GROUP BY ALLO.COLLECTOR
+		)Alloc On Alloc.Collector = Empset.User_Id
+		LEFT Join (
+		<!-- 已结清库存 -->
+			Select coll.Collector,count(coll.id) as Monthcasecount,sum(coll.Remaining_Principal) as Monthremainingprincipal from
+			(
+			Select  Rec.Payment_Id,Rec.Collector ,al.id,al.Remaining_Principal
+			From Plms_La_Collect_Rec Rec 
+			Inner Join( 
+				Select Alloc.Payment_Id,Alloc.id,alloc.Alloc_End_Date,Alloc.Remaining_Principal From Plms_La_Collect_Alloc Alloc 
+				Inner Join  Plms_Emp_Collect_Set Cset On cset.IS_ACTIVE = 'Y' and Cset.User_Id = Alloc.Collector
+				Inner Join Plms_Collection_Rule_Set Rset On Rset.Id= Cset.Group_Id And Rset.Status = #{status}
+				Where Alloc.Alloc_End_Date Is Not Null  And  Alloc.Is_Active = 'Y' 
+				<!-- and Trunc(Alloc.Alloc_Begin_Date)>=Trunc(Sysdate, 'MM') And Trunc(Alloc.Assign_Time)>=Trunc(Sysdate, 'MM') -->
+			) Al On Al.Payment_Id = Rec.Payment_Id And Trunc(Al.Alloc_End_Date) = Trunc(Rec.Rec_Date)
+			Where Trunc(Rec.Rec_Date) &lt;=Trunc(Sysdate) And Trunc(Rec.Rec_Date)>=Trunc(Sysdate, 'MM') And Rec.Status = #{status}
+			)Coll
+			group by coll.Collector
+		)AGENT ON AGENT.Collector = Empset.User_Id
+       	</when>
+        <otherwise>
+       		LEFT JOIN (
+			SELECT ALLO.COLLECTOR ,COUNT(ALLO.ID) MONTHCASECOUNT,SUM(ALLO.REMAINING_PRINCIPAL) MONTHREMAININGPRINCIPAL FROM PLMS_LA_COLLECT_ALLOC  ALLO 
+			WHERE TRUNC(ALLO.ALLOC_BEGIN_DATE)>=TRUNC(SYSDATE, 'MM') And Trunc(Allo.ASSIGN_TIME)>=Trunc(Sysdate, 'MM') AND ALLO.IS_ACTIVE = 'Y'
+			GROUP BY ALLO.COLLECTOR
+			)ALLOC ON ALLOC.COLLECTOR = EMPSET.USER_ID
+        </otherwise>
+       </choose>
+       <if test='siteCode !=null and siteCode !=""'>
+       inner join (
+		  select sorg.id from sys_org sorg start with sorg.org_no='G0301' connect by sorg.pid=prior sorg.id
+		)sorg on sysemp.org_id =sorg.id
+       </if> 
+       where Sysuser.Is_Active = 'Y' and sysemp.IS_QUIT = 'N' and Empset.is_alloc = 'Y'
+       <if test="collectors!=null and collectors !=''">
+  			and Empset.User_Id  in
+  			<foreach item="item" index="index" collection="collectors" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>
+  	 	</if>    	
+		order by Monthcasecount,monthremainingprincipal
+  </select>
+  
+    <!--多劳多得分配方式 -->
+    <select id="selectDtoByExampleList02" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDto">
+    Select 
+	  Empset.Id As id,
+	  Empset.User_Id As userId,
+	  Empset.Group_Id As groupId,
+	  Empset.ISLEADER As isLeader,
+	  nvl(Larec.CaseCount,0) as clearMonthCaseCount, 
+	  NVL(ALLOC.MONTHCASECOUNT,0) AS monthcasecount,
+	  nvl(alloc.monthremainingprincipal,0) as monthremainingprincipal,
+	  sysemp.org_id as orgid,
+      sysrole.roleid as roleids
+	From Plms_Emp_Collect_Set Empset
+	Left Join (
+	 Select count(Rec.Id) CaseCount ,Rec.Collector 
+	 From Plms_La_Collect_Rec Rec 
+	 Where Rec.Status = #{status} And Rec.Is_Active = 'Y'  
+	 <if test='time == "yesterday"'>
+	 	and Trunc(Rec.Rec_Date) =Trunc(Sysdate-1)
+	 </if>
+	 <if test='time == "month"'>
+	 	and Trunc(Rec.Rec_Date) >=Trunc(Sysdate,'MM') 
+	 </if>
+	 <if test='time == "theBeforemonth"'>
+	 	 	and Trunc(Rec.Rec_Date) >=trunc(add_months(sysdate, -1), 'month') 
+	 </if>
+   		Group By Rec.Collector
+	)larec  On Larec.Collector = Empset.User_Id 
+	Inner Join Plms_Collection_Rule_Set Rset On Rset.Id = Empset.Group_Id and Rset.Is_Active='Y' And Rset.Status = #{status} 
+	Inner Join Sys_User Sysuser On Sysuser.User_Id = EMPSET.User_Id and Sysuser.Is_Active = 'Y'
+	left join sys_emp sysemp on sysuser.emp_id = sysemp.id 
+	left join(
+	    select 
+	          listagg(userrole.role_id,',') within group (order by  user_id) as roleId,
+	          userrole.user_id
+	      from    plms_user_role userrole 
+	      group by userrole.user_id
+	    )sysRole on sysRole.user_id = empset.user_id
+	  LEFT JOIN (
+			SELECT ALLO.COLLECTOR ,COUNT(ALLO.ID) MONTHCASECOUNT,SUM(ALLO.REMAINING_PRINCIPAL) MONTHREMAININGPRINCIPAL FROM PLMS_LA_COLLECT_ALLOC  ALLO 
+			WHERE TRUNC(ALLO.ALLOC_BEGIN_DATE)>=TRUNC(SYSDATE, 'MM') And Trunc(Allo.ASSIGN_TIME)>=Trunc(Sysdate, 'MM') AND ALLO.IS_ACTIVE = 'Y'
+			group by allo.collector
+			)alloc on alloc.collector = empset.user_id     
+    where Empset.Is_Active='Y'  and Sysuser.Is_Active = 'Y'and sysemp.IS_QUIT = 'N'and Empset.is_alloc = 'Y'
+    <if test="collectors!=null and collectors !=''">
+  		and Empset.User_Id  in
+  		<foreach item="item" index="index" collection="collectors" open="(" separator="," close=")">  
+			  #{item}  
+		</foreach>
+  	 </if>
+    order by clearMonthCaseCount desc,monthremainingprincipal desc
+     </select>
+    
+    <!-- 查找结清数据的真正所属催收员 -->
+    <select id="judgeCollector"  resultType="com.ljwd.plms.web.vo.case_management.PlmsLaCollectRecDto">
+    
+  	Select Pool.Payment_Id As  paymentId,
+           Pool.Appl_Id As applId,
+           allo.Collector as collector,
+           pool.status as status
+ 	From Plms_Work_Order_Pool Pool 
+	left join (
+		 		Select    Alloc_Agent.Payment_Id , 
+		 				  Alloc_Agent.Appl_Id , 
+		 				  Case  When Alloc_Agent.Agent Is Null Then Alloc_Agent.Collector Else Alloc_Agent.Agent End As Collector 
+		 		From(  
+		 			Select Alloc.Collector,Alloc.Payment_Id,Alloc.Appl_Id,Agent.Agent   From Plms_La_Collect_Alloc Alloc 
+		 			Left Join Plms_La_Collect_Agent Agent On Agent.Payment_Id = Alloc.Payment_Id 
+		 			And Trunc(Agent.Alloc_Begin_Date) &lt;=Trunc(Sysdate)  and Trunc(Agent.Alloc_Begin_Date)>=Trunc(alloc.Alloc_Begin_Date)
+				 	And Trunc(Agent.Alloc_End_Date) >=Trunc(Sysdate-1) And Alloc.Is_Active = 'Y' And Agent.Client = Alloc.Collector  
+					Where  Trunc(Alloc.Alloc_Begin_Date) &lt;=Trunc(Sysdate) And Alloc.Alloc_End_Date Is Null And Alloc.Is_Active = 'Y' 
+		  		) Alloc_Agent
+			)Allo On Allo.Payment_Id = Pool. Payment_Id and pool.appl_id = Allo.Appl_Id
+	where 1=1
+	<if test="payments!=null and payments !=''">
+		and pool.Payment_Id In  
+		<foreach item="item" index="index" collection="payments" open="(" separator="," close=")">  
+	  			#{item}  
+	 	</foreach>
+ 	</if>
+    </select>
+    
+    
+    
+    <!-- 查找催收员  手动分配统计催收员方式一（不管代理出去与否，库存都属于原催收员）-->
+    <select id="getAllCollector01" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDetailDto">
+	 Select Eset.Id As Id,
+		    eset.group_id as groupid,
+		    Eset.ISLEADER As isLeader,
+	      	Eset.User_Id As Collector,
+	      	Sysuser.User_Name As Collectorname,
+	      	sysorg.ORG_NAME as orgName,
+	      	sysOrg.ID as orgId,
+		    nvl(alloc.monthcasecount,0) as monthcasecount,
+		    nvl(alloc.monthremainingprincipal,0) as monthremainingprincipal ,  
+	      	nvl(currentAlloc.monthcasecount,0) as currentcasecount,
+		    nvl(currentAlloc.monthremainingprincipal,0) as currentremainingprincipal   
+	 from plms_emp_collect_set eset
+			left join (
+				select allo.collector ,
+					   count(allo.id) monthcasecount,
+					   sum(allo.remaining_principal) monthremainingprincipal 
+				From Plms_La_Collect_Alloc  Allo 
+				where trunc(allo.alloc_begin_date)>=trunc(sysdate, 'mm') and trunc(allo.assign_time)>=trunc(sysdate, 'mm') and allo.is_active = 'Y'
+				And Trunc(Allo.Alloc_Begin_Date)&lt;=Trunc(Sysdate)  And Trunc(Allo.Assign_Time)&lt;=Trunc(Sysdate)
+				Group By Allo.Collector
+			)alloc on alloc.collector = eset.user_id
+			left join (
+				select allo.collector ,
+					   count(allo.id) monthcasecount,
+					   sum(allo.remaining_principal) monthremainingprincipal 
+				From Plms_La_Collect_Alloc  Allo 
+				where <!-- trunc(allo.alloc_begin_date)>=trunc(sysdate, 'mm') and trunc(allo.assign_time)>=trunc(sysdate, 'mm') and --> allo.ALLOC_END_DATE is null 
+				      And Trunc(Allo.Alloc_Begin_Date)&lt;=Trunc(Sysdate)  And Trunc(Allo.Assign_Time)&lt;=Trunc(Sysdate) and allo.is_active = 'Y'
+				group by allo.collector
+			)Currentalloc On Currentalloc.Collector = Eset.User_Id
+    Inner Join Sys_User Sysuser On Sysuser.User_Id = Eset.User_Id and Sysuser.Is_Active = 'Y'
+    Inner Join Sys_Emp Sysemp On Sysemp.Id =Sysuser.Emp_Id
+    inner join sys_org sysorg on sysorg.id = sysemp.ORG_ID
+		Where Eset.Group_Id = #{groupId,jdbcType=BIGINT} And Eset.Is_Active = 'Y' and Sysuser.Is_Active = 'Y'and sysemp.IS_QUIT = 'N' and Eset.is_alloc = 'Y'
+		<if test="userId !=null and userId !=''">
+				and  Eset.User_Id = #{userId}
+		</if>
+		<if test='orgId !=null and orgId !=""'>
+			and sysorg.id = #{orgId}
+		</if>
+		order by monthcasecount,monthremainingprincipal
+    </select>
+    
+    <!--  查找催收员 手动分配统计催收员方式一（代理出去并由代理催收员催收成功的，库存属于代理催收员，其余情况库存仍属于原催收员）-->
+    <select id="getAllCollector02" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDetailDto">
+    	 Select Eset.Id As Id,
+		    eset.group_id as groupid,
+		    Eset.ISLEADER As isLeader,
+	      	Eset.User_Id As Collector,
+	      	Sysuser.User_Name As Collectorname,
+	      	Sysorg.Org_Name As Orgname,
+	      	sysOrg.ID as orgId,
+		    Nvl(Alloc.Monthcasecount,0)+Nvl(Agent.Monthcasecount,0) As Monthcasecount,
+		    nvl(alloc.monthremainingprincipal,0)+nvl(agent.monthremainingprincipal,0) as monthremainingprincipal ,  
+        	nvl(currentAlloc.monthcasecount,0) as currentcasecount,
+		    nvl(currentAlloc.monthremainingprincipal,0) as currentremainingprincipal   
+	 from plms_emp_collect_set eset
+			left join (
+				Select Allo.Collector ,
+				Count(Allo.Id) Monthcasecount,
+				Sum(Allo.Remaining_Principal) Monthremainingprincipal 
+        From Plms_La_Collect_Alloc  Allo 
+        Where  Trunc(Allo.Alloc_Begin_Date)>=Trunc(Sysdate, 'MM') And Trunc(Allo.Assign_Time)>=Trunc(Sysdate, 'MM') 
+				And Allo.Is_Active = 'Y' And Not Exists (Select 1 From Plms_La_Collect_Rec Rec Where Rec.status= #{status} And Allo.Payment_Id = Rec.Payment_Id and Trunc(Rec.Rec_Date)>=Trunc(Sysdate, 'MM')) 
+        Group By Allo.Collector 
+			)Alloc On Alloc.Collector = Eset.User_Id
+      LEFT Join (
+			Select coll.Collector,count(coll.id) as Monthcasecount,sum(coll.Remaining_Principal) as Monthremainingprincipal from
+			(
+			Select  Rec.Payment_Id,Rec.Collector ,al.id,al.Remaining_Principal
+			From Plms_La_Collect_Rec Rec 
+			Inner Join( 
+			Select Alloc.Payment_Id,Alloc.id,alloc.Alloc_End_Date,Alloc.Remaining_Principal From Plms_La_Collect_Alloc Alloc 
+			Inner Join  Plms_Emp_Collect_Set Cset On Cset.Is_Active = 'Y' And Cset.User_Id = Alloc.Collector
+			Inner Join Plms_Collection_Rule_Set Rset On Rset.Id= Cset.Group_Id And Rset.Status = #{status}
+			Where Alloc.Alloc_End_Date Is Not Null  And  Alloc.Is_Active = 'Y'  
+			<!-- and Trunc(Alloc.Alloc_Begin_Date)>=Trunc(Sysdate, 'MM') And Trunc(Alloc.Assign_Time)>=Trunc(Sysdate, 'MM') -->
+			) Al On Al.Payment_Id = Rec.Payment_Id And Trunc(Al.Alloc_End_Date) = Trunc(Rec.Rec_Date)
+			Where Trunc(Rec.Rec_Date) &lt;=Trunc(Sysdate) And Trunc(Rec.Rec_Date)>=Trunc(Sysdate, 'MM') And Rec.Status = #{status}
+			)Coll
+			Group By Coll.Collector
+		)AGENT ON AGENT.Collector = Eset.User_Id
+			left join (
+				select allo.collector ,
+					   count(allo.id) monthcasecount,
+					   sum(allo.remaining_principal) monthremainingprincipal 
+				From Plms_La_Collect_Alloc  Allo 
+				where <!-- trunc(allo.alloc_begin_date)>=trunc(sysdate, 'mm') and trunc(allo.assign_time)>=trunc(sysdate, 'mm') and --> allo.ALLOC_END_DATE is null 
+				      And Trunc(Allo.Alloc_Begin_Date)&lt;=Trunc(Sysdate)  And Trunc(Allo.Assign_Time)&lt;=Trunc(Sysdate) and allo.is_active = 'Y'
+				group by allo.collector
+			)Currentalloc On Currentalloc.Collector = Eset.User_Id
+    Inner Join Sys_User Sysuser On Sysuser.User_Id = Eset.User_Id and Sysuser.Is_Active = 'Y'
+    Inner Join Sys_Emp Sysemp On Sysemp.Id =Sysuser.Emp_Id
+    inner join sys_org sysorg on sysorg.id = sysemp.ORG_ID
+		Where Eset.Group_Id = #{groupId,jdbcType=BIGINT} And Eset.Is_Active = 'Y' and Sysuser.Is_Active = 'Y' and sysemp.IS_QUIT = 'N'and Eset.is_alloc = 'Y'
+		<choose>
+			<when test='orgId != null and orgId !=""'>
+				and sysorg.id = #{orgId}
+			</when>
+			<otherwise>
+			<if test='orgIds !=null and orgIds !=""'>
+				and sysorg.id  in 
+				<foreach item="item" index="index" collection="orgIds" open="(" separator="," close=")">  
+				  			#{item}  
+				</foreach>
+			</if>
+			</otherwise>
+		</choose>
+		order by monthcasecount,monthremainingprincipal
+    </select>
+    
+    
+    <!-- 微贷已离职贷后仍有效的催收员 -->
+    <select id="searchIsquitCollector" resultMap="BaseResultMap">
+    	 select 
+	    Empset.*
+	    from PLMS_EMP_COLLECT_SET Empset
+	    Inner Join Sys_User Sysuser On Empset.User_Id = Sysuser.User_Id 
+      	inner join sys_emp emp on emp.id = sysuser.EMP_ID and Emp.Is_Quit = 'Y' 
+      	where  Empset.Is_Active = 'Y'
+    </select>
+    
+    <!-- 平均分配时查找催收员数据  	人员先按【月初库存个数】进行升序排序，再按【月初库存剩余本金】进行升序排序； -->
+    <select id="selectCollectorByExampleList" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsEmpCollectDto">
+        SELECT EMPSET.ID AS id,
+		   EMPSET.USER_ID AS userId,
+	       EMPSET.GROUP_ID AS groupId,
+	       EMPSET.ISLEADER AS isLeader,
+       	   nvl(alloc.monthcasecount,0) as monthCaseCount,
+	       nvl(alloc.monthremainingprincipal,0) as monthRemainingPrincipal,
+	       sysrole.roleid as roleIds,
+	       sysemp.org_id  as orgId
+		  from plms_emp_collect_set empset
+			Inner Join Sys_User Sysuser On Sysuser.User_Id = EMPSET.User_Id and Sysuser.Is_Active = 'Y'
+	    left JOIN 
+			(Select Allo.Collector ,
+					Count(Allo.Id) Monthcasecount,
+					Sum(Allo.Remaining_Principal) Monthremainingprincipal 
+				From Plms_La_Collect_Alloc  Allo 
+				where  Allo.Is_Active = 'Y' and Allo.ALLOC_END_DATE is null
+			GROUP BY ALLO.COLLECTOR
+			)alloc on alloc.collector = empset.user_id
+	    inner join sys_user sysUser on sysuser.user_id = empset.user_id and sysuser.is_active='Y'
+	    left join sys_emp sysemp on sysuser.emp_id = sysemp.id
+	    inner join sys_org sysorg on sysorg.id = sysemp.org_id
+	    <if test='siteCode !=null and siteCode !=""'>
+		  	and  sysorg.site_code = #{siteCode}
+		</if>
+	    left join(
+	    select 
+	          listagg(userrole.role_id,',') within group (order by  user_id) as roleId,
+	          userrole.user_id
+	      from    plms_user_role userrole 
+	      group by userrole.user_id
+	    )sysRole on sysRole.user_id = empset.user_id
+	    <if test='siteCode !=null and siteCode !=""'>
+       	inner join (
+		  select sorg.id from sys_org sorg start with sorg.org_no='G0301' connect by sorg.pid=prior sorg.id
+		)sorg on sysemp.org_id =sorg.id
+       </if> 
+	    where empset.GROUP_ID = #{groupId} AND empset.IS_ACTIVE = 'Y' and Sysuser.Is_Active = 'Y'and sysemp.IS_QUIT = 'N'and Empset.is_alloc = 'Y'
+	     <if test="collectors!=null and collectors !=''">
+  			and Empset.User_Id  in
+  			<foreach item="item" index="index" collection="collectors" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>
+  	 	</if>
+		order by Monthcasecount,monthremainingprincipal
+		
+    </select>
+    
+   <resultMap type="com.ljwd.plms.web.model.case_management.PlmsEmpCollectSet" id="BaseResultMap_Ext" extends="BaseResultMap">
+  	        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+  	        <result column="officeTel" property="officeTel" jdbcType="VARCHAR"/>
+  	        <result column="orgName" property="orgName" jdbcType="VARCHAR"/>
+  	        <result column="groupIds" property="groupIds" jdbcType="VARCHAR"/>
+  	        <result column="groupNames" property="groupNames" jdbcType="VARCHAR"/>
+  	        
+  </resultMap>
+  
+  <!-- 催收用户分页列表 -->
+  <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.vo.sys_management.PlmsEmpCollectorParam">
+	   select 
+        collectT.userid as userId,
+        sysEmp.org_id as orgId,   
+        collectT.groupids as groupIds,
+        collectT.groupnames as groupNames,
+        collectT.isActive as isActive,
+        collectT.isAlloc as isAlloc,
+        collectT.messagename as messageName,
+        collectT.isLeader as isLeader,
+        collectT.updateTime as updateTime,
+        collectT.updatedBy as updatedBy,
+        sysuser2.user_name as updatedUserName,
+        sysemp.emp_name as username,
+        sysemp.office_tel as officetel,
+        sysorg.org_name as orgname 
+        from 
+        (select coll.user_id as userid,
+                max(coll.message_name)as  messagename,
+                max(coll.is_active) as isActive,
+                max(coll.is_alloc) as isAlloc,
+                max(coll.ISLEADER) as isLeader,
+                max(coll.UPDATE_TIME) as updateTime,
+                max(coll.UPDATED_BY) as updatedBy,
+                listagg(coll.GROUP_ID,',') within group (order by  user_Id) as groupIds,
+                listagg(coll.statusname,',') within group (order by  user_Id) as groupNames
+          from
+            ( select collect.*,rset.name as statusname from plms_emp_collect_set collect
+            left join plms_collection_rule_set rset on rset.id = collect.group_id
+            	
+            )coll
+          group by coll.user_id
+          )collectT
+    	left join sys_user sysuser on sysuser.user_id = collectT.userid
+		left join sys_emp sysemp on  sysuser.emp_id = sysemp.id
+		left join sys_org sysOrg  on sysOrg.id = sysemp.org_id 
+		left join sys_user sysuser2 on sysuser2.user_id = collectT.updatedBy
+		<where>
+			<if test='orgId !=null and orgId !=""'>
+				and sysOrg.id = #{orgId}
+			</if>
+            <if test='userName !=null and userName !=""'>
+            	and sysemp.emp_name = #{userName}
+            </if>
+		</where>
+		<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by updateTime desc
+            </otherwise>
+        </choose>
+  </select>
+  
+  
+  <select id="selectCollector" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.vo.sys_management.PlmsEmpCollectorParam">
+  		select 
+        collectT.userid as userId,
+        sysEmp.org_id as orgId,   
+        collectT.groupids as groupIds,
+        collectT.groupnames as groupNames,
+        collectT.isActive as isActive,
+        collectT.messagename as messageName,
+        collectT.isLeader as isLeader,
+        collectT.updateTime as updateTime,
+        collectT.updatedBy as updatedBy,
+        sysuser2.user_name as updatedUserName,
+        sysemp.emp_name as username,
+        sysemp.office_tel as officetel,
+        sysorg.org_name as orgname 
+        from 
+        (select coll.user_id as userid,
+                max(coll.message_name)as  messagename,
+                max(coll.is_active) as isActive,
+                max(coll.ISLEADER) as isLeader,
+                max(coll.UPDATE_TIME) as updateTime,
+                max(coll.UPDATED_BY) as updatedBy,
+                listagg(coll.GROUP_ID,',') within group (order by  user_Id) as groupIds,
+                listagg(coll.statusname,',') within group (order by  user_Id) as groupNames
+          from
+            ( select collect.*,rset.name as statusname from plms_emp_collect_set collect
+            left join plms_collection_rule_set rset on rset.id = collect.group_id
+            	
+            )coll
+          group by coll.user_id
+          )collectT
+    	left join sys_user sysuser on sysuser.user_id = collectT.userid
+		left join sys_emp sysemp on  sysuser.emp_id = sysemp.id
+		left join sys_org sysOrg  on sysOrg.id = sysemp.org_id 
+		left join sys_user sysuser2 on sysuser2.user_id = collectT.updatedBy
+		<where>
+			<if test='orgId !=null and orgId !=""'>
+				and sysOrg.id = #{orgId}
+			</if>
+            <if test='userName !=null and userName !=""'>
+            	and sysemp.emp_name = #{userName}
+            </if>
+		</where>
+		order by updateTime desc
+  </select>
+
+    <!--根据流转规则code,查找有效且可分配的催收员-->
+    <select id="selectCollectorByCircuRuleCode" parameterType="string" resultMap="BaseResultMap">
+        select empSet.*
+        from plms_emp_collect_set empSet
+        inner join plms_collection_rule_set ruleSet on empSet.Group_Id = ruleSet.Status
+        where empSet.Is_Active = 'Y' and empSet.Is_Alloc = 'Y' and ruleSet.Circu_Rule_Code = #{circuRuleCode}
+    </select>
+
+</mapper>

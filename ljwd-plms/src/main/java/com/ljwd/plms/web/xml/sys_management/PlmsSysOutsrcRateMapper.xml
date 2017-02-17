@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.PlmsSysOutsrcRateMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate">
+    <id column="ID" property="id" jdbcType="BIGINT"/>
+    <result column="AGING" property="aging" jdbcType="VARCHAR"/>
+    <result column="OVERDUE_DAYS_FROM" property="overdueDaysFrom" jdbcType="INTEGER"/>
+    <result column="OVERDUE_DAYS_TO" property="overdueDaysTo" jdbcType="INTEGER"/>
+    <result column="OUTSRC_RATE" property="outsrcRate" jdbcType="DECIMAL"/>
+    <result column="SERVICE_RATE" property="serviceRate" jdbcType="DECIMAL"/>
+
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR"/>
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR"/>
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP"/>
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT"/>
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT"/>
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isActive != null and isActive != ''">
+            and T.IS_ACTIVE = #{isActive}
+        </if>
+        <if test="aging != null and aging != ''">
+            and T.AGING = #{aging}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.isActive != null and example.isActive != ''">
+                and T.IS_ACTIVE = #{example.isActive}
+            </if>
+            <if test="example.aging != null and example.aging != ''">
+                and T.AGING = #{example.aging}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.AGING,
+    T.OVERDUE_DAYS_FROM,
+    T.OVERDUE_DAYS_TO,
+    T.OUTSRC_RATE,
+    T.SERVICE_RATE,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRateExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_OUTSRC_RATE T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_OUTSRC_RATE T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_SYS_OUTSRC_RATE T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRateExample" >
+    delete from PLMS_SYS_OUTSRC_RATE T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_SYS_OUTSRC_RATE.nextval FROM dual
+      </selectKey>
+    insert into PLMS_SYS_OUTSRC_RATE T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{aging,jdbcType=VARCHAR},
+      #{overdueDaysFrom,jdbcType=INTEGER},
+      #{overdueDaysTo,jdbcType=INTEGER},
+      #{outsrcRate,jdbcType=DECIMAL},
+      #{serviceRate,jdbcType=DECIMAL},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_SYS_OUTSRC_RATE.nextval FROM dual
+      </selectKey>
+    insert into PLMS_SYS_OUTSRC_RATE T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="aging != null" >
+          T.AGING,
+      </if>
+      <if test="overdueDaysFrom != null" >
+          T.OVERDUE_DAYS_FROM,
+      </if>
+      <if test="overdueDaysTo != null" >
+          T.OVERDUE_DAYS_TO,
+      </if>
+      <if test="outsrcRate != null" >
+          T.OUTSRC_RATE,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="serviceRate != null" >
+          T.SERVICE_RATE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="aging != null" >
+        #{aging,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueDaysFrom != null" >
+        #{overdueDaysFrom,jdbcType=INTEGER},
+      </if>
+      <if test="overdueDaysTo != null" >
+        #{overdueDaysTo,jdbcType=INTEGER},
+      </if>
+      <if test="outsrcRate != null" >
+        #{outsrcRate,jdbcType=DECIMAL},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="serviceRate != null" >
+        #{serviceRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRateExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_SYS_OUTSRC_RATE T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_SYS_OUTSRC_RATE T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.aging != null" >
+          T.AGING = #{record.aging,jdbcType=VARCHAR},
+      </if>
+      <if test="record.overdueDaysFrom != null" >
+          T.OVERDUE_DAYS_FROM = #{record.overdueDaysFrom,jdbcType=INTEGER},
+      </if>
+      <if test="record.overdueDaysTo != null" >
+          T.OVERDUE_DAYS_TO = #{record.overdueDaysTo,jdbcType=INTEGER},
+      </if>
+      <if test="record.outsrcRate != null" >
+          T.OUTSRC_RATE = #{record.outsrcRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.serviceRate != null" >
+          T.SERVICE_RATE = #{record.serviceRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_SYS_OUTSRC_RATE T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.aging = #{record.aging,jdbcType=VARCHAR},
+      T.OVERDUE_DAYS_FROM = #{record.overdueDaysFrom,jdbcType=INTEGER},
+      T.OVERDUE_DAYS_TO = #{record.overdueDaysTo,jdbcType=INTEGER},
+      T.OUTSRC_RATE = #{record.outsrcRate,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.SERVICE_RATE = #{record.serviceRate,jdbcType=DECIMAL},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate" >
+    update PLMS_SYS_OUTSRC_RATE T
+    <set >
+      <if test="aging != null" >
+          T.AGING = #{aging,jdbcType=INTEGER},
+      </if>
+      <if test="overdueDaysFrom != null" >
+          T.OVERDUE_DAYS_FROM = #{overdueDaysFrom,jdbcType=INTEGER},
+      </if>
+      <if test="overdueDaysTo != null" >
+          T.OVERDUE_DAYS_TO = #{overdueDaysTo,jdbcType=INTEGER},
+      </if>
+      <if test="outsrcRate != null" >
+          T.OUTSRC_RATE = #{outsrcRate,jdbcType=DECIMAL},
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="serviceRate != null" >
+          T.SERVICE_RATE = #{serviceRate,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate" >
+    update PLMS_SYS_OUTSRC_RATE T
+    set
+      T.AGING = #{aging,jdbcType=VARCHAR},
+      T.OVERDUE_DAYS_FROM = #{overdueDaysFrom,jdbcType=INTEGER},
+      T.OVERDUE_DAYS_TO = #{overdueDaysTo,jdbcType=INTEGER},
+      T.OUTSRC_RATE = #{outsrcRate,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.SERVICE_RATE = #{serviceRate,jdbcType=DECIMAL},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 根据逾期天数查询有效的费率 -->
+    <select id="selectByOverdueDays" resultMap="BaseResultMap" parameterType="long">
+        SELECT rate.*
+        FROM plms_sys_outsrc_rate rate
+        WHERE nvl(rate.overdue_days_from,0) &lt;= #{value,jdbcType=BIGINT}
+        AND nvl(rate.overdue_days_to,999999999) &gt;= #{value,jdbcType=BIGINT}
+        AND rate.is_active = 'Y'
+    </select>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRate" extends="BaseResultMap">
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysOutsrcRateExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_SYS_OUTSRC_RATE T
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                ORDER BY T.ID DESC
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

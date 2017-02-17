@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClPolicyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" >
+
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="POLICY_NAME" property="policyName" jdbcType="VARCHAR" />
+    <result column="POLICY_ADDRESS" property="policyAddress" jdbcType="VARCHAR" />
+    <result column="POLICY_ADDR_PROVINCE_ID" property="policyAddrProvinceId" jdbcType="BIGINT" />
+    <result column="POLICY_ADDR_CITY_ID" property="policyAddrCityId" jdbcType="BIGINT" />
+    <result column="POLICY_ADDR_AREA_ID" property="policyAddrAreaId" jdbcType="BIGINT" />
+    <result column="EFFECTIVE_DATE" property="effectiveDate" jdbcType="TIMESTAMP" />
+    <result column="PAYMENT_YEARS" property="paymentYears" jdbcType="INTEGER" />
+    <result column="PAYMENT_METHOD" property="paymentMethod" jdbcType="VARCHAR" />
+    <result column="PAYMENT_CATEGORY" property="paymentCategory" jdbcType="VARCHAR" />
+    <result column="PERIOD_GUARANTEE" property="periodGuarantee" jdbcType="DECIMAL" />
+    <result column="GROSSLINE" property="grossline" jdbcType="DECIMAL" />
+    <result column="POLICY_BRANCH" property="policyBranch" jdbcType="VARCHAR" />
+    <result column="PAID_PERIOD" property="paidPeriod" jdbcType="INTEGER" />
+    <result column="POLICY_CUST_NAME" property="policyCustName" jdbcType="VARCHAR" />
+    <result column="CONTACT_TEL" property="contactTel" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.POLICY_NAME,
+    T.POLICY_ADDRESS,
+    T.POLICY_ADDR_PROVINCE_ID,
+    T.POLICY_ADDR_CITY_ID,
+    T.POLICY_ADDR_AREA_ID,
+    T.EFFECTIVE_DATE,
+    T.PAYMENT_YEARS,
+    T.PAYMENT_METHOD,
+    T.PAYMENT_CATEGORY,
+    T.PERIOD_GUARANTEE,
+    T.GROSSLINE,
+    T.POLICY_BRANCH,
+    T.PAID_PERIOD,
+    T.POLICY_CUST_NAME,
+    T.CONTACT_TEL,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_POLICY_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_POLICY_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_POLICY_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfoExample" >
+    delete from PLMS_CL_POLICY_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_policy_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_POLICY_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{policyName,jdbcType=VARCHAR},
+      #{policyAddress,jdbcType=VARCHAR},
+      #{policyAddrProvinceId,jdbcType=BIGINT},
+      #{policyAddrCityId,jdbcType=BIGINT},
+      #{policyAddrAreaId,jdbcType=BIGINT},
+      #{effectiveDate,jdbcType=TIMESTAMP},
+      #{paymentYears,jdbcType=INTEGER},
+      #{paymentMethod,jdbcType=VARCHAR},
+      #{paymentCategory,jdbcType=VARCHAR},
+      #{periodGuarantee,jdbcType=DECIMAL},
+      #{grossline,jdbcType=DECIMAL},
+      #{policyBranch,jdbcType=VARCHAR},
+      #{paidPeriod,jdbcType=INTEGER},
+      #{policyCustName,jdbcType=VARCHAR},
+      #{contactTel,jdbcType=VARCHAR},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_policy_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_POLICY_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="policyName != null" >
+          T.POLICY_NAME,
+      </if>
+      <if test="policyAddress != null" >
+          T.POLICY_ADDRESS,
+      </if>
+      <if test="policyAddrProvinceId != null" >
+          T.POLICY_ADDR_PROVINCE_ID,
+      </if>
+      <if test="policyAddrCityId != null" >
+          T.POLICY_ADDR_CITY_ID,
+      </if>
+      <if test="policyAddrAreaId != null" >
+          T.POLICY_ADDR_AREA_ID,
+      </if>
+      <if test="effectiveDate != null" >
+          T.EFFECTIVE_DATE,
+      </if>
+      <if test="paymentYears != null" >
+          T.PAYMENT_YEARS,
+      </if>
+      <if test="paymentMethod != null" >
+          T.PAYMENT_METHOD,
+      </if>
+      <if test="paymentCategory != null" >
+          T.PAYMENT_CATEGORY,
+      </if>
+      <if test="periodGuarantee != null" >
+          T.PERIOD_GUARANTEE,
+      </if>
+      <if test="grossline != null" >
+          T.GROSSLINE,
+      </if>
+      <if test="policyBranch != null" >
+          T.POLICY_BRANCH,
+      </if>
+      <if test="paidPeriod != null" >
+          T.PAID_PERIOD,
+      </if>
+      <if test="policyCustName != null" >
+          T.POLICY_CUST_NAME,
+      </if>
+      <if test="contactTel != null" >
+          T.CONTACT_TEL,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="policyName != null" >
+        #{policyName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddress != null" >
+        #{policyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddrProvinceId != null" >
+        #{policyAddrProvinceId,jdbcType=BIGINT},
+      </if>
+      <if test="policyAddrCityId != null" >
+        #{policyAddrCityId,jdbcType=BIGINT},
+      </if>
+      <if test="policyAddrAreaId != null" >
+        #{policyAddrAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="effectiveDate != null" >
+        #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentYears != null" >
+        #{paymentYears,jdbcType=INTEGER},
+      </if>
+      <if test="paymentMethod != null" >
+        #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentCategory != null" >
+        #{paymentCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="periodGuarantee != null" >
+        #{periodGuarantee,jdbcType=DECIMAL},
+      </if>
+      <if test="grossline != null" >
+        #{grossline,jdbcType=DECIMAL},
+      </if>
+      <if test="policyBranch != null" >
+        #{policyBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="paidPeriod != null" >
+        #{paidPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="policyCustName != null" >
+        #{policyCustName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null" >
+        #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_POLICY_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_POLICY_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.policyName != null" >
+          T.POLICY_NAME = #{record.policyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyAddress != null" >
+          T.POLICY_ADDRESS = #{record.policyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyAddrProvinceId != null" >
+          T.POLICY_ADDR_PROVINCE_ID = #{record.policyAddrProvinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyAddrCityId != null" >
+          T.POLICY_ADDR_CITY_ID = #{record.policyAddrCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.policyAddrAreaId != null" >
+          T.POLICY_ADDR_AREA_ID = #{record.policyAddrAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.effectiveDate != null" >
+          T.EFFECTIVE_DATE = #{record.effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.paymentYears != null" >
+          T.PAYMENT_YEARS = #{record.paymentYears,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentMethod != null" >
+          T.PAYMENT_METHOD = #{record.paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentCategory != null" >
+          T.PAYMENT_CATEGORY = #{record.paymentCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.periodGuarantee != null" >
+          T.PERIOD_GUARANTEE = #{record.periodGuarantee,jdbcType=DECIMAL},
+      </if>
+      <if test="record.grossline != null" >
+          T.GROSSLINE = #{record.grossline,jdbcType=DECIMAL},
+      </if>
+      <if test="record.policyBranch != null" >
+          T.POLICY_BRANCH = #{record.policyBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paidPeriod != null" >
+          T.PAID_PERIOD = #{record.paidPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.policyCustName != null" >
+          T.POLICY_CUST_NAME = #{record.policyCustName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactTel != null" >
+          T.CONTACT_TEL = #{record.contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_POLICY_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.POLICY_NAME = #{record.policyName,jdbcType=VARCHAR},
+      T.POLICY_ADDRESS = #{record.policyAddress,jdbcType=VARCHAR},
+      T.POLICY_ADDR_PROVINCE_ID = #{record.policyAddrProvinceId,jdbcType=BIGINT},
+      T.POLICY_ADDR_CITY_ID = #{record.policyAddrCityId,jdbcType=BIGINT},
+      T.POLICY_ADDR_AREA_ID = #{record.policyAddrAreaId,jdbcType=BIGINT},
+      T.EFFECTIVE_DATE = #{record.effectiveDate,jdbcType=TIMESTAMP},
+      T.PAYMENT_YEARS = #{record.paymentYears,jdbcType=INTEGER},
+      T.PAYMENT_METHOD = #{record.paymentMethod,jdbcType=VARCHAR},
+      T.PAYMENT_CATEGORY = #{record.paymentCategory,jdbcType=VARCHAR},
+      T.PERIOD_GUARANTEE = #{record.periodGuarantee,jdbcType=DECIMAL},
+      T.GROSSLINE = #{record.grossline,jdbcType=DECIMAL},
+      T.POLICY_BRANCH = #{record.policyBranch,jdbcType=VARCHAR},
+      T.PAID_PERIOD = #{record.paidPeriod,jdbcType=INTEGER},
+      T.POLICY_CUST_NAME = #{record.policyCustName,jdbcType=VARCHAR},
+      T.CONTACT_TEL = #{record.contactTel,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" >
+    update PLMS_CL_POLICY_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="policyName != null" >
+          T.POLICY_NAME = #{policyName,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddress != null" >
+          T.POLICY_ADDRESS = #{policyAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddrProvinceId != null" >
+          T.POLICY_ADDR_PROVINCE_ID = #{policyAddrProvinceId,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddrCityId != null" >
+          T.POLICY_ADDR_CITY_ID = #{policyAddrCityId,jdbcType=VARCHAR},
+      </if>
+      <if test="policyAddrAreaId != null" >
+          T.POLICY_ADDR_AREA_ID = #{policyAddrAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="effectiveDate != null" >
+          T.EFFECTIVE_DATE = #{effectiveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paymentYears != null" >
+          T.PAYMENT_YEARS = #{paymentYears,jdbcType=INTEGER},
+      </if>
+      <if test="paymentMethod != null" >
+          T.PAYMENT_METHOD = #{paymentMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentCategory != null" >
+          T.PAYMENT_CATEGORY = #{paymentCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="periodGuarantee != null" >
+          T.PERIOD_GUARANTEE = #{periodGuarantee,jdbcType=DECIMAL},
+      </if>
+      <if test="grossline != null" >
+          T.GROSSLINE = #{grossline,jdbcType=DECIMAL},
+      </if>
+      <if test="policyBranch != null" >
+          T.POLICY_BRANCH = #{policyBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="paidPeriod != null" >
+          T.PAID_PERIOD = #{paidPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="policyCustName != null" >
+          T.POLICY_CUST_NAME = #{policyCustName,jdbcType=VARCHAR},
+      </if>
+      <if test="contactTel != null" >
+          T.CONTACT_TEL = #{contactTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" >
+    update PLMS_CL_POLICY_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.POLICY_NAME = #{policyName,jdbcType=VARCHAR},
+      T.POLICY_ADDRESS = #{policyAddress,jdbcType=VARCHAR},
+      T.POLICY_ADDR_PROVINCE_ID = #{policyAddrProvinceId,jdbcType=BIGINT},
+      T.POLICY_ADDR_CITY_ID = #{policyAddrCityId,jdbcType=BIGINT},
+      T.POLICY_ADDR_AREA_ID = #{policyAddrAreaId,jdbcType=BIGINT},
+      T.EFFECTIVE_DATE = #{effectiveDate,jdbcType=TIMESTAMP},
+      T.PAYMENT_YEARS = #{paymentYears,jdbcType=INTEGER},
+      T.PAYMENT_METHOD = #{paymentMethod,jdbcType=VARCHAR},
+      T.PAYMENT_CATEGORY = #{paymentCategory,jdbcType=VARCHAR},
+      T.PERIOD_GUARANTEE = #{periodGuarantee,jdbcType=DECIMAL},
+      T.GROSSLINE = #{grossline,jdbcType=DECIMAL},
+      T.POLICY_BRANCH = #{policyBranch,jdbcType=VARCHAR},
+      T.PAID_PERIOD = #{paidPeriod,jdbcType=INTEGER},
+      T.POLICY_CUST_NAME = #{policyCustName,jdbcType=VARCHAR},
+      T.CONTACT_TEL = #{contactTel,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClPolicyInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClPolicyInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_POLICY_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的保单信息 -->
+    <select id="findMfbmsPolicyByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select (ai.id) as appl_id,
+               (a.policy_name) as policy_name,
+               (a.policy_address) as policy_address,
+               (a.policy_addr_province_id) as policy_addr_province_id,
+               (a.policy_addr_city_id) as policy_addr_city_id,
+               (a.policy_addr_area_id) as policy_addr_area_id,
+               (a.effective_date) as effective_date,
+               (a.payment_years) as payment_years,
+               (a.payment_method) as payment_method,
+               (a.payment_category) as payment_category,
+               (a.period_guarantee) as period_guarantee,
+               (a.grossline) as grossline,
+               (a.policy_branch) as policy_branch,
+               (a.paid_period) as paid_period,
+               (a.policy_cust_name) as policy_cust_name,
+               (a.contact_tel) as contact_tel,
+               (c.id_card_no) as docno
+        from CL_POLICY_INFO a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+              select 1 from plms_cl_policy_info policy
+              inner join plms_cl_cust_info cust on policy.cl_cust_id = cust.id
+              where policy.policy_name = a.policy_name
+                    and policy.policy_address = a.policy_address
+                    and policy.effective_date = a.effective_date
+                    and policy.payment_years = a.payment_years
+                    and policy.payment_method = a.payment_method
+                    and policy.payment_category = a.payment_category
+                    and policy.period_guarantee = a.period_guarantee
+                    and policy.grossline = a.grossline
+                    and policy.paid_period = a.paid_period
+                    and policy.policy_branch = a.policy_branch
+                    and policy.policy_cust_name = a.policy_cust_name
+                    and policy.contact_tel = a.contact_tel
+                    and cust.docno = c.id_card_no
+              )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_POLICY_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_policy_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.policyName,jdbcType=VARCHAR},
+            #{item.policyAddress,jdbcType=VARCHAR},
+            #{item.policyAddrProvinceId,jdbcType=BIGINT},
+            #{item.policyAddrCityId,jdbcType=BIGINT},
+            #{item.policyAddrAreaId,jdbcType=BIGINT},
+            #{item.effectiveDate,jdbcType=TIMESTAMP},
+            #{item.paymentYears,jdbcType=INTEGER},
+            #{item.paymentMethod,jdbcType=VARCHAR},
+            #{item.paymentCategory,jdbcType=VARCHAR},
+            #{item.periodGuarantee,jdbcType=DECIMAL},
+            #{item.grossline,jdbcType=DECIMAL},
+            #{item.policyBranch,jdbcType=VARCHAR},
+            #{item.paidPeriod,jdbcType=INTEGER},
+            #{item.policyCustName,jdbcType=VARCHAR},
+            #{item.contactTel,jdbcType=VARCHAR},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+</mapper>

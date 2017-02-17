@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfRecivDtlMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfRecivDtl">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="RECIV_ID" jdbcType="BIGINT" property="recivId" />
+    <result column="LEDGER_CODE" jdbcType="VARCHAR" property="ledgerCode" />
+    <result column="RECIV_AMT" jdbcType="DECIMAL" property="recivAmt" />
+    <result column="ACTUAL_AMT" jdbcType="DECIMAL" property="actualAmt" />
+    <result column="WAIVED_AMT" jdbcType="DECIMAL" property="waivedAmt" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recivIds != null and recivIds != ''">
+            and T.RECIV_ID in (${recivIds})
+        </if>
+        <if test="recivId != null">
+            and T.RECIV_ID = #{recivId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.RECIV_ID,
+    T.LEDGER_CODE,
+    T.RECIV_AMT,
+    T.ACTUAL_AMT,
+    T.WAIVED_AMT,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+	
+	<resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.case_collection.LfRecivDtl" extends="BaseResultMap">
+        <result column="ledgerName" property="ledgerName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivDtlExample" resultMap="BaseResultMap_Ext">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,ledger.name as ledgerName
+    from LF_RECIV_DTL T
+    left join SYS_LEDGER_TYPE ledger on t.LEDGER_CODE = ledger.CODE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LF_RECIV_DTL T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivDtlExample" resultType="java.lang.Integer">
+    select count(*) from LF_RECIV_DTL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+	<!--客户应收明细表  -->
+  <select id="searchReceivableAndPage" parameterType="com.ljwd.plms.web.vo.case_collection.CustRecivDetailExample" resultType="com.ljwd.plms.web.vo.case_collection.RecivPageDto">
+  	 SELECT
+                receivable.ID as recivId,
+                contract.ID as cntrctId,
+                appl.ID as applId,
+                payment.ID as paymentId,
+                rplan.ID as repaymentPlanId,
+                receivable.PERIOD_NUM as periodNum,
+                receivable.TTL_RECIV_AMT as ttlRecivAmt,
+                receivable.TTL_ACTUAL_AMT as ttlActualAmt,
+                receivable.TTL_WAIVED_AMT as ttlWaivedAmt,
+                receivable.ACTUAL_RPMNT_DATE as actualRpmntDate,
+                receivable.IS_OVERDUE as isOverdue,
+                receivable.START_DATE as startDate,
+                payment.END_DATE as endDate,
+                receivable.RPMNT_DATE as rpmntDate,
+                receivable.MAX_RPMNT_DATE as maxRpmntDate,
+                receivable.FAIL_COLLECT_NUM as failCollectNum,
+                receivable.RE_COLLECT_DATE as reCollectDate,
+                receivable.LAST_CALC_TIME as lastCalcTime,
+                receivable.STATUS as status,
+                decode(receivable.STATUS,'UNPAID','未还','PAID','已还','FAILED','失败','PARTIAL_PAID','部分还') as statusVal,
+                contract.CNTRCT_NO as cntrctNo,
+                contract.LOAN_AMT as loanAmount,
+                payment.PAY_DATE as payDate,
+                cust.CUST_NAME as custName,
+                cust.ID_CARD_NO as idCardNo,
+                appl.BIZ_CATEGORY as bizCategory
+        FROM   LF_RECIV receivable 
+                INNER JOIN LN_APPL_INFO appl ON appl.ID = receivable.APPL_ID 
+                INNER JOIN LN_PAYMENT payment ON payment.ID = receivable.PAYMENT_ID 
+                INNER JOIN LN_CNTRCT contract ON contract.ID = receivable.CNTRCT_ID 
+                INNER JOIN LN_RPMNT_PLAN rplan ON rplan.PAYMENT_ID = receivable.PAYMENT_ID and rplan.PERIOD_NUM = receivable.PERIOD_NUM 
+                INNER JOIN CL_CUST cust ON cust.APPL_ID = receivable.APPL_ID 
+        WHERE  1=1  AND receivable.IS_DELETED = 'N' 
+        <if test='cntrctNo != null and cntrctNo !=""'> 
+          AND contract.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <if test='custName != null and custName !=""'>
+          AND    cust.CUST_NAME = #{custName}  
+        </if>
+        <if test='idCardNo != null and idCardNo !=""'>
+          AND   cust.ID_CARD_NO = #{idCardNo}  
+        </if>
+        <if test='siteCode != null and siteCode !=""'> 
+          AND appl.SITE_CODE = #{siteCode} 
+        </if>
+         <if test='paymentType != null and paymentType !=""'> 
+          AND appl.PAYMENT_TYPE  = #{paymentType}  
+        </if> 
+        <if test='payStatus != null and payStatus !=""'> 
+          AND receivable.STATUS  = #{payStatus}  
+        </if> 
+        <if test='reCollectDate != null and reCollectDate !=""'> 
+          AND receivable.RE_COLLECT_DATE = #{reCollectDate}  
+        </if> 
+        <if test='repaymentDateFrom != null and repaymentDateFrom !=""'>
+          AND   receivable.RPMNT_DATE &gt;= #{repaymentDateFrom} 
+        </if>
+        <if test='repaymentDateTo != null and repaymentDateTo !=""'>
+          AND  receivable.RPMNT_DATE &lt;#{repaymentDateTo} +1
+        </if>
+        <if test='collectDateFrom != null and collectDateFrom !=""'>
+          AND  receivable.ACTUAL_RPMNT_DATE &gt;= #{collectDateFrom}  
+        </if>
+        <if test='collectDateTo != null and collectDateTo !=""'>
+          AND  receivable.ACTUAL_RPMNT_DATE &lt;#{collectDateTo} + 1 
+        </if>
+        order by receivable.ID asc 
+  </select>
+
+  <select id="selectAllPaymentType" resultType="com.ljwd.plms.web.vo.sys_management.SysPaymentTypeDto">
+  		select CODE as code,
+  			   TYPE_NAME as typeName
+  		from SYS_PAYMENT_TYPE
+  </select>
+
+</mapper>

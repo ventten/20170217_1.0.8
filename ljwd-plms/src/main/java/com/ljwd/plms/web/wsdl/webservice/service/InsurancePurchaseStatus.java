@@ -1,0 +1,38 @@
+
+package com.ljwd.plms.web.wsdl.webservice.service;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
+
+
+/**
+ * <p>Java class for insurancePurchaseStatus.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * <p>
+ * <pre>
+ * &lt;simpleType name="insurancePurchaseStatus">
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *     &lt;enumeration value="PURCHASED"/>
+ *     &lt;enumeration value="NOT_PURCHASED"/>
+ *   &lt;/restriction>
+ * &lt;/simpleType>
+ * </pre>
+ * 
+ */
+@XmlType(name = "insurancePurchaseStatus")
+@XmlEnum
+public enum InsurancePurchaseStatus {
+
+    PURCHASED,
+    NOT_PURCHASED;
+
+    public String value() {
+        return name();
+    }
+
+    public static InsurancePurchaseStatus fromValue(String v) {
+        return valueOf(v);
+    }
+
+}

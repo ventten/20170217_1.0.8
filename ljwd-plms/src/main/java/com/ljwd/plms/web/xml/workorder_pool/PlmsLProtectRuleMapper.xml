@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.workorder_pool.PlmsLProtectRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRule" >
+    <id column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="VAL" property="val" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="GRP_NAME" property="grpName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    CODE, VAL, SEQ, IS_ACTIVE, REMARK, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+    REC_VER, TAG_SEQ, GRP_NAME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRuleExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_L_PROTECT_RULE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_L_PROTECT_RULE
+    where CODE = #{code,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from PLMS_L_PROTECT_RULE
+    where CODE = #{code,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRuleExample" >
+    delete from PLMS_L_PROTECT_RULE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRule" >
+    insert into PLMS_L_PROTECT_RULE (CODE, VAL, SEQ, 
+      IS_ACTIVE, REMARK, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ, GRP_NAME
+      )
+    values (#{code,jdbcType=VARCHAR}, #{val,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{isActive,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT}, #{grpName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRule" >
+    insert into PLMS_L_PROTECT_RULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="val != null" >
+        VAL,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+      <if test="grpName != null" >
+        GRP_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="val != null" >
+        #{val,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="grpName != null" >
+        #{grpName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRuleExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_L_PROTECT_RULE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_L_PROTECT_RULE
+    <set >
+      <if test="record.code != null" >
+        CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.val != null" >
+        VAL = #{record.val,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seq != null" >
+        SEQ = #{record.seq,jdbcType=INTEGER},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.grpName != null" >
+        GRP_NAME = #{record.grpName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_L_PROTECT_RULE
+    set CODE = #{record.code,jdbcType=VARCHAR},
+      VAL = #{record.val,jdbcType=VARCHAR},
+      SEQ = #{record.seq,jdbcType=INTEGER},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      GRP_NAME = #{record.grpName,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRule" >
+    update PLMS_L_PROTECT_RULE
+    <set >
+      <if test="val != null" >
+        VAL = #{val,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="grpName != null" >
+        GRP_NAME = #{grpName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.workorder_pool.PlmsLProtectRule" >
+    update PLMS_L_PROTECT_RULE
+    set VAL = #{val,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      GRP_NAME = #{grpName,jdbcType=VARCHAR}
+    where CODE = #{code,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectDtoList" resultType="PlmsProtectRuleDto"  >
+    select 
+        l.CODE as code ,
+        l.VAL as val,
+        l.SEQ as seq,
+        l.IS_ACTIVE as ruleIsActive,
+        l.REMARK as ruleRemark ,
+        rset.ID as id,
+        rset.ASSIGN_CODE as assignCode,
+        me.VAL as assignVal,
+        rset.IS_ACTIVE as setIsActive,
+        rset.REMARK as setRemark,
+        rset.CREATED_BY as createdBy,
+        rset.CREATE_TIME as createTime,
+        rset.UPDATED_BY as updatedBy,
+        rset.UPDATE_TIME as updateTime,
+        rset.REC_VER as recVer,
+        rset.TAG_SEQ as tagSeq
+	from PLMS_L_PROTECT_RULE l 
+	left join PLMS_PROTECT_RULE_SET rset on rset.CODE=l.CODE and rset.IS_ACTIVE = 'Y'
+	left join PLMS_L_ASSIGN_METHOD me on me.CODE=rset.ASSIGN_CODE and me.IS_ACTIVE='Y'
+	where l.IS_ACTIVE ='Y'
+	order by l.SEQ
+    
+  </select>
+  
+  <select id="selectDtoById" resultType="PlmsProtectRuleDto" parameterType="java.lang.String">
+  select 
+        l.CODE as code ,
+        l.VAL as val,
+        l.SEQ as seq,
+        l.IS_ACTIVE as ruleIsActive,
+        l.REMARK as ruleRemark ,
+        rset.ID as id,
+        rset.ASSIGN_CODE as assignCode,
+        me.VAL as assignVal,
+        rset.IS_ACTIVE as setIsActive,
+        rset.REMARK as setRemark,
+        rset.CREATED_BY as createdBy,
+        rset.CREATE_TIME as createTime,
+        rset.UPDATED_BY as updatedBy,
+        rset.UPDATE_TIME as updateTime,
+        rset.REC_VER as recVer,
+        rset.TAG_SEQ as tagSeq
+	from PLMS_L_PROTECT_RULE l 
+	left join PLMS_PROTECT_RULE_SET rset on rset.CODE=l.CODE and rset.IS_ACTIVE = 'Y'
+	left join PLMS_L_ASSIGN_METHOD me on me.CODE=rset.ASSIGN_CODE and me.IS_ACTIVE='Y'
+	where l.IS_ACTIVE ='Y' and rset.ID=#{id} 
+  </select>
+  
+  
+  
+</mapper>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.outsource.PlmsLaApplOutsrcLotMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcLot">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PAYMENT_ID" jdbcType="BIGINT" property="paymentId" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="CNTRCT_ID" jdbcType="BIGINT" property="cntrctId" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="LOT_NO" jdbcType="VARCHAR" property="lotNo" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="status != null and status != ''">
+            and T.STATUS = #{status}
+        </if>
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.status != null and example.status != ''">
+                and T.STATUS = #{example.status}
+            </if>
+            <if test="example.cntrctId != null">
+                and T.CNTRCT_ID = #{example.cntrctId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.paymentId != null">
+                and T.PAYMENT_ID = #{example.paymentId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.PAYMENT_ID,
+    T.APPL_ID,
+    T.CNTRCT_ID,
+    T.STATUS,
+    T.LOT_NO,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    cntrct.CNTRCT_NO as cntrctNo
+    from PLMS_LA_APPL_OUTSRC_LOT T
+    inner join LN_CNTRCT cntrct on T.CNTRCT_ID = cntrct.ID
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_APPL_OUTSRC_LOT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="long">
+    delete from PLMS_LA_APPL_OUTSRC_LOT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample">
+    delete from PLMS_LA_APPL_OUTSRC_LOT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_appl_outsrc_lot.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC_LOT T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{paymentId,jdbcType=BIGINT},
+      #{applId,jdbcType=BIGINT},
+      #{cntrctId,jdbcType=BIGINT},
+      #{status,jdbcType=VARCHAR},
+      #{lotNo,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_appl_outsrc_lot.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC_LOT T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+          T.ID,
+      </if>
+      <if test="paymentId != null">
+          T.PAYMENT_ID,
+      </if>
+      <if test="applId != null">
+          T.APPL_ID,
+      </if>
+      <if test="cntrctId != null">
+          T.CNTRCT_ID,
+      </if>
+      <if test="status != null">
+          T.STATUS,
+      </if>
+      <if test="lotNo != null">
+          T.LOT_NO,
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null">
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null">
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null">
+        #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNo != null">
+        #{LOT_NO,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample" resultType="java.lang.Integer">
+    select count(*) from PLMS_LA_APPL_OUTSRC_LOT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update PLMS_LA_APPL_OUTSRC_LOT T
+    <set>
+      <if test="record.id != null">
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentId != null">
+          T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null">
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cntrctId != null">
+          T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null">
+          T.STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lotNo != null">
+          T.LOT_NO = #{record.lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map">
+    update PLMS_LA_APPL_OUTSRC_LOT T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      T.STATUS = #{record.status,jdbcType=VARCHAR},
+      T.LOT_NO = #{record.lotNo,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+    update PLMS_LA_APPL_OUTSRC_LOT T
+    <set>
+      <if test="paymentId != null">
+          T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null">
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null">
+          T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+          T.STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="lotNo != null">
+          T.LOT_NO = #{lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+    update PLMS_LA_APPL_OUTSRC_LOT T
+    set
+      T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      T.STATUS = #{status,jdbcType=VARCHAR},
+      T.LOT_NO = #{lotNo,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_LA_APPL_OUTSRC_LOT T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_la_appl_outsrc_lot.nextval , LOT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.paymentId,jdbcType=BIGINT},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.cntrctId,jdbcType=BIGINT},
+            #{item.status,jdbcType=VARCHAR},
+            #{item.lotNo,jdbcType=VARCHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) LOT
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update PLMS_LA_APPL_OUTSRC_LOT T
+            <set>
+                T.REC_VER = T.REC_VER + 1,
+                <if test="item.paymentId != null">
+                    T.PAYMENT_ID = #{item.paymentId,jdbcType=BIGINT},
+                </if>
+                <if test="item.applId != null">
+                    T.APPL_ID = #{item.applId,jdbcType=BIGINT},
+                </if>
+                <if test="item.cntrctId != null">
+                    T.CNTRCT_ID = #{item.cntrctId,jdbcType=BIGINT},
+                </if>
+                <if test="item.status != null">
+                    T.STATUS = #{item.status,jdbcType=VARCHAR},
+                </if>
+                <!--<if test="item.lotNo != null">-->
+                    <!--T.LOT_NO = #{item.lotNo,jdbcType=VARCHAR},-->
+                <!--</if>-->
+                <if test="item.createdBy != null">
+                    T.CREATED_BY = #{item.createdBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createTime != null">
+                    T.CREATE_TIME = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatedBy != null">
+                    T.UPDATED_BY = #{item.updatedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    T.UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <!--<if test="item.recVer != null">-->
+                    <!--T.REC_VER = #{item.recVer,jdbcType=BIGINT} + 1,-->
+                <!--</if>-->
+                <if test="item.tagSeq != null">
+                    T.TAG_SEQ = #{item.tagSeq,jdbcType=BIGINT},
+                </if>
+            </set>
+            where T.LOT_NO = #{item.lotNo,jdbcType=VARCHAR}
+        </foreach>
+        ;end;
+    </update>
+
+</mapper>

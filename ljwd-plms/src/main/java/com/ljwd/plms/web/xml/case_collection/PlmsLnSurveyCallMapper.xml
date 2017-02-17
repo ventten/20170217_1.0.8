@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.PlmsLnSurveyCallMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCall">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="LOANNAME" jdbcType="VARCHAR" property="loanname" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="CONTRACTNO" jdbcType="VARCHAR" property="contractno" />
+    <result column="CALL_TYPE" jdbcType="VARCHAR" property="callType" />
+    <result column="CALL_START" jdbcType="VARCHAR" property="callStart" />
+    <result column="CALL_DATE" jdbcType="TIMESTAMP" property="callDate" />
+    <result column="CALL_LONG" jdbcType="VARCHAR" property="callLong" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="RELATION" jdbcType="VARCHAR" property="relation" />
+    <result column="CALL_BY" jdbcType="VARCHAR" property="callBy" />
+    <result column="CALL_LOG" jdbcType="VARCHAR" property="callLog" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="UNIQUEID" jdbcType="VARCHAR" property="uniqueid" />
+    <result column="SCORE" jdbcType="VARCHAR" property="score" />
+    <result column="CALL_FROM" jdbcType="VARCHAR" property="callFrom" />
+    <result column="DEPTYPE" jdbcType="VARCHAR" property="deptype" />
+    <result column="CREATUSERNAME" jdbcType="VARCHAR" property="creatusername" />
+    <result column="APPLY_ID" jdbcType="BIGINT" property="applyId" />
+    <result column="CLOUDCALL_STATUS" jdbcType="VARCHAR" property="cloudcallStatus" />
+    <result column="CLOUDCALL_UNIQUEDID" jdbcType="VARCHAR" property="cloudcallUniquedid" />
+    <result column="PHONE_SOURCE" jdbcType="INTEGER" property="phoneSource" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="maxDays != null">
+            and TRUNC(sysdate) - TRUNC(T.CREATE_TIME) &lt;= #{maxDays}
+        </if>
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="createTimeMax != null">
+            and TRUNC(T.CREATE_TIME) &lt;= TRUNC(#{createTimeMax})
+        </if>
+        <if test="createTimeMin != null">
+            and TRUNC(T.CREATE_TIME) &gt;= TRUNC(#{createTimeMin})
+        </if>
+        <if test="loanname != null and loanname != ''">
+            and T.LOANNAME = #{loanname}
+        </if>
+        <if test="idcard != null and idcard != ''">
+            and T.IDCARD = #{idcard}
+        </if>
+        <if test="contractno != null and contractno != ''">
+            and T.CONTRACTNO = #{contractno}
+        </if>
+        <if test="applyId != null">
+            and T.APPLY_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.loanname != null and example.loanname != ''">
+                and T.LOANNAME = #{example.loanname}
+            </if>
+            <if test="example.idcard != null and example.idcard != ''">
+                and T.IDCARD = #{example.idcard}
+            </if>
+            <if test="example.contractno != null and example.contractno != ''">
+                and T.CONTRACTNO = #{example.contractno}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.LOANNAME,
+    T.IDCARD,
+    T.CONTRACTNO,
+    T.CALL_TYPE,
+    T.CALL_START,
+    T.CALL_DATE,
+    T.CALL_LONG,
+    T.PHONE,
+    T.RELATION,
+    T.CALL_BY,
+    T.CALL_LOG,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.UNIQUEID,
+    T.SCORE,
+    T.CALL_FROM,
+    T.DEPTYPE,
+    T.CREATUSERNAME,
+    T.APPLY_ID,
+    T.CLOUDCALL_STATUS,
+    T.CLOUDCALL_UNIQUEDID,
+    T.PHONE_SOURCE
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCallExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LN_SURVEY_CALL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LN_SURVEY_CALL T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="long">
+    delete from PLMS_LN_SURVEY_CALL T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCallExample">
+    delete from PLMS_LN_SURVEY_CALL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCall">
+    <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+      SELECT seq_plms_ln_survey_call.nextval FROM dual
+    </selectKey>
+    insert into PLMS_LN_SURVEY_CALL T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{loanname,jdbcType=VARCHAR},
+      #{idcard,jdbcType=VARCHAR},
+      #{contractno,jdbcType=VARCHAR},
+      #{callType,jdbcType=VARCHAR},
+      #{callStart,jdbcType=VARCHAR},
+      #{callDate,jdbcType=TIMESTAMP},
+      #{callLong,jdbcType=VARCHAR},
+      #{phone,jdbcType=VARCHAR},
+      #{relation,jdbcType=VARCHAR},
+      #{callBy,jdbcType=VARCHAR},
+      #{callLog,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1,
+      #{uniqueid,jdbcType=VARCHAR},
+      #{score,jdbcType=VARCHAR},
+      #{callFrom,jdbcType=VARCHAR},
+      #{deptype,jdbcType=VARCHAR},
+      #{creatusername,jdbcType=VARCHAR},
+      #{applyId,jdbcType=BIGINT},
+      #{cloudcallStatus,jdbcType=VARCHAR},
+      #{cloudcallUniquedid,jdbcType=VARCHAR},
+      #{phoneSource,jdbcType=INTEGER}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCall">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_survey_call.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_SURVEY_CALL T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+          T.ID,
+      </if>
+      <if test="loanname != null">
+          T.LOANNAME,
+      </if>
+      <if test="idcard != null">
+          T.IDCARD,
+      </if>
+      <if test="contractno != null">
+          T.CONTRACTNO,
+      </if>
+      <if test="callType != null">
+          T.CALL_TYPE,
+      </if>
+      <if test="callStart != null">
+          T.CALL_START,
+      </if>
+      <if test="callDate != null">
+          T.CALL_DATE,
+      </if>
+      <if test="callLong != null">
+          T.CALL_LONG,
+      </if>
+      <if test="phone != null">
+          T.PHONE,
+      </if>
+      <if test="relation != null">
+          T.RELATION,
+      </if>
+      <if test="callBy != null">
+          T.CALL_BY,
+      </if>
+      <if test="callLog != null">
+          T.CALL_LOG,
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ,
+      </if>
+      <if test="uniqueid != null">
+          T.UNIQUEID,
+      </if>
+      <if test="score != null">
+          T.SCORE,
+      </if>
+      <if test="callFrom != null">
+          T.CALL_FROM,
+      </if>
+      <if test="deptype != null">
+          T.DEPTYPE,
+      </if>
+      <if test="creatusername != null">
+          T.CREATUSERNAME,
+      </if>
+      <if test="applyId != null">
+          T.APPLY_ID,
+      </if>
+      <if test="cloudcallStatus != null">
+          T.CLOUDCALL_STATUS,
+      </if>
+      <if test="cloudcallUniquedid != null">
+          T.CLOUDCALL_UNIQUEDID,
+      </if>
+      <if test="phoneSource != null">
+          T.PHONE_SOURCE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="loanname != null">
+        #{loanname,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+        #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="contractno != null">
+        #{contractno,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null">
+        #{callType,jdbcType=VARCHAR},
+      </if>
+      <if test="callStart != null">
+        #{callStart,jdbcType=VARCHAR},
+      </if>
+      <if test="callDate != null">
+        #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callLong != null">
+        #{callLong,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="callBy != null">
+        #{callBy,jdbcType=VARCHAR},
+      </if>
+      <if test="callLog != null">
+        #{callLog,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="uniqueid != null">
+        #{uniqueid,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="callFrom != null">
+        #{callFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="deptype != null">
+        #{deptype,jdbcType=VARCHAR},
+      </if>
+      <if test="creatusername != null">
+        #{creatusername,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+        #{applyId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudcallStatus != null">
+        #{cloudcallStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cloudcallUniquedid != null">
+        #{cloudcallUniquedid,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneSource != null">
+        #{phoneSource,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCallExample" resultType="java.lang.Integer">
+    select count(*) from PLMS_LN_SURVEY_CALL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update PLMS_LN_SURVEY_CALL T
+    <set>
+      <if test="record.id != null">
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.loanname != null">
+          T.LOANNAME = #{record.loanname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idcard != null">
+          T.IDCARD = #{record.idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractno != null">
+          T.CONTRACTNO = #{record.contractno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callType != null">
+          T.CALL_TYPE = #{record.callType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callStart != null">
+          T.CALL_START = #{record.callStart,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callDate != null">
+          T.CALL_DATE = #{record.callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.callLong != null">
+          T.CALL_LONG = #{record.callLong,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phone != null">
+          T.PHONE = #{record.phone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.relation != null">
+          T.RELATION = #{record.relation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callBy != null">
+          T.CALL_BY = #{record.callBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callLog != null">
+          T.CALL_LOG = #{record.callLog,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.uniqueid != null">
+          T.UNIQUEID = #{record.uniqueid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+          T.SCORE = #{record.score,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callFrom != null">
+          T.CALL_FROM = #{record.callFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deptype != null">
+          T.DEPTYPE = #{record.deptype,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creatusername != null">
+          T.CREATUSERNAME = #{record.creatusername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyId != null">
+          T.APPLY_ID = #{record.applyId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cloudcallStatus != null">
+          T.CLOUDCALL_STATUS = #{record.cloudcallStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cloudcallUniquedid != null">
+          T.CLOUDCALL_UNIQUEDID = #{record.cloudcallUniquedid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.phoneSource != null">
+          T.PHONE_SOURCE = #{record.phoneSource,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map">
+    update PLMS_LN_SURVEY_CALL T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.LOANNAME = #{record.loanname,jdbcType=VARCHAR},
+      T.IDCARD = #{record.idcard,jdbcType=VARCHAR},
+      T.CONTRACTNO = #{record.contractno,jdbcType=VARCHAR},
+      T.CALL_TYPE = #{record.callType,jdbcType=VARCHAR},
+      T.CALL_START = #{record.callStart,jdbcType=VARCHAR},
+      T.CALL_DATE = #{record.callDate,jdbcType=TIMESTAMP},
+      T.CALL_LONG = #{record.callLong,jdbcType=VARCHAR},
+      T.PHONE = #{record.phone,jdbcType=VARCHAR},
+      T.RELATION = #{record.relation,jdbcType=VARCHAR},
+      T.CALL_BY = #{record.callBy,jdbcType=VARCHAR},
+      T.CALL_LOG = #{record.callLog,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      T.UNIQUEID = #{record.uniqueid,jdbcType=VARCHAR},
+      T.SCORE = #{record.score,jdbcType=VARCHAR},
+      T.CALL_FROM = #{record.callFrom,jdbcType=VARCHAR},
+      T.DEPTYPE = #{record.deptype,jdbcType=VARCHAR},
+      T.CREATUSERNAME = #{record.creatusername,jdbcType=VARCHAR},
+      T.APPLY_ID = #{record.applyId,jdbcType=BIGINT},
+      T.CLOUDCALL_STATUS = #{record.cloudcallStatus,jdbcType=VARCHAR},
+      T.CLOUDCALL_UNIQUEDID = #{record.cloudcallUniquedid,jdbcType=VARCHAR},
+      T.PHONE_SOURCE = #{record.phoneSource,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCall">
+    update PLMS_LN_SURVEY_CALL T
+    <set>
+      <if test="loanname != null">
+          T.LOANNAME = #{loanname,jdbcType=VARCHAR},
+      </if>
+      <if test="idcard != null">
+          T.IDCARD = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="contractno != null">
+          T.CONTRACTNO = #{contractno,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null">
+          T.CALL_TYPE = #{callType,jdbcType=VARCHAR},
+      </if>
+      <if test="callStart != null">
+          T.CALL_START = #{callStart,jdbcType=VARCHAR},
+      </if>
+      <if test="callDate != null">
+          T.CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="callLong != null">
+          T.CALL_LONG = #{callLong,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+          T.PHONE = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null">
+          T.RELATION = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="callBy != null">
+          T.CALL_BY = #{callBy,jdbcType=VARCHAR},
+      </if>
+      <if test="callLog != null">
+          T.CALL_LOG = #{callLog,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="uniqueid != null">
+          T.UNIQUEID = #{uniqueid,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+          T.SCORE = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="callFrom != null">
+          T.CALL_FROM = #{callFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="deptype != null">
+          T.DEPTYPE = #{deptype,jdbcType=VARCHAR},
+      </if>
+      <if test="creatusername != null">
+          T.CREATUSERNAME = #{creatusername,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+          T.APPLY_ID = #{applyId,jdbcType=BIGINT},
+      </if>
+      <if test="cloudcallStatus != null">
+          T.CLOUDCALL_STATUS = #{cloudcallStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cloudcallUniquedid != null">
+          T.CLOUDCALL_UNIQUEDID = #{cloudcallUniquedid,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneSource != null">
+          T.PHONE_SOURCE = #{phoneSource,jdbcType=INTEGER},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnSurveyCall">
+    update PLMS_LN_SURVEY_CALL T
+    set
+      T.LOANNAME = #{loanname,jdbcType=VARCHAR},
+      T.IDCARD = #{idcard,jdbcType=VARCHAR},
+      T.CONTRACTNO = #{contractno,jdbcType=VARCHAR},
+      T.CALL_TYPE = #{callType,jdbcType=VARCHAR},
+      T.CALL_START = #{callStart,jdbcType=VARCHAR},
+      T.CALL_DATE = #{callDate,jdbcType=TIMESTAMP},
+      T.CALL_LONG = #{callLong,jdbcType=VARCHAR},
+      T.PHONE = #{phone,jdbcType=VARCHAR},
+      T.RELATION = #{relation,jdbcType=VARCHAR},
+      T.CALL_BY = #{callBy,jdbcType=VARCHAR},
+      T.CALL_LOG = #{callLog,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      T.UNIQUEID = #{uniqueid,jdbcType=VARCHAR},
+      T.SCORE = #{score,jdbcType=VARCHAR},
+      T.CALL_FROM = #{callFrom,jdbcType=VARCHAR},
+      T.DEPTYPE = #{deptype,jdbcType=VARCHAR},
+      T.CREATUSERNAME = #{creatusername,jdbcType=VARCHAR},
+      T.APPLY_ID = #{applyId,jdbcType=BIGINT},
+      T.CLOUDCALL_STATUS = #{cloudcallStatus,jdbcType=VARCHAR},
+      T.CLOUDCALL_UNIQUEDID = #{cloudcallUniquedid,jdbcType=VARCHAR},
+      T.PHONE_SOURCE = #{phoneSource,jdbcType=INTEGER}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultType="com.ljwd.plms.web.vo.case_collection.SurveyCallPageDto"
+            parameterType="com.ljwd.plms.web.vo.case_collection.SurveyCallPageExample">
+        SELECT T.*,
+               RLTNSHP.val AS relationVal
+        FROM (
+            SELECT  T.ID as id,
+                    T.APPLY_ID as applyId,
+                    T.LOANNAME as loanname,
+                    T.IDCARD as idcard,
+                    T.CONTRACTNO as contractno,
+                    T.CALL_TYPE as callType,
+                    T.CALL_START as callStart,
+                    T.CALL_DATE as callDate,
+                    T.CALL_LONG as callLong,
+                    T.PHONE as phone,
+                    T.RELATION as relation,
+                    T.CALL_BY as callBy,
+                    T.CALL_LOG as callLog,
+                    T.UNIQUEID as uniqueid,
+                    T.SCORE as score,
+                    T.CALL_FROM as callFrom,
+                    T.DEPTYPE as deptype,
+                    T.CREATUSERNAME as creatusername,
+                    T.CLOUDCALL_STATUS as cloudcallStatus,
+                    T.CLOUDCALL_UNIQUEDID as cloudcallUniquedid,
+                    T.CREATE_TIME as createTime,
+                    T.PHONE_SOURCE as phoneSource,
+                    2 as tableFrom
+            FROM PLMS_LN_SURVEY_CALL T
+            WHERE 1 = 1
+            <if test="maxDays != null">
+                AND TRUNC(sysdate) - TRUNC(T.CREATE_TIME) &lt;= #{maxDays}
+            </if>
+            <if test="createTimeMax != null">
+                AND TRUNC(T.CREATE_TIME) &lt;= TRUNC(#{createTimeMax})
+            </if>
+            <if test="createTimeMin != null">
+                AND TRUNC(T.CREATE_TIME) &gt;= TRUNC(#{createTimeMin})
+            </if>
+            <if test="loanname != null and loanname != ''">
+                AND T.LOANNAME = #{loanname}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                AND T.IDCARD = #{idcard}
+            </if>
+            <if test="contractno != null and contractno != ''">
+                AND T.CONTRACTNO = #{contractno}
+            </if>
+            <if test="applyId != null">
+                AND T.APPLY_ID = #{applId}
+            </if>
+            <if test="id != null">
+                AND T.ID = #{id}
+            </if>
+
+            UNION ALL
+
+            SELECT  T.ID as id,
+                    T.APPLY_ID as applyId,
+                    T.LOANNAME as loanname,
+                    T.IDCARD as idcard,
+                    T.CONTRACTNO as contractno,
+                    T.CALL_TYPE as callType,
+                    T.CALL_START as callStart,
+                    T.CALL_DATE as callDate,
+                    T.CALL_LONG as callLong,
+                    T.PHONE as phone,
+                    T.RELATION as relation,
+                    T.CALL_BY as callBy,
+                    T.CALL_LOG as callLog,
+                    T.UNIQUEID as uniqueid,
+                    T.SCORE as score,
+                    T.CALL_FROM as callFrom,
+                    T.DEPTYPE as deptype,
+                    T.CREATUSERNAME as creatusername,
+                    T.CLOUDCALL_STATUS as cloudcallStatus,
+                    T.CLOUDCALL_UNIQUEDID as cloudcallUniquedid,
+                    T.CREATE_TIME as createTime,
+                    null as phoneSource,
+                    1 as tableFrom
+            FROM LN_SURVEY_CALL T
+            WHERE 1 = 1
+            <if test="maxDays != null">
+                AND TRUNC(sysdate) - TRUNC(T.CREATE_TIME) &lt;= #{maxDays}
+            </if>
+            <if test="createTimeMax != null">
+                AND TRUNC(T.CREATE_TIME) &lt;= TRUNC(#{createTimeMax})
+            </if>
+            <if test="createTimeMin != null">
+                AND TRUNC(T.CREATE_TIME) &gt;= TRUNC(#{createTimeMin})
+            </if>
+            <if test="loanname != null and loanname != ''">
+                AND T.LOANNAME = #{loanname}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                AND T.IDCARD = #{idcard}
+            </if>
+            <if test="contractno != null and contractno != ''">
+                AND T.CONTRACTNO = #{contractno}
+            </if>
+            <if test="applyId != null">
+                AND T.APPLY_ID = #{applId}
+            </if>
+            <if test="id != null">
+                AND T.ID = #{id}
+            </if>
+        ) T
+        LEFT JOIN L_RLTNSHP RLTNSHP ON RLTNSHP.CODE = T.RELATION
+        <if test="orderByClause != null">
+            ORDER BY ${orderByClause}
+        </if>
+    </select>
+
+</mapper>

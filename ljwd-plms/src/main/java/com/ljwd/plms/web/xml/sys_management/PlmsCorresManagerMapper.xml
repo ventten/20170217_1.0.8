@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.PlmsCorresManagerMapper" >
+    <insert id="insertPdfCorresFile" parameterType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoInsertDto">
+        <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_LN_DOC_MANAGE.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_DOC_MANAGE T ( 
+        t.id,
+       t.doc_code,
+       t.doc_name,
+       t.data_source,
+       t.business_model,
+       t.contract_way,
+       t.file_path,
+       t.CREATED_BY,
+       t.CREATE_TIME,
+       t.UPDATED_BY,
+       t.UPDATE_TIME,
+       t.REC_VER,
+       TAG_SEQ
+     )
+    values (
+      #{id,jdbcType=BIGINT},
+      #{documentCode,jdbcType=VARCHAR},
+      #{documentName,jdbcType=VARCHAR},
+      #{dataSource,jdbcType=VARCHAR},
+      #{businessModel,jdbcType=INTEGER},
+      #{contractWay,jdbcType=INTEGER},
+      #{filePath,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+      
+      )
+    </insert>
+    
+    <delete id="deletePdfCorresFileById" parameterType="String">
+        DELETE FROM PLMS_LN_DOC_MANAGE WHERE id = #{ID} 
+        
+    </delete>
+    <select id="selectCorresPdfDataById" resultType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoDto" parameterType="Long">
+         SELECT
+         T.ID ID,
+         T.DOC_CODE DOCUMENTCODE,
+         T.DOC_NAME DOCUMENTNAME,
+         T.DATA_SOURCE DATASOURCE,
+         T.BUSINESS_MODEL BUSINESSMODEL,
+         T.CONTRACT_WAY CONTRACTWAY,
+         T.FILE_PATH FILEPATH,
+         T.CREATED_BY CREATEBY,
+         T.CREATE_TIME CREATETIME,
+         T.UPDATED_BY UPDATEBY,
+         T.UPDATE_TIME UPDATETIME,
+         T.REC_VER RECVER,
+         TAG_SEQ TEGSEQ
+         FROM PLMS_LN_DOC_MANAGE t
+         where 1=1
+         <if test="id != null">
+          and t.id = #{id,jdbcType=BIGINT}
+         </if>
+    </select>
+    <select id="selectAllCorresPdfInfo" resultType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoDto">
+         SELECT
+         T.ID ID,
+         T.DOC_CODE DOCUMENTCODE,
+         T.DOC_NAME DOCUMENTNAME,
+         T.DATA_SOURCE DATASOURCE,
+         T.BUSINESS_MODEL BUSINESSMODEL,
+         T.CONTRACT_WAY CONTRACTWAY,
+         T.FILE_PATH FILEPATH,
+         T.CREATED_BY CREATEBY,
+         T.CREATE_TIME CREATETIME,
+         T.UPDATED_BY UPDATEBY,
+         T.UPDATE_TIME UPDATETIME,
+         T.REC_VER RECVER,
+         TAG_SEQ TEGSEQ
+         FROM PLMS_LN_DOC_MANAGE t
+    </select>
+    <update id="updatePdfCorresFileByModel" parameterType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoInsertDto">
+        update PLMS_LN_DOC_MANAGE t set
+        <if test="documentCode != null">
+            t.doc_code = #{documentCode,jdbcType=VARCHAR},
+        </if> 
+        <if test="documentName != null">
+	       t.doc_name = #{documentName,jdbcType=VARCHAR},
+        </if>
+        <if test="dataSource != null ">
+            t.data_source = #{dataSource,jdbcType=VARCHAR},
+        </if>    
+	    <if test="businessModel != null">
+	       t.business_model = #{businessModel,jdbcType=INTEGER},
+	    </if>
+	    <if test="contractWay != null">
+	       t.contract_way = #{contractWay,jdbcType=INTEGER},
+	    </if>   
+	    <if test="filePath != null">
+            t.file_path = #{filePath,jdbcType=VARCHAR},	    
+	    </if>
+	    <if test="createdBy != null">
+            t.CREATED_BY = #{createdBy,jdbcType=VARCHAR},      
+        </if>
+        <if test="createTime != null">
+            t.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},      
+        </if>
+        <if test="updatedBy != null">
+            t.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},      
+        </if>
+        <if test="updateTime != null">
+            t.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}      
+        </if>
+        where 1=1 
+        <if test="id != null ">
+            and t.id = #{id,jdbcType=BIGINT}
+        </if>
+    </update>
+    
+    <select id="selectCorresManaDataForPage" resultType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoDto" parameterType="com.ljwd.plms.web.model.sys_management.PlmsPdfCorresInfoSearchDto">
+        SELECT
+            <if test="distinct">
+            distinct
+            </if>
+            t.id id,
+	       t.doc_code documentCode,
+	       t.doc_name documentName,
+	       t.data_source dataSource,
+	       t.business_model businessModel,
+	       t.contract_way contractWay,
+	       t.file_path filePath,
+	       t.CREATED_BY createBy,
+           t.CREATE_TIME createTime,
+           t.UPDATED_BY upDateby,
+           t.UPDATE_TIME upDateTime,
+           t.REC_VER recVer,
+           TAG_SEQ tegSeq
+	       from PLMS_LN_DOC_MANAGE t
+	       where 1=1
+	       <if test="documentCode !=null and documentCode != '' ">
+	           and t.doc_code = #{documentCode,jdbcType=VARCHAR}
+	       </if>
+	       <if test="documentName !=null and documentName != '' ">
+               and t.doc_name = #{documentName,jdbcType=VARCHAR}
+           </if>
+           <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by t.CREATE_TIME desc,t.UPDATE_TIME desc
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

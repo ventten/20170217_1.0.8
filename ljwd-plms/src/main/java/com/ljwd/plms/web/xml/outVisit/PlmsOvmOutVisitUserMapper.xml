@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outVisit.PlmsOvmOutVisitUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="SITE_CODE" property="siteCode" jdbcType="VARCHAR" />
+    <result column="CITY_CODE" property="cityCode" jdbcType="BIGINT" />
+    <result column="AREA_ID" property="areaId" jdbcType="BIGINT" />
+    <result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CASE_COUNT" property="caseCount" jdbcType="BIGINT" />
+    <result column="REMAINDER_AMOUNT" property="remainderAmount" jdbcType="DECIMAL" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+     	<if test='userId !=null and userId !=""'>
+     		and user_id = #{userId}
+     	</if>
+     	<if test='isActive !=null and isActive !=""'>
+     	   	and IS_ACTIVE = #{isActive}
+     	</if>
+     	<if test='areaId !=null and areaId != ""'>
+     		and AREA_ID = #{areaId}
+     	</if>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, SITE_CODE, CITY_CODE, AREA_ID, ORG_ID,TEL, IS_ACTIVE, CASE_COUNT, REMAINDER_AMOUNT, 
+    CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_USER
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_OVM_OUT_VISIT_USER
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUserExample" >
+    delete from PLMS_OVM_OUT_VISIT_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" >
+    insert into PLMS_OVM_OUT_VISIT_USER (ID, USER_ID, SITE_CODE, 
+      CITY_CODE, AREA_ID, ORG_ID, TEL,
+      IS_ACTIVE, CASE_COUNT, REMAINDER_AMOUNT, 
+      CREATED_BY, CREATE_TIME, UPDATED_BY, 
+      UPDATE_TIME, REC_VER, TAG_SEQ
+      )
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{siteCode,jdbcType=VARCHAR}, 
+      #{cityCode,jdbcType=BIGINT}, #{areaId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{tel,jdbcType=VARCHAR}, 
+      #{isActive,jdbcType=CHAR}, #{caseCount,jdbcType=BIGINT}, #{remainderAmount,jdbcType=DECIMAL}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" >
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_OVM_OUT_VISIT_USER.Nextval as ID from DUAL  
+	</selectKey>
+    insert into PLMS_OVM_OUT_VISIT_USER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE,
+      </if>
+      <if test="cityCode != null" >
+        CITY_CODE,
+      </if>
+      <if test="areaId != null" >
+        AREA_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="tel !=null">
+      	TEL,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="caseCount != null" >
+        CASE_COUNT,
+      </if>
+      <if test="remainderAmount != null" >
+        REMAINDER_AMOUNT,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="caseCount != null" >
+        #{caseCount,jdbcType=BIGINT},
+      </if>
+      <if test="remainderAmount != null" >
+        #{remainderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+       0,1
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUserExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OVM_OUT_VISIT_USER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_USER
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteCode != null" >
+        SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cityCode != null" >
+        CITY_CODE = #{record.cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="record.areaId != null" >
+        AREA_ID = #{record.areaId,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.tel != null" >
+        TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.caseCount != null" >
+        CASE_COUNT = #{record.caseCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.remainderAmount != null" >
+        REMAINDER_AMOUNT = #{record.remainderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_USER
+    set ID = #{record.id,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      CITY_CODE = #{record.cityCode,jdbcType=BIGINT},
+      AREA_ID = #{record.areaId,jdbcType=BIGINT},
+      ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      TEL = #{record.tel,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CASE_COUNT = #{record.caseCount,jdbcType=BIGINT},
+      REMAINDER_AMOUNT = #{record.remainderAmount,jdbcType=DECIMAL},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" >
+    update PLMS_OVM_OUT_VISIT_USER
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cityCode != null" >
+        CITY_CODE = #{cityCode,jdbcType=BIGINT},
+      </if>
+      <if test="areaId != null" >
+        AREA_ID = #{areaId,jdbcType=BIGINT},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="tel != null" >
+        TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="caseCount != null" >
+        CASE_COUNT = #{caseCount,jdbcType=BIGINT},
+      </if>
+      <if test="remainderAmount != null" >
+        REMAINDER_AMOUNT = #{remainderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" >
+    update PLMS_OVM_OUT_VISIT_USER
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      CITY_CODE = #{cityCode,jdbcType=BIGINT},
+      AREA_ID = #{areaId,jdbcType=BIGINT},
+      ORG_ID = #{orgId,jdbcType=BIGINT},
+      TEL = #{tel,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CASE_COUNT = #{caseCount,jdbcType=BIGINT},
+      REMAINDER_AMOUNT = #{remainderAmount,jdbcType=DECIMAL},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <!-- 批量修改 -->
+   <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_OVM_OUT_VISIT_USER 
+            <set>
+            <if test='item.caseCount!=null '>
+                CASE_COUNT = #{item.caseCount},
+            </if>
+            <if test='item.remainderAmount!=null'>
+                REMAINDER_AMOUNT = #{item.remainderAmount},
+            </if>
+            <if test='item.updatedBy!=null'>
+                UPDATED_BY = #{item.updatedBy},
+            </if>
+            <if test='item.recVer != null' >
+		        REC_VER = #{item.recVer} + 1,
+		    </if>
+            </set>
+            where ID = #{item.id}
+            </foreach>
+        ;end;
+    </update>
+  
+   <!--  根据applId查找此案件所属区域的外访人员列表 -->
+  <select id="searchOutVisitUserListByApplId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+  	 select outuser.* from  
+   		( select adminregion.id from sys_administrative_region  adminregion start with
+    	adminregion.id=(select syssite.area_id  from  sys_site syssite where syssite.site_code=
+    		(select info.input_site_code from ln_appl_info info where info.id = #{applId}))  
+    		connect by adminregion.pid=prior adminregion.id
+    	)temparea
+ 		inner join plms_ovm_out_visit_area area on area.area_id =temparea.id
+    	inner join plms_ovm_out_visit_user outuser on outuser.area_id = area.id and outuser.is_active = 'Y'
+
+  </select>
+  
+  <!-- 根据applId查询合同编号  -->
+  <select id="searchCntrctNoByapplId" parameterType="java.lang.Long" resultType="java.lang.String">
+  	select CNTRCT_NO from ln_cntrct where APPL_ID = #{applId}
+  </select>
+  
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" extends="BaseResultMap">
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+        <result column="areaName" property="areaName" jdbcType="VARCHAR"/>
+<!--           
+         <result column="areaIds" property="areaIds" jdbcType="VARCHAR"/>       
+ -->    <result column="orgName" property="orgName" jdbcType="VARCHAR"/>                 
+   </resultMap>
+     <!-- 外访人员分页显示 -->
+   <select id="selectByExampleAndPage" parameterType="com.ljwd.plms.web.vo.sys_management.PlmsEmpCollectorParam" resultMap="BaseResultMap_Ext">
+   		select 
+           	   outvisit.id as id,
+           	   outvisit.user_id as userId,
+		       outarea.area_name as areaname,
+		       outvisit.area_id as areaid,
+		       outvisit.is_active as isactive,
+		       outvisit.updated_by as updatedby,
+		       outvisit.update_time as  updateTime,
+		       outvisit.TEL as tel,
+		       sysemp.org_id as orgId,   
+		       sysemp.emp_name as username,
+		       sysorg.org_name as orgName,
+		       sysuser2.user_name as updatedUserName
+		from plms_ovm_out_visit_user outvisit
+		left join plms_ovm_out_visit_area outarea on outvisit.area_id =  outarea.id and outarea.is_active = 'Y'
+		left join sys_administrative_region sysregion on sysregion.id = outarea.area_id
+		left join sys_user sysuser on sysuser.user_id = outvisit.user_id
+		left join sys_emp sysemp on  sysuser.emp_id = sysemp.id
+		left join sys_org sysOrg  on sysOrg.id = sysemp.org_id 	
+		left join sys_user sysuser2 on sysuser2.user_id = outvisit.updated_by
+		
+		<where>
+			<if test='orgId !=null and orgId !=""'>
+				and sysOrg.id = #{orgId}
+			</if>
+			<if test='userName !=null and userName !=""'>
+				and sysuser.user_Name = #{userName}
+			</if>
+			<if test='isActive !=null and isActive !=""'>
+				and outvisit.is_active = #{isActive}
+			</if>
+		</where>
+		<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by updateTime desc,userId
+            </otherwise>
+        </choose>
+   </select>
+   <!-- 外访人员分页显示 -->
+ <!--  <select id="selectByExampleAndPage" parameterType="com.ljwd.plms.web.vo.sys_management.PlmsEmpCollectorParam" resultMap="BaseResultMap_Ext">
+		select outvisit.user_id as userId,
+		       outvisit.areanames as areaNames,
+		       outvisit.areaIds as areaIds,
+		       outvisit.isactive as isActive,
+		       outvisit.updatedby as updatedBy,
+		       outvisit.updatetime as  updateTime,
+		       sysemp.org_id as orgId,   
+		       sysemp.emp_name as userName,
+		       sysorg.org_name as orgName 
+		      from
+		(select temp.user_id as user_id,
+		        max(temp.updated_by) as updatedby,
+		        max(temp.update_time) as updatetime,
+		        max(temp.is_active) as isactive,
+		      listagg(temp.areaname,',') within group (order by  user_id) as areanames,
+		       listagg(temp.area_id,',') within group (order by  user_id) as areaIds
+		from 
+		(select outuser.*,outarea.area_name as areaname from plms_ovm_out_visit_user outuser 
+		inner join plms_ovm_out_visit_area outarea on outuser.area_id =  outarea.id and outarea.is_active = 'Y'
+		inner join sys_administrative_region sysregion on sysregion.id = outarea.area_id)temp
+		group by temp.user_id)outvisit
+		inner join sys_user sysuser on sysuser.user_id = outvisit.user_id
+		left join sys_emp sysemp on  sysuser.emp_id = sysemp.id
+		left join sys_org sysOrg  on sysOrg.id = sysemp.org_id 
+		<where>
+			<if test='orgId !=null and orgId !=""'>
+				and sysOrg.id = #{orgId}
+			</if>
+			<if test='userName !=null and userName !=""'>
+				and sysuser.user_Name = #{userName}
+			</if>
+			<if test='isActive !=null and isActive !=""'>
+				and outvisit.isactive = #{isActive}
+			</if>
+		</where>
+		order by updateTime desc,userId
+  </select> -->
+  <!--  查找外访用户中共有多少种区域 -->
+  <select id="searchAreaIdForOutVisitUser" resultType="java.lang.Long">
+  	select area_id from plms_ovm_out_visit_user outUser group by area_id
+  </select>
+  
+  <resultMap id="BaseResultMap02" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitUser" extends="BaseResultMap">
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>         
+        <result column="tel" property="tel" jdbcType="VARCHAR"/>                
+               
+   </resultMap>
+   
+  <select id="searchInfoByMap" parameterType="map" resultMap="BaseResultMap02">
+  		select outVisitUser.*,
+  			   sysUser.user_name as userName ,
+  			   nvl(sysemp.tel,'') as tel
+  		from plms_ovm_out_visit_user outVisitUser
+  		left join sys_user sysUser on sysUser.user_id = outVisitUser.user_id
+  		left join sys_emp sysemp on sysemp.id = sysUser.EMP_ID
+  		where outVisitUser.IS_ACTIVE = 'Y'
+  		<if test='areaId !=null and areaId !=""'>
+  				and outVisitUser.AREA_ID = #{areaId}
+  		</if>
+  		<if test='userIds !=null and userIds !=""'>
+  			and outVisitUser.user_Id in
+  			<foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+  		</if>
+  		<if test='userId !=null and userId !=""'>
+  				 and outVisitUser.AREA_ID in (
+  				 	select ouser.AREA_ID from plms_ovm_out_visit_user ouser where ouser.user_Id = #{userId}
+  				 )and outVisitUser.user_Id != #{userId}
+  		</if>
+  		<if test='userName !=null and userName !="" '>
+  				and sysUser.user_name = #{userName}
+  		</if>
+  		order by outVisitUser.CASE_COUNT,outvisituser.id
+  	</select>
+  	<select id="searchOutVisitArea" resultType="com.ljwd.plms.web.vo.outVisit.PlmsOvmOutVisitDto">
+  	     select area.id        as id,
+		       area.area_id   as areaId,
+		       area.pid       as pid,
+		       area.area_name as areaName,
+		       area.remarks   as remarks
+		  from PLMS_OVM_OUT_VISIT_AREA area
+		    order by area.area_name desc
+  	</select>
+ </mapper>

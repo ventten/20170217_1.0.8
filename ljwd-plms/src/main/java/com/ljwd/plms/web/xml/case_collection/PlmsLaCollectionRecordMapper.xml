@@ -1,0 +1,1355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.PlmsLaCollectionRecordMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="PERIOD_NUM" property="periodNum" jdbcType="BIGINT" />
+    <result column="COLLECT_TIME" property="collectTime" jdbcType="TIMESTAMP" />
+    <result column="FOLLOWED_BY" property="followedBy" jdbcType="VARCHAR" />
+    <result column="INPUT_TIME" property="inputTime" jdbcType="TIMESTAMP" />
+    <result column="COLLECT_MTHD" property="collectMthd" jdbcType="VARCHAR" />
+    <result column="RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
+    <result column="ABNORMITY_CODE" property="abnormityCode" jdbcType="VARCHAR" />
+    <result column="CONTROL_STATUS" property="controlStatus" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="RPMNT_DATE" property="rpmntDate" jdbcType="TIMESTAMP" />
+    <result column="RPMNT_AMT" property="rpmntAmt" jdbcType="DECIMAL" />
+    <result column="RLTN" property="rltn" jdbcType="VARCHAR" />
+    <result column="CONTACTOR" property="contactor" jdbcType="VARCHAR" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="collectMthd != null and collectMthd != ''">
+            and T.COLLECT_MTHD in 
+			<foreach item="item" index="index" collection="collectMthd" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+        </if>
+        <if test="followedBy != null and followedBy != ''">
+            and T.FOLLOWED_BY = #{followedBy}
+        </if>
+        <if test='startTime != null and startTime != ""'>
+            and T.CREATE_TIME >= #{startTime}
+        </if> 
+        <if test='endTime !=null and endTime !=""'>
+        	and T.CREATE_TIME &lt;= #{endTime}
+        </if>
+		<if test="controlStatusIn != null and controlStatusIn != ''">
+            and T.CONTROL_STATUS IN (${controlStatusIn})
+        </if>        
+		<if test="rpmntDateMin != null">
+            and trunc(T.RPMNT_DATE) &gt;= trunc(#{rpmntDateMin})
+        </if>
+        <if test="rpmntDateMax != null">
+            and trunc(T.RPMNT_DATE) &lt;= trunc(#{rpmntDateMax})
+        </if>
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.noThisId != null">
+                and T.ID &lt;&gt; #{example.noThisId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.APPL_ID,
+    T.PERIOD_NUM,
+    T.COLLECT_TIME,
+    T.FOLLOWED_BY,
+    T.INPUT_TIME,
+    T.COLLECT_MTHD,
+    T.RESULT,
+    T.CONTENT,
+    T.ABNORMITY_CODE,
+    T.CONTROL_STATUS,
+    T.STATUS,
+    T.RPMNT_DATE,
+    T.RPMNT_AMT,
+    T.RLTN,
+    T.CONTACTOR,
+    T.TEL,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECTION_RECORD T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="int" >
+    select
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECTION_RECORD T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="int" >
+    delete from PLMS_LA_COLLECTION_RECORD T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecordExample" >
+    delete from PLMS_LA_COLLECTION_RECORD T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_collection_record.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_COLLECTION_RECORD T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{applId,jdbcType=BIGINT},
+      #{periodNum,jdbcType=BIGINT},
+      sysdate,
+      #{followedBy,jdbcType=VARCHAR},
+      sysdate,
+      #{collectMthd,jdbcType=VARCHAR},
+      #{result,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR},
+      #{abnormityCode,jdbcType=VARCHAR},
+      #{controlStatus,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR},
+      #{rpmntDate,jdbcType=TIMESTAMP},
+      #{rpmntAmt,jdbcType=DECIMAL},
+      #{rltn,jdbcType=VARCHAR},
+      #{contactor,jdbcType=VARCHAR},
+      #{tel,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_collection_record.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_COLLECTION_RECORD T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="periodNum != null" >
+          T.PERIOD_NUM,
+      </if>
+      <if test="collectTime != null" >
+          T.COLLECT_TIME,
+      </if>
+      <if test="followedBy != null" >
+          T.FOLLOWED_BY,
+      </if>
+      <if test="inputTime != null" >
+          T.INPUT_TIME,
+      </if>
+      <if test="collectMthd != null" >
+          T.COLLECT_MTHD,
+      </if>
+      <if test="result != null" >
+          T.RESULT,
+      </if>
+      <if test="content != null" >
+          T.CONTENT,
+      </if>
+      <if test="abnormityCode != null" >
+          T.ABNORMITY_CODE,
+      </if>
+      <if test="controlStatus != null" >
+          T.CONTROL_STATUS,
+      </if>
+      <if test="status != null" >
+          T.STATUS,
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE,
+      </if>
+      <if test="rpmntAmt != null" >
+          T.RPMNT_AMT,
+      </if>
+      <if test="rltn != null" >
+          T.RLTN,
+      </if>
+      <if test="contactor != null" >
+          T.CONTACTOR,
+      </if>
+      <if test="tel != null" >
+          T.TEL,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="periodNum != null" >
+        #{periodNum,jdbcType=BIGINT},
+      </if>
+      <if test="collectTime != null" >
+        #{collectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followedBy != null" >
+        #{followedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="inputTime != null" >
+        #{inputTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="collectMthd != null" >
+        #{collectMthd,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormityCode != null" >
+        #{abnormityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="controlStatus != null" >
+        #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+        #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rpmntAmt != null" >
+        #{rpmntAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rltn != null" >
+        #{rltn,jdbcType=VARCHAR},
+      </if>
+      <if test="contactor != null" >
+        #{contactor,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecordExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LA_COLLECTION_RECORD T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  
+  <select id="selectSysMessageTempLateSuiTableGroup" resultType="com.ljwd.plms.web.model.messageSystem.SysMessageTempLate"  parameterType="map">
+  	select distinct(t2.suitablegroup) from SYS_MESSAGE_TEMPLATE t2
+  </select>
+  
+  <select id="selectSuiTableTypeBySuiTableGroup" resultType="com.ljwd.plms.web.model.messageSystem.SysMessageTempLate" parameterType="string">
+  	select t3.id,t3.suitabletype from  SYS_MESSAGE_TEMPLATE t3 
+  	<if test="_parameter != null">
+  		where t3.suitablegroup = #{_parameter }
+  	</if>
+  </select>
+  <select id="selectListUserSearchResultItemDto" resultType="com.ljwd.plms.web.model.messageSystem.UserSearchResultItemDto" parameterType="string">
+  	select 
+    	       sysuser.user_id            userId, 
+               employee.id                employeeId, 
+               employee.emp_name          employeeName, 
+               employee.org_id            orgId,
+               employee.office_tel        officeTelephone,
+               sysuser.last_login_time    lastLoginTime,
+               sysuser.is_active          isActive, 
+               sysuser.create_time        createTime, 
+               sysuser.created_By         createdBy, 
+               sysuser.update_time        lastUpdateTime, 
+               sysuser.updated_by         lastUpdatedBy, 
+               sysuser.rec_ver            recordVersion
+			  
+	      from sys_user sysuser
+          left join sys_emp employee on sysuser.emp_id = employee.id
+          left join sys_org org on employee.org_id = org.id
+	     where sysuser.user_id in(
+	           	  select collectset.user_id from la_collect_set collectset
+	       	   )
+	       <if test="_parameter != null"> 
+		   	   and user.user_Id = #{_parameter }
+		   </if>
+		   <!-- <if test="isActive==true">
+		   	   and sys_user.is_active = 'Y' 
+		   </if>
+		   <if test="isActive==false">
+		   	   and sys_user.is_active = 'N'
+		   </if>
+		   <if test="employeeName != null">
+	       	   and employee.emp_name like '%#{employeeName}%'
+	       </if>
+	       <if test="orgId != null">
+	       	   and employee.org_id =:orgId
+	       </if>
+	       <if test="isSalesMan==true">
+	           and employee.is_sales_man = 'Y'
+	       </if>
+	       <if test="isSalesMan==false">
+	           and employee.is_sales_man = 'N'
+	       </if>
+	       <if test="isQuit==true">
+	           and employee.is_quit = 'Y'
+	       </if>
+	       <if test="isQuit==false">
+	           and employee.is_quit = 'N'
+	       </if>
+	       <if test="siteCode != null">
+	           and org.site_code =:siteCode
+	       </if> -->
+  </select>
+  <select id="findEmployeeOne" resultType="com.ljwd.plms.web.model.messageSystem.Employee" parameterType = "long">
+  		select t.id id,
+       t.org_id organization,
+       t.emp_no employeeNo,
+       t.emp_name employeeName,
+       t.idcard idCard,
+       t.gender gender,
+       t.birthday birthday,
+       t.duties duties,
+       t.tel telephone,
+       t.mobile mobile,
+       t.home_tel homeTelephone,
+       t.office_tel officeTelephone,
+       t.home_addr homeAddress,
+       t.post post,
+       t.email email,
+       t.is_sales_man isSalesMan,
+       t.is_superviser isSuperviser,
+       t.entry_date entryDate,
+       t.is_quit isQuit,
+       t.quit_date quitDate,
+       t.is_in_leave isInLeave,
+       t.remark remark,
+       t.position position,
+       t.call_center_number callCenterNumber,
+       t.quit_type quitType
+  from SYS_EMP t
+   <if test="_parameter != null"> 
+ 	where t.id  = #{_parameter }
+ 	</if>
+  </select>
+  <select id="searchContractNos" resultType="com.ljwd.plms.web.model.messageSystem.ContractClientDto" parameterType="map" >
+  	SELECT
+            contract.CNTRCT_NO as contractNo,
+            cust.CUST_NAME     as customerName,
+            cust.ID_CARD_NO    as idCardNo 
+        FROM LN_CNTRCT contract 
+        INNER JOIN CL_CUST cust ON contract.APPL_ID = cust.APPL_ID
+        INNER JOIN LN_PAYMENT pay ON contract.ID = pay.CNTRCT_ID AND pay.IS_PAID = 'Y'
+        INNER join ln_appl_info on contract.APPL_ID = ln_appl_info.id
+        inner join wf_workflow_info on ln_appl_info.wf_id = wf_workflow_info.id and  wf_workflow_info.status != 'CLEAR'
+        WHERE 1 = 1
+        <if test="contractNo != null"> 
+            AND contract.CNTRCT_NO = #{contractNo}  
+        </if> 
+        <if test="customerName != null">
+            AND cust.CUST_NAME = #{customerName } 
+        </if>
+        <if test="idCardNo != null">
+            AND cust.ID_CARD_NO = #{idCardNo}  
+        </if>
+  </select>
+  <select id="findContractByContractNo" resultType="com.ljwd.plms.web.model.messageSystem.Contract" parameterType="string" >
+  		SELECT c FROM Contract c 
+  		<if test="_parameter != null">
+  			WHERE c.contractNo = #{_parameter }
+  		</if>
+  </select>
+  <select id="findPaymentByApplyId" resultType="com.ljwd.plms.web.model.messageSystem.Payment" parameterType="string" >
+  		SELECT p FROM Payment p 
+  		<if test="_parameter != null">
+  			WHERE p.applicationInfo.id = #{_parameter }
+  		</if>
+  </select>
+  <select id="searchChargeSchemaByContractId" resultType="com.ljwd.plms.web.model.messageSystem.ChargeSchema" parameterType="long">
+  	 select t3.id id,
+       t3.schema_code schemaCode,
+       t3.schema_name schemaName,
+       t3.schema_desc schemaDescription,
+       t3.rpmnt_mthd repaymentMethod,
+       t3.int_rate interestRate,
+       t3.int_rate_year interestRateYear,
+       t3.calc_int_type calculatingInterestType,
+       t3.decimal_place decimalPlace,
+       t3.base_days baseDays,
+       t3.round_mode roundingMode,
+       t3.adjust_int_decimal adjustInterestDecimal,
+       t3.adjust_principal_decimal adjustPrincipalDecimal
+  from SYS_CHARGE_SCHEMA t3
+ where t3.id =
+       (select t2.charge_schema_id
+          from LN_APPL_INFO t2
+         where t2.id =
+               (select t1.appl_id from LN_CNTRCT t1 
+               <if test="_parameter != null">
+               		where t1.id = #{_parameter }
+               </if>
+               ))
+  </select>
+  <select id="searchRepaymentPlansByPaymentId" resultType="com.ljwd.plms.web.model.messageSystem.RepaymentPlan" parameterType="long">
+  		select t.id id,
+           t.appl_id applicationInfoId,
+           t.payment_id paymentId,
+           t.period_num periodNumber,
+           t.start_date startDate,
+           t.end_date endDate,
+           t.max_rpmnt_date maxRepaymentDate,
+           t.rpmnt_date repaymentDate,
+           t.principal principal,
+           t.int interest,
+           t.int_adjust interestAdjust,
+           t.status status,
+           t.int_day interestDay,
+           t.ttl_amt totalAmount,
+           t.is_extent isExtent,
+           t.penalty penalty,
+           t.penalty_rate penaltyRate,
+           t.clear_amt clearAmount,
+           t.remain_principal remainPrincipal
+            from LN_RPMNT_PLAN t 
+            <if test="_parameter != null">
+            	where t.payment_id = #{_parameter }
+            </if>
+  </select>
+  <select id="getCustomerByApplyId" resultType="com.ljwd.plms.web.model.messageSystem.Customer" parameterType="long">
+  		select t.id id,
+       t.appl_id applId,
+       t.cust_name customerName,
+       t.age age,
+       t.gender gender,
+       t.marriage marriage,
+       t.id_type_code idTypeCode,
+       t.id_card_no idCardNo,
+       t.id_card_issued_by idCardIssuedBy,
+       t.id_card_end_date idCardEndDate,
+       t.social_security socialSecurity,
+       t.temp_id_no tempIdNo,
+       t.birthday birthday,
+       t.birth_place birthPlace,
+       t.household household,
+       t.education education,
+       t.mobile mobile,
+       t.mobile2 mobile2,
+       t.mobile3 mobile3,
+       t.mail_addr mailAddress,
+       t.mail_type mailType,
+       t.qq_no qqNo,
+       t.live_time liveTime,
+       t.zip_code zipCode,
+       t.is_known isKnown,
+       t.children_in_sz childrenInSz,
+       t.spouse_name spouseName,
+       t.spouse_id_card_no spouseIdCardNo,
+       t.spouse_age spouseAge,
+       t.spouse_tel spouseTelephone,
+       t.spouse_tel2 spouseTelephone2,
+       t.spouse_tel3 spouseTelephone3,
+       t.spouse_unit spouseUnit,
+       t.spouse_unit_position spouseUnitPosition,
+       t.spouse_unit_addr spouseUnitAddress,
+       t.spouse_unit_dept spouseUnitDepartment,
+       t.spouse_unit_tel spouseUnitTelephone,
+       t.spouse_mon_income spouseMonthlyIncome,
+       t.estate_purchase_mode estatePurchaseMode,
+       t.estate_loan_amt estateLoanAmount,
+       t.estate_mon_rpmnt estateMonthlyRepayment,
+       t.car_purchase_mthd carPurchaseMethod,
+       t.car_loan_amt carLoanAmount,
+       t.car_mon_rpmnt carMonthlyRepayment,
+       t.crdt_card_ttl_num creditCardTotalNumber,
+       t.crdt_card_ttl_lmt creditCardTotalLimit,
+       t.crdt_card_one_bank creditCardOneBank,
+       t.crdt_card_no creditCardNo,
+       t.crdt_card_one_lmt creditCardOneLimit,
+       t.investment investment,
+       t.remark remark,
+       t.cust_type customerType,
+       t.house_info_type houseInfoType,
+       t.house_numer houseNumer,
+       t.house_estimate_amt houseEstimateAmount,
+       t.house_loan_amt houseLoanAmount,
+       t.house_repay_amt houseRepayAmount,
+       t.house_mortgage_date houseMortgageDate,
+       t.house_mortgage_bank houseMortgageBank,
+       t.house_cert_no houseCertNo,
+       t.id_address_province_id idAddressProvinceId,
+       t.id_address_city_id idAddressCityId,
+       t.id_address_area_id idAddressAreaId,
+       t.id_address_details idAddressDetails,
+       t.spouse_id_addr_province_id spouseIdAddrProvinceId,
+       t.spouse_id_addr_city_id spouseIdAddrCityId,
+       t.spouse_id_addr_area_id spouseIdAddrAreaId,
+       t.spouse_id_addr_details spouseIdAddrDetails,
+       t.spouse_id_addr spouseIdAddr,
+       t.spouse_unit_addr_province_id spouseUnitAddrProvinceId,
+       t.spouse_unit_addr_city_id spouseUnitAddrCityId,
+       t.spouse_unit_addr_area_id spouseUnitAddrAreaId,
+       t.spouse_unit_addr_details spouseUnitAddrDetails
+ from CL_CUST t 
+ <if test="_parameter != null">
+ where t.appl_id = #{_parameter }
+ </if>
+  </select>
+  <select id="searchListReceivableDetailByRecivId" resultType="com.ljwd.plms.web.model.messageSystem.ReceivableDetail" parameterType="long">
+  		select t.id id,
+       t.ledger_code ledgerTypeCode,
+       t.reciv_id receivableId,
+       t.reciv_amt receivableAmount,
+       t.actual_amt actualAmount,
+       t.waived_amt waivedAmount
+ 		from LF_RECIV_DTL t 
+  <if test="_parameter != null">
+ 	where t.reciv_id = #{_parameter }
+  </if>
+  </select>
+  <select id="getPerviousRepaymentDate" resultType="Date" parameterType="map">
+  	SELECT MAX(r.TX_DATE)
+  	FROM LF_RPMNT r 
+ 	WHERE r.PAYMENT_ID = #{paymentId}
+  	AND r.status != 'REVERSED'
+   	AND r.TX_AMT != r.REFUND_AMT
+   	AND r.INPUT_TIME &lt; (SELECT p.INPUT_TIME FROM LF_RPMNT p WHERE p.id = #{repaymentId})
+ 
+ </select>
+ <select id="getLastRepaymentDate" resultType="Date" parameterType="long">
+ 		  SELECT MAX(r.TX_DATE)
+    FROM LF_RPMNT r
+   WHERE r.PAYMENT_ID = #{_parameter}
+     AND r.status != 'REVERSED'
+     AND ((r.TX_AMT > 0 AND r.TX_AMT != r.REFUND_AMT) OR (r.TX_AMT = 0))
+ 		
+ </select>
+  <select id="getReceivableFeeDetailsByRicivId" resultType="com.ljwd.plms.web.model.case_collection.LfRecivFeeDtl" parameterType="long">
+  		select 
+    t.id id,
+    t.reciv_id recivId,
+    t.ledger_code ledgerCode,
+    t.start_date startDate,
+    t.end_date endDate,
+    t.base_val baseVal,
+    t.rate rate,
+    t.amt amt,
+    t.calc_time calcTime,
+    t.ref_id refId,
+    t.remark remark
+ from LF_RECIV_FEE_DTL t where t.reciv_id = #{_parameter}
+  </select>
+  <select id="findListProductFeeBySchemaId" resultType="com.ljwd.plms.web.model.messageSystem.ProductFee" parameterType="long">
+  	select t.id id,
+       t.schema_id chargeSchemaId,
+       t.fee_code ledgerTypeCode,
+       t.charge_time chargeTime,
+       t.calc_mthd calcMethod,
+       t.base_val baseValue,
+       t.val_type valueType
+       
+ from SYS_PRD_FEE t where t.schema_id = #{_parameter}
+  </select>
+  
+  
+  
+  
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LA_COLLECTION_RECORD T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.periodNum != null" >
+          T.PERIOD_NUM = #{record.periodNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.collectTime != null" >
+          T.COLLECT_TIME = #{record.collectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.followedBy != null" >
+          T.FOLLOWED_BY = #{record.followedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.inputTime != null" >
+          T.INPUT_TIME = #{record.inputTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.collectMthd != null" >
+          T.COLLECT_MTHD = #{record.collectMthd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.result != null" >
+          T.RESULT = #{record.result,jdbcType=VARCHAR},
+      </if>
+      <if test="record.content != null" >
+          T.CONTENT = #{record.content,jdbcType=VARCHAR},
+      </if>
+      <if test="record.abnormityCode != null" >
+          T.ABNORMITY_CODE = #{record.abnormityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.controlStatus != null" >
+          T.CONTROL_STATUS = #{record.controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+          T.STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rpmntDate != null" >
+          T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.rpmntAmt != null" >
+          T.RPMNT_AMT = #{record.rpmntAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.rltn != null" >
+          T.RLTN = #{record.rltn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contactor != null" >
+          T.CONTACTOR = #{record.contactor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+          T.TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LA_COLLECTION_RECORD T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.period_Num = #{record.periodNum,jdbcType=BIGINT},
+      T.COLLECT_TIME = #{record.collectTime,jdbcType=TIMESTAMP},
+      T.FOLLOWED_BY = #{record.followedBy,jdbcType=VARCHAR},
+      T.INPUT_TIME = #{record.inputTime,jdbcType=TIMESTAMP},
+      T.COLLECT_MTHD = #{record.collectMthd,jdbcType=VARCHAR},
+      T.RESULT = #{record.result,jdbcType=VARCHAR},
+      T.CONTENT = #{record.content,jdbcType=VARCHAR},
+      T.ABNORMITY_CODE = #{record.abnormityCode,jdbcType=VARCHAR},
+      T.CONTROL_STATUS = #{record.controlStatus,jdbcType=VARCHAR},
+      T.STATUS = #{record.status,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      T.RPMNT_AMT = #{record.rpmntAmt,jdbcType=DECIMAL},
+      T.RLTN = #{record.rltn,jdbcType=VARCHAR},
+      T.CONTACTOR = #{record.contactor,jdbcType=VARCHAR},
+      T.TEL = #{record.tel,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord" >
+    update PLMS_LA_COLLECTION_RECORD T
+    <set >
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="periodNum != null" >
+          T.PERIOD_NUM = #{periodNum,jdbcType=BIGINT},
+      </if>
+      <if test="collectTime != null" >
+          T.COLLECT_TIME = #{collectTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="followedBy != null" >
+          T.FOLLOWED_BY = #{followedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="inputTime != null" >
+          T.INPUT_TIME = #{inputTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="collectMthd != null" >
+          T.COLLECT_MTHD = #{collectMthd,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+          T.RESULT = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+          T.CONTENT = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="abnormityCode != null" >
+          T.ABNORMITY_CODE = #{abnormityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="controlStatus != null" >
+          T.CONTROL_STATUS = #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+          T.STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rpmntAmt != null" >
+          T.RPMNT_AMT = #{rpmntAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="rltn != null" >
+          T.RLTN = #{rltn,jdbcType=VARCHAR},
+      </if>
+      <if test="contactor != null" >
+          T.CONTACTOR = #{contactor,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+          T.TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord" >
+    update PLMS_LA_COLLECTION_RECORD T
+    set
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.period_Num = #{periodNum,jdbcType=BIGINT},
+      T.COLLECT_TIME = #{collectTime,jdbcType=TIMESTAMP},
+      T.FOLLOWED_BY = #{followedBy,jdbcType=VARCHAR},
+      T.INPUT_TIME = #{inputTime,jdbcType=TIMESTAMP},
+      T.COLLECT_MTHD = #{collectMthd,jdbcType=VARCHAR},
+      T.RESULT = #{result,jdbcType=VARCHAR},
+      T.CONTENT = #{content,jdbcType=VARCHAR},
+      T.ABNORMITY_CODE = #{abnormityCode,jdbcType=VARCHAR},
+      T.CONTROL_STATUS = #{controlStatus,jdbcType=VARCHAR},
+      T.STATUS = #{status,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      T.RPMNT_AMT = #{rpmntAmt,jdbcType=DECIMAL},
+      T.RLTN = #{rltn,jdbcType=VARCHAR},
+      T.CONTACTOR = #{contactor,jdbcType=VARCHAR},
+      T.TEL = #{tel,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecordExample">
+        SELECT T.*,
+               RLTNSHP.VAL AS rltnText
+        FROM (
+            SELECT  T.ID,
+                    T.APPL_ID,
+                    T.PERIOD_NUM,
+                    T.COLLECT_TIME,
+                    T.FOLLOWED_BY,
+                    T.INPUT_TIME,
+                    T.COLLECT_MTHD,
+                    T.RESULT,
+                    T.CONTENT,
+                    T.ABNORMITY_CODE,
+                    T.CONTROL_STATUS,
+                    T.STATUS,
+                    T.RPMNT_DATE,
+                    T.RPMNT_AMT,
+                    T.RLTN,
+                    T.CONTACTOR,
+                    T.TEL,
+                    T.CREATED_BY,
+                    T.CREATE_TIME,
+                    T.UPDATED_BY,
+                    T.UPDATE_TIME,
+                    T.REC_VER,
+                    T.TAG_SEQ,
+                    2 as tableType,
+                    MTHD.VAL AS collectMthdText,
+                    STATUS.VAL AS statusText,
+                    CODE.VAL AS resultText,
+                    CONTROL.VAL AS controlStatusText,
+                    ABNORMITY.VAL AS abnormityCodeText
+            FROM PLMS_LA_COLLECTION_RECORD T
+            LEFT JOIN PLMS_L_COLLECT_MTHD MTHD ON MTHD.CODE = T.COLLECT_MTHD
+            LEFT JOIN PLMS_L_COLLECT_STATUS STATUS ON STATUS.CODE = T.STATUS
+            LEFT JOIN PLMS_L_COLLECT_CODE CODE ON CODE.CODE = T.RESULT
+            LEFT JOIN PLMS_L_COLLECT_CONTROL CONTROL ON CONTROL.CODE = T.CONTROL_STATUS
+            LEFT JOIN PLMS_L_COLLECT_ABNORMITY ABNORMITY ON ABNORMITY.CODE = T.ABNORMITY_CODE
+            WHERE 1 = 1
+            <if test="noThisId != null">
+                and T.ID &lt;&gt; #{noThisId}
+            </if>
+            <if test="controlStatusIn != null and controlStatusIn != ''">
+                and T.CONTROL_STATUS IN (${controlStatusIn})
+            </if>
+            <if test="rpmntDateMin != null">
+                and trunc(T.RPMNT_DATE) &gt;= trunc(#{rpmntDateMin})
+            </if>
+            <if test="rpmntDateMax != null">
+                and trunc(T.RPMNT_DATE) &lt;= trunc(#{rpmntDateMax})
+            </if>
+            <if test="recVer != null">
+                and T.REC_VER = #{recVer}
+            </if>
+            <if test="applId != null">
+                and T.APPL_ID = #{applId}
+            </if>
+            <if test="id != null">
+                and T.ID = #{id}
+            </if>
+            <if test="applId != null">
+                UNION ALL
+                SELECT  T.ID,
+                        T.APPL_ID,
+                        NULL AS PERIOD_NUM,
+                        T.COLLECT_TIME,
+                        followUser.USER_NAME AS FOLLOWED_BY,
+                        T.INPUT_TIME,
+                        T.COLLECT_MTHD,
+                        T.RESULT,
+                        T.CONTENT,
+                        T.ABNORMITY_CODE,
+                        T.STATUS AS CONTROL_STATUS,
+                        T.PHONE_RESULT AS STATUS,
+                        T.RPMNT_DATE,
+                        T.RPMNT_AMT,
+                        T.RLTN,
+                        T.CONTACTOR,
+                        T.TEL,
+                        T.CREATED_BY,
+                        T.CREATE_TIME,
+                        T.UPDATED_BY,
+                        T.UPDATE_TIME,
+                        T.REC_VER,
+                        T.TAG_SEQ,
+                        1 as tableType,
+                        MTHD.VAL AS collectMthdText,
+                        STATUS.VAL AS statusText,
+                        CODE.VAL AS resultText,
+                        CONTROL.VAL AS controlStatusText,
+                        ABNORMITY.VAL AS abnormityCodeText
+                FROM LA_COLLECT_REC T
+                LEFT JOIN L_COLLECT_MTHD MTHD ON MTHD.CODE = T.COLLECT_MTHD
+                LEFT JOIN L_COLLECT_FOLLOW STATUS ON STATUS.CODE = T.Phone_Result
+                LEFT JOIN L_COLLECT_RESULT CODE ON CODE.CODE = T.RESULT
+                LEFT JOIN l_follow_status CONTROL ON CONTROL.CODE = T.STATUS
+                LEFT JOIN L_COLLECT_ABNORMITY ABNORMITY ON ABNORMITY.CODE = T.ABNORMITY_CODE
+                LEFT JOIN SYS_USER followUser ON followUser.USER_ID = T.FOLLOWED_BY
+                WHERE 1 = 1
+                <if test="noThisId != null">
+                    and T.ID &lt;&gt; #{noThisId}
+                </if>
+                <if test="rpmntDateMin != null">
+                    and trunc(T.RPMNT_DATE) &gt;= trunc(#{rpmntDateMin})
+                </if>
+                <if test="rpmntDateMax != null">
+                    and trunc(T.RPMNT_DATE) &lt;= trunc(#{rpmntDateMax})
+                </if>
+                <if test="recVer != null">
+                    and T.REC_VER = #{recVer}
+                </if>
+                <if test="applId != null">
+                    and T.APPL_ID = #{applId}
+                </if>
+                <if test="id != null">
+                    and T.ID = #{id}
+                </if>
+            </if>
+        ) T
+        LEFT JOIN L_RLTNSHP RLTNSHP ON RLTNSHP.CODE = T.RLTN
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+  <!--根据借款申请ID统计借款详细-->
+  <select id="selectApplDetailByApplIdAndDuePeriod" resultType="com.ljwd.plms.web.vo.case_collection.ApplDetailDto" parameterType="map">
+      <![CDATA[
+          select cust.id as custId,
+                 appl.id as applId,
+                 appl.appl_code as applCode,
+                 payment.id as paymentId,
+                 appl.prd_id as prdId,
+
+                 cust.mobile as mobile,
+
+                 cntrct.cntrct_no as cntrctNo,
+                 cust.cust_name as custName,
+                 cust.id_card_no as idCardNo,
+                 prd.prd_no as prdNo,
+                 prd.prd_name as prdName,
+                 paytype.type_name as paymentName,
+
+                 cntrct.loan_amt as loanAmt,
+                 appl.biz_category as bizCategory,
+                 cntrct.loan_period as loanPeriod,
+
+                 firstPlan.Ttl_Amt as firstAmt,
+                 secondPlan.Ttl_Amt as secondAmt,
+
+                 maxPaidRec.paidPeriod as paidPeriod,
+                 cntrct.loan_amt - nvl(applAc.repaid_principal,0) - NVL(returnRec.RETURN_AMT,0) as remainingPrincipal,
+                 overRec.overDays,
+                 overRec.overDaysTotal,
+                 overRec.overDaysMax,
+                 bank.status as redeemStatus
+          from ln_appl_info appl
+          inner join ln_cntrct cntrct on cntrct.appl_id = appl.id
+          inner join ln_payment payment on payment.appl_id = appl.id
+          inner join cl_cust cust on cust.appl_id = appl.id
+          left join sys_prd prd on prd.id = appl.prd_id
+          left join ln_rpmnt_plan firstPlan on firstPlan.appl_id = appl.id and firstPlan.period_num = 1
+          left join ln_rpmnt_plan secondPlan on secondPlan.appl_id = appl.id and secondPlan.period_num = 2
+          left join sys_payment_type paytype on paytype.code = appl.payment_type
+          left join lf_appl_ac applAc on applAc.appl_id = appl.id
+          left join (
+              select reciv.appl_id as appl_id,
+                     sum(case when (reciv.status <> 'PAID' and trunc(sysdate) > trunc(reciv.max_rpmnt_date)) then trunc(sysdate) - trunc(reciv.rpmnt_date)
+                              when (reciv.status = 'PAID' and trunc(reciv.actual_rpmnt_date) > trunc(reciv.max_rpmnt_date)) then trunc(reciv.actual_rpmnt_date) - trunc(reciv.rpmnt_date)
+                              else 0 end) as overDaysTotal,
+                     max(case when (reciv.status <> 'PAID' and trunc(sysdate) > trunc(reciv.max_rpmnt_date)) then trunc(sysdate) - trunc(reciv.rpmnt_date)
+                              when (reciv.status = 'PAID' and trunc(reciv.actual_rpmnt_date) > trunc(reciv.max_rpmnt_date)) then trunc(reciv.actual_rpmnt_date) - trunc(reciv.rpmnt_date)
+                              else 0 end) as overDaysMax,
+                     max(case when reciv.status <> 'PAID' and reciv.period_num = #{overduePeriod,jdbcType=INTEGER} then TRUNC(SYSDATE) - TRUNC(reciv.RPMNT_DATE) else 0 end) as overDays
+              from lf_reciv reciv
+              where reciv.Is_Deleted = 'N' and reciv.appl_id = #{applId,jdbcType=BIGINT}
+              group by reciv.appl_id
+          ) overRec on overRec.appl_id = appl.id
+          LEFT JOIN (SELECT MAX(rec.PERIOD_NUM) as paidPeriod,rec.PAYMENT_ID as PAYMENT_ID FROM LF_RECIV rec WHERE rec.STATUS='PAID' and rec.appl_id = #{applId,jdbcType=BIGINT} GROUP BY rec.PAYMENT_ID) maxPaidRec ON maxPaidRec.PAYMENT_ID = payment.ID
+          LEFT JOIN LF_RPMNT_BANK bank on bank.PAYMENT_ID = payment.ID
+          LEFT JOIN (
+              SELECT DISTINCT retRec.* FROM (
+                  SELECT  rec.PAYMENT_ID,
+                          rec.APPL_ID,
+                          rec.RETURN_AMT
+                  FROM LF_RECIV rec INNER JOIN LN_APPL_INFO appl ON appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') AND appl.ID = rec.APPL_ID
+                  WHERE rec.RETURN_AMT > 0
+              ) retRec
+          )returnRec ON returnRec.APPL_ID = APPL.ID
+          WHERE appl.id = #{applId,jdbcType=BIGINT}
+      ]]>
+  </select>
+
+    <!--根据借款申请ID和最早逾期期数统计破坏承诺次数-->
+    <select id="selectBreakCountByApplIdAndDuePeriod" resultType="com.ljwd.plms.web.vo.case_collection.BreakCountDto" parameterType="map">
+        select
+              sum(case when record.collect_mthd = 'DESTROYCOMMIT' then 1 else 0 end) as breakTotalCount,
+              sum(case when record.collect_mthd = 'DESTROYCOMMIT' and record.period_num = #{overduePeriod,jdbcType=INTEGER} then 1 else 0 end) as breakThisCount
+        from plms_la_collection_record record
+        where record.appl_id = #{applId,jdbcType=BIGINT}
+        group by record.appl_id
+    </select>
+
+    <!--根据借款申请ID查询银行扣款情况-->
+    <select id="selectLoanStuationByApplId" resultType="com.ljwd.plms.web.vo.case_collection.LoanStuationDto" parameterType="long">
+        SELECT temp.applId,
+               temp.loanMoney,
+               temp.loanDate,
+               temp.loanRealMoney,
+               temp.loanRemark,
+               temp.loanType,
+               temp.createTime
+        FROM (
+          SELECT CNTRCT.APPL_ID as applId,
+                 offerBatDtl.AMT as loanMoney,
+                 offerbat.req_date  as loanDate,
+                 offerBatDtl.ACTUAL_AMT as loanRealMoney,
+                 offerbatdtl.remark as loanRemark,
+                 case offerbatdtl.status when 'FAILED' THEN '扣款失败' WHEN 'SUCCESS' THEN '扣款成功' WHEN 'CREATED' THEN '扣款中' ELSE '' END as loanType,
+                 offerbatdtl.CREATE_TIME as createTime
+          FROM lf_offer_bat_dtl offerbatdtl
+          LEFT JOIN LF_OFFER_BAT offerBat on offerbatdtl.bat_code=offerbat.bat_code
+          LEFT JOIN ln_cntrct cntrct on cntrct.id = offerbatdtl.cntrct_id
+          WHERE offerbatdtl.status is not null and OFFERBATDTL.STATUS in ('FAILED','SUCCESS') AND OFFER_TYPE ='KFT_T0_GW'
+                AND cntrct.appl_id = #{applId,jdbcType=BIGINT}
+
+          UNION ALL
+
+          SELECT PAYMENT.APPL_ID as applId,
+                 DTL.AMT as loanMoney,
+                 REPLY.PAY_DATE  as loanDate,
+                 Case When dtl.Pay_Flag='Y' or dtl.Pay_Flag='FSBR0000' or dtl.Pay_Flag='0000' Then DTL.AMT Else 0 End as loanRealMoney,
+                 Nvl(dtl.Msg,dtl.Bank_Msg) As loanRemark,
+                 Case When dtl.Pay_Flag='Y' or dtl.Pay_Flag='FSBR0000' or dtl.Pay_Flag='0000' Then '扣款成功' Else '扣款失败' End as loanType,
+                 dtl.CREATE_TIME as createTime
+          FROM Lf_Offer_Reply_Dtl dtl
+          LEFT JOIN Ln_Payment Payment On dtl.Payment_Id=Payment.Id
+          LEFT JOIN lf_offer_bat bat on bat.bat_code=dtl.bat_code
+          LEFT JOIN LF_OFFER_REPLY REPLY ON REPLY.BAT_CODE = DTL.BAT_CODE
+          LEFT JOIN LF_OFFER_BAT_DTL  OFFERBATDTL ON OFFERBATDTL.id = DTL.BATCH_DTL_ID
+          WHERE OFFER_TYPE NOT IN ('KFT_T0_GW') AND Payment.Appl_Id = #{applId,jdbcType=BIGINT}
+        ) temp
+        order by temp.createTime DESC,temp.loanDate DESC
+    </select>
+
+    <!--分页条件查询银行代扣数据-->
+    <select id="selectLoanStuationAndPage" resultType="com.ljwd.plms.web.vo.case_collection.LoanStuationDto"
+            parameterType="com.ljwd.plms.web.vo.case_collection.LoanStuationExample">
+        SELECT temp.applId,
+               temp.loanMoney,
+               temp.loanDate,
+               temp.loanRealMoney,
+               temp.loanRemark,
+               temp.loanType,
+               temp.createTime
+        FROM (
+          SELECT CNTRCT.APPL_ID as applId,
+                 offerBatDtl.AMT as loanMoney,
+                 offerbat.req_date  as loanDate,
+                 offerBatDtl.ACTUAL_AMT as loanRealMoney,
+                 offerbatdtl.remark as loanRemark,
+                 case offerbatdtl.status when 'FAILED' THEN '扣款失败' WHEN 'SUCCESS' THEN '扣款成功' WHEN 'CREATED' THEN '扣款中' ELSE '' END as loanType,
+                 offerbatdtl.CREATE_TIME as createTime
+          FROM lf_offer_bat_dtl offerbatdtl
+          LEFT JOIN LF_OFFER_BAT offerBat on offerbatdtl.bat_code=offerbat.bat_code
+          LEFT JOIN ln_cntrct cntrct on cntrct.id = offerbatdtl.cntrct_id
+          WHERE offerbatdtl.status is not null and OFFERBATDTL.STATUS in ('FAILED','SUCCESS') AND OFFER_TYPE ='KFT_T0_GW'
+          <if test="loanDateMin != null">
+              AND trunc(offerbatdtl.CREATE_TIME) &gt;= trunc(#{loanDateMin,jdbcType=TIMESTAMP})
+          </if>
+          <if test="loanDateMax != null">
+              AND trunc(offerbatdtl.CREATE_TIME) &lt;= trunc(#{loanDateMax,jdbcType=TIMESTAMP})
+          </if>
+          <if test="applId != null">
+              AND cntrct.appl_id = #{applId,jdbcType=BIGINT}
+          </if>
+
+          UNION ALL
+
+          SELECT PAYMENT.APPL_ID as applId,
+                 DTL.AMT as loanMoney,
+                 REPLY.PAY_DATE  as loanDate,
+                 Case When dtl.Pay_Flag='Y' or dtl.Pay_Flag='FSBR0000' or dtl.Pay_Flag='0000' Then DTL.AMT Else 0 End as loanRealMoney,
+                 Nvl(dtl.Msg,dtl.Bank_Msg) As loanRemark,
+                 Case When dtl.Pay_Flag='Y' or dtl.Pay_Flag='FSBR0000' or dtl.Pay_Flag='0000' Then '扣款成功' Else '扣款失败' End as loanType,
+                 dtl.CREATE_TIME as createTime
+          FROM Lf_Offer_Reply_Dtl dtl
+          LEFT JOIN Ln_Payment Payment On dtl.Payment_Id=Payment.Id
+          LEFT JOIN lf_offer_bat bat on bat.bat_code=dtl.bat_code
+          LEFT JOIN LF_OFFER_REPLY REPLY ON REPLY.BAT_CODE = DTL.BAT_CODE
+          LEFT JOIN LF_OFFER_BAT_DTL  OFFERBATDTL ON OFFERBATDTL.id = DTL.BATCH_DTL_ID
+          WHERE OFFER_TYPE NOT IN ('KFT_T0_GW')
+          <if test="loanDateMin != null">
+              AND trunc(dtl.CREATE_TIME) &gt;= trunc(#{loanDateMin,jdbcType=TIMESTAMP})
+          </if>
+          <if test="loanDateMax != null">
+              AND trunc(dtl.CREATE_TIME) &lt;= trunc(#{loanDateMax,jdbcType=TIMESTAMP})
+          </if>
+          <if test="applId != null">
+              AND Payment.appl_id = #{applId,jdbcType=BIGINT}
+          </if>
+        ) temp
+        order by temp.createTime DESC,temp.loanDate DESC
+    </select>
+
+    <!--根据借款申请ID查询扣款银行账号-->
+    <select id="selectCollectBankByApplId" resultType="com.ljwd.plms.web.vo.case_collection.CollectBankDto" parameterType="long">
+        SELECT bankAc.SEQ as seqNum,
+               cntrct.appl_id as applId,
+               bankAc.CNTRCT_ID as cntrctId,
+               bankAc.BANK_CODE as bankCode,
+               bankAc.BANK_AC_NAME as bankAccountName,
+               bankAc.BANK_AC as bankCardNo,
+               bank.VAL as bankName
+        FROM LN_CUST_BANK_AC bankAc
+        INNER JOIN LN_CNTRCT cntrct on bankAc.cntrct_id = cntrct.id
+        LEFT JOIN L_BANK bank ON bank.code = bankAc.bank_code
+        WHERE bankAc.ac_type ='COLLECT' AND bankAc.is_valid = 'Y' and cntrct.appl_id = #{applId,jdbcType=BIGINT}
+        order by bankAc.id
+    </select>
+
+  <!-- 批量插入催收新纪录 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_LA_COLLECTION_RECORD T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_la_collection_record.nextval , record.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                       #{item.applId,jdbcType=BIGINT},
+                       #{item.periodNum,jdbcType=BIGINT},
+				       #{item.collectTime,jdbcType=TIMESTAMP},
+				       #{item.followedBy,jdbcType=VARCHAR},
+				       #{item.inputTime,jdbcType=TIMESTAMP},
+				       #{item.collectMthd,jdbcType=VARCHAR},
+				       #{item.result,jdbcType=VARCHAR},
+				       #{item.content,jdbcType=VARCHAR},
+				       #{item.abnormityCode,jdbcType=VARCHAR},
+				       #{item.controlStatus,jdbcType=VARCHAR},
+				       #{item.status,jdbcType=VARCHAR},
+				       #{item.rpmntDate,jdbcType=TIMESTAMP},
+				       #{item.rpmntAmt,jdbcType=DECIMAL},
+				       #{item.rltn,jdbcType=VARCHAR},
+				       #{item.contactor,jdbcType=VARCHAR},
+				       #{item.tel,jdbcType=VARCHAR},
+				       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       #{item.recVer,jdbcType=BIGINT},
+                       #{item.tagSeq,jdbcType=BIGINT}
+                from dual
+            </foreach>
+        ) record
+  </insert>
+
+    <!--查找到期的申请再扣、承诺还款或代偿的入账结果-->
+    <select id="selectTPJournalReport" resultType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecord">
+        select  record.id as id,
+                max(record.appl_id) as applId,
+                min(record.period_num) as periodNum,
+                NVL(max(record.rpmnt_amt),0) as rpmntAmt,
+                max(record.rpmnt_date) as rpmntDate,
+                NVL(sum(rpmnt.post_amt),0) as repaymentAmount
+        from plms_la_collection_record record
+        left join lf_rpmnt rpmnt on trunc(rpmnt.input_time) &gt;= trunc(record.create_time) and trunc(rpmnt.input_time) &lt;= trunc(record.rpmnt_date) and rpmnt.status = 'ADDED' and record.appl_id = rpmnt.appl_id
+        where record.tag_seq = 0 and record.control_status in ('PTP','FPTP','TPTP','AD','PTPF','FPTPF','TPTPF') and trunc(sysdate) &gt; trunc(record.rpmnt_date)
+        group by record.id
+    </select>
+
+    <!--根据借款ID和时间,统计成功入账的金额-->
+    <select id="selectReportAmtByApplIdAndTime" parameterType="map" resultType="java.math.BigDecimal">
+        SELECT NVL(SUM(assign.ASSIGN_AMT),0)
+        FROM LF_BANK_ASSIGN assign
+        INNER JOIN LF_BANK_JOURNAL journal ON journal.ID = assign.BANK_JOURNAL_ID
+        LEFT JOIN LF_BANK_JOURNAL_LOG jLog ON jLog.BANK_JOURNAL_ID = journal.ID AND jLog.ACTION_TYPE='POST'
+        WHERE journal.PAID_DATE &gt;= TRUNC(#{startTime}) and journal.PAID_DATE &lt;= sysdate
+        and assign.STATUS='VALID' and journal.STATUS = 'POSTED' and assign.APPL_ID = #{applId}
+    </select>
+
+    <!--查询客户银行认账信息-->
+    <select id="selectBankJournalReport" resultType="com.ljwd.plms.web.vo.case_collection.BankJournalReportDto"
+            parameterType="com.ljwd.plms.web.vo.case_collection.BankJournalReportExample">
+        SELECT
+            assign.appl_id as applId,
+            contract.CNTRCT_NO AS contractNo,
+            cust.CUST_NAME AS custName,
+            cust.ID_CARD_NO as idCardNo,
+            journal.BANK_AC_NAME as repaymentName,
+            assign.ASSIGN_AMT as repaymentAmount,
+            jLog.ACTION_TIME AS enterAcDate,
+            journal.PAID_DATE as repaymentDate,
+            CASE payment.IS_WRITE_OFF WHEN 'Y' THEN '是' ELSE '否'  END  as isWriteOff,
+            CASE assign.IS_ADV_CLEAR WHEN 'Y' THEN '是' ELSE '否'  END  AS isAdvanceClear,
+            CASE outsrc.STATUS WHEN 'APPROVED' THEN '外包客户' ELSE '未外包' END  isOutsrcCustormer，
+            CASE outsrc.OUTSRC_TYPE WHEN 'FIRST_HAND' THEN '一手外包' WHEN 'SECOND_HAND' THEN '二手外包' ELSE '' END  outSrcType,
+            journal.STATUS AS enterAcStatus,
+            journal.REMARK AS remark,
+            (select journalLog.REASON from LF_BANK_JOURNAL_LOG journalLog where journalLog.BANK_JOURNAL_ID=journal.ID AND
+              journalLog.ACTION_TYPE='ASSIGN_ERROR' AND journalLog.IS_LAST='Y' ) as  errorReason,
+            (select journalLog.REASON from LF_BANK_JOURNAL_LOG journalLog where journalLog.BANK_JOURNAL_ID=journal.ID AND
+              journalLog.ACTION_TYPE='SUSPEND' AND journalLog.IS_LAST='Y' ) as  handleReason
+        FROM LF_BANK_ASSIGN assign
+        INNER JOIN LN_CNTRCT contract ON assign.APPL_ID = contract.APPL_ID
+        INNER JOIN CL_CUST cust ON contract.APPL_ID=cust.APPL_ID
+        INNER JOIN LN_PAYMENT payment ON payment.APPL_ID =assign.APPL_ID
+        INNER JOIN LF_BANK_JOURNAL journal ON journal.ID=assign.BANK_JOURNAL_ID
+        LEFT  JOIN LA_APPL_OUTSRC outsrc ON outsrc.APPL_ID = assign.APPL_ID AND outsrc.STATUS='APPROVED'
+        LEFT JOIN LF_BANK_JOURNAL_LOG jLog ON jLog.BANK_JOURNAL_ID=journal.ID AND jLog.ACTION_TYPE='POST'
+        WHERE assign.STATUS='VALID'
+        <if test="applId != null">
+            AND assign.APPL_ID = #{applId}
+        </if>
+        <if test="contractNo != null and contractNo != ''">
+            AND contract.CNTRCT_NO = #{contractNo}
+        </if>
+        ORDER BY assign.ID ASC
+    </select>
+
+    <!--根据IDS集合修改Tag(修改人设为system)-->
+    <update id="updateTagByIds" parameterType="map">
+        UPDATE PLMS_LA_COLLECTION_RECORD T SET T.TAG_SEQ = #{tag,jdbcType=BIGINT},T.REC_VER = T.REC_VER + 1,T.UPDATED_BY = 'system',T.UPDATE_TIME = sysdate
+        WHERE T.ID IN <foreach collection="ids" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+    </update>
+
+    <!-- 通过放款方式查询放款方式code -->
+	<select id="findCodeByPaymentType" resultType="String" parameterType="String">
+        select t.code from SYS_PAYMENT_TYPE t where t.type_name = #{_parameter}
+    </select>
+
+  <!-- 通过联系人ID查询联系人信息 -->
+    <select id="selectContantByMore" resultType="com.ljwd.plms.web.model.messageSystem.MesContact">
+        SELECT T1.TEL as telNum
+		  FROM PLMS_CL_CONTACTOR_INFO T1, PLMS_CL_CUST_INFO T2
+		 WHERE T1.TEL_TYPE = 'MOBPHONE'
+		   AND T1.CL_CUST_ID = T2.ID
+		   AND T1.IS_ACTIVE = 'Y'
+		   <if test="idCard != null and idCard != '' ">
+			   AND T2.DOCNO = #{idCard}
+		   </if>
+		   <if test="conName != null and conName != '' ">
+			   AND T1.NAME = #{conName}
+		   </if>
+		   <if test="rltnshp != null and rltnshp != '' ">
+			   AND T1.RLTNSHP = #{rltnshp}
+		   </if>
+		 GROUP BY T1.TEL
+    </select>
+    <!-- 通过主贷人的身份证号查询主贷人所拥有的关系 数据 -->
+    <select id="selectRelationMesData" resultType="com.ljwd.plms.web.model.case_collection.LRltnshpDto">
+        SELECT T.CODE AS CODE, T.VAL AS VAL
+		  FROM L_RLTNSHP T
+		 WHERE 1=1
+		   AND T.CODE IN (SELECT T1.RLTNSHP
+		                    FROM PLMS_CL_CONTACTOR_INFO T1, PLMS_CL_CUST_INFO T2
+		                   WHERE T1.TEL_TYPE = 'MOBPHONE'
+		                     AND T1.CL_CUST_ID = T2.ID
+		                     AND T1.IS_ACTIVE = 'Y'
+		                     <if test="idCard != null and idCard != ''">
+		                     AND T2.DOCNO = #{idCard}
+		                     </if>
+		                   GROUP BY T1.RLTNSHP)
+		 ORDER BY T.SEQ
+    </select>
+    <select id="selectContactsMes" resultType="com.ljwd.plms.web.model.messageSystem.MesContact">
+        SELECT T1.CL_CUST_ID AS clCustId,
+         T1.RLTNSHP AS rltnshp, 
+         T1.NAME AS conName
+		  FROM PLMS_CL_CONTACTOR_INFO T1, PLMS_CL_CUST_INFO T2
+		 WHERE T1.TEL_TYPE = 'MOBPHONE'
+		   AND T1.CL_CUST_ID = T2.ID
+		   AND T1.IS_ACTIVE = 'Y'
+		   <if test="idCard != null and idCard != '' ">
+			   AND T2.DOCNO = #{idCard}
+		   </if>
+		   <if test="rltnshp != null and rltnshp != '' ">
+			   AND T1.RLTNSHP = #{rltnshp}
+		   </if>
+		 GROUP BY T1.NAME, T1.RLTNSHP, T1.CL_CUST_ID
+    </select>
+    
+    
+    <!-- 查询外访员在外访期间提交的第一条催记 -->
+    <select id="selectMinTimeOutVisitRecord" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLaCollectionRecordExample" resultMap="BaseResultMap">
+    	select min(lrecord.CREATE_TIME) as createTime 
+    		from PLMS_LA_COLLECTION_RECORD lrecord 
+			where lrecord.APPL_ID = #{applId} and lrecord.FOLLOWED_BY=#{followedBy}
+			and lrecord.CREATE_TIME >=#{startTime } and lrecord.CREATE_TIME &lt;=#{endTime}
+			and lrecord.COLLECT_MTHD in ('PHONE','NEWPHONE','SEARCH')
+    </select>
+</mapper>

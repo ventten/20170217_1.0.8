@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outsource.PlmsLaApplOutsrcCollectMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollect" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="CNTRCT_ID" property="cntrctId" jdbcType="BIGINT" />
+    <result column="COM_ID" property="comId" jdbcType="BIGINT" />
+    <result column="OVERDUE_PERIOD" property="overduePeriod" jdbcType="INTEGER" />
+    <result column="OVERDUE_DAYS" property="overdueDays" jdbcType="INTEGER" />
+    <result column="CONTROL_STATUS" property="controlStatus" jdbcType="VARCHAR" />
+    <result column="RECIV_AMT" property="recivAmt" jdbcType="DECIMAL" />
+    <result column="RECYCLE_AMT" property="recycleAmt" jdbcType="DECIMAL" />
+    <result column="FOLLOW_TIME" property="followTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="controlStatus != null and controlStatus != ''">
+            and T.CONTROL_STATUS = #{controlStatus}
+        </if>
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.controlStatus != null and example.controlStatus != ''">
+                and T.CONTROL_STATUS = #{example.controlStatus}
+            </if>
+            <if test="example.cntrctId != null">
+                and T.CNTRCT_ID = #{example.cntrctId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.APPL_ID,
+    T.CNTRCT_ID,
+    T.COM_ID,
+    T.OVERDUE_PERIOD,
+    T.OVERDUE_DAYS,
+    T.CONTROL_STATUS,
+    T.RECIV_AMT,
+    T.RECYCLE_AMT,
+    T.FOLLOW_TIME,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LA_APPL_OUTSRC_COLLECT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_APPL_OUTSRC_COLLECT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="long" >
+    delete from PLMS_LA_APPL_OUTSRC_COLLECT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollectExample" >
+    delete from PLMS_LA_APPL_OUTSRC_COLLECT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollect" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_outsrc_collect.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC_COLLECT T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{applId,jdbcType=BIGINT},
+      #{cntrctId,jdbcType=BIGINT},
+      #{comId,jdbcType=BIGINT},
+      #{overduePeriod,jdbcType=INTEGER},
+      #{overdueDays,jdbcType=INTEGER},
+      #{controlStatus,jdbcType=VARCHAR},
+      #{recivAmt,jdbcType=DECIMAL},
+      #{recycleAmt,jdbcType=DECIMAL},
+      #{followTime,jdbcType=TIMESTAMP},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollect" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_outsrc_collect.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC_COLLECT T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="cntrctId != null" >
+          T.CNTRCT_ID,
+      </if>
+      <if test="comId != null" >
+          T.COM_ID,
+      </if>
+      <if test="overduePeriod != null" >
+          T.OVERDUE_PERIOD,
+      </if>
+      <if test="overdueDays != null" >
+          T.OVERDUE_DAYS,
+      </if>
+      <if test="controlStatus != null" >
+          T.CONTROL_STATUS,
+      </if>
+      <if test="recivAmt != null" >
+          T.RECIV_AMT,
+      </if>
+      <if test="recycleAmt != null" >
+          T.RECYCLE_AMT,
+      </if>
+      <if test="followTime != null" >
+          T.FOLLOW_TIME,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null" >
+        #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="comId != null" >
+        #{comId,jdbcType=BIGINT},
+      </if>
+      <if test="overduePeriod != null" >
+        #{overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="overdueDays != null" >
+        #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="controlStatus != null" >
+        #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="recivAmt != null" >
+        #{recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="recycleAmt != null" >
+        #{recycleAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="followTime != null" >
+        #{followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollectExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LA_APPL_OUTSRC_COLLECT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LA_APPL_OUTSRC_COLLECT T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cntrctId != null" >
+          T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="record.comId != null" >
+          T.COM_ID = #{record.comId,jdbcType=BIGINT},
+      </if>
+      <if test="record.overduePeriod != null" >
+          T.OVERDUE_PERIOD = #{record.overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.overdueDays != null" >
+          T.OVERDUE_DAYS = #{record.overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.controlStatus != null" >
+          T.CONTROL_STATUS = #{record.controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recivAmt != null" >
+          T.RECIV_AMT = #{record.recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.recycleAmt != null" >
+          T.RECYCLE_AMT = #{record.recycleAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.followTime != null" >
+          T.FOLLOW_TIME = #{record.followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LA_APPL_OUTSRC_COLLECT T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      T.COM_ID = #{record.comId,jdbcType=BIGINT},
+      T.OVERDUE_PERIOD = #{record.overduePeriod,jdbcType=INTEGER},
+      T.OVERDUE_DAYS = #{record.overdueDays,jdbcType=INTEGER},
+      T.CONTROL_STATUS = #{record.controlStatus,jdbcType=VARCHAR},
+      T.RECIV_AMT = #{record.recivAmt,jdbcType=DECIMAL},
+      T.RECYCLE_AMT = #{record.recycleAmt,jdbcType=DECIMAL},
+      T.FOLLOW_TIME = #{record.followTime,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollect" >
+    update PLMS_LA_APPL_OUTSRC_COLLECT T
+    <set >
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null" >
+          T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="comId != null" >
+          T.COM_ID = #{comId,jdbcType=BIGINT},
+      </if>
+      <if test="overduePeriod != null" >
+          T.OVERDUE_PERIOD = #{overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="overdueDays != null" >
+          T.OVERDUE_DAYS = #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="controlStatus != null" >
+          T.CONTROL_STATUS = #{controlStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="recivAmt != null" >
+          T.RECIV_AMT = #{recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="recycleAmt != null" >
+          T.RECYCLE_AMT = #{recycleAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="followTime != null" >
+          T.FOLLOW_TIME = #{followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcCollect" >
+    update PLMS_LA_APPL_OUTSRC_COLLECT T
+    set
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      T.COM_ID = #{comId,jdbcType=BIGINT},
+      T.OVERDUE_PERIOD = #{overduePeriod,jdbcType=INTEGER},
+      T.OVERDUE_DAYS = #{overdueDays,jdbcType=INTEGER},
+      T.CONTROL_STATUS = #{controlStatus,jdbcType=VARCHAR},
+      T.RECIV_AMT = #{recivAmt,jdbcType=DECIMAL},
+      T.RECYCLE_AMT = #{recycleAmt,jdbcType=DECIMAL},
+      T.FOLLOW_TIME = #{followTime,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_LA_APPL_OUTSRC_COLLECT T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_la_outsrc_collect.nextval , TEMP.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.applId,jdbcType=BIGINT},
+            #{item.cntrctId,jdbcType=BIGINT},
+            #{item.comId,jdbcType=BIGINT},
+            #{item.overduePeriod,jdbcType=INTEGER},
+            #{item.overdueDays,jdbcType=INTEGER},
+            #{item.controlStatus,jdbcType=VARCHAR},
+            #{item.recivAmt,jdbcType=DECIMAL},
+            #{item.recycleAmt,jdbcType=DECIMAL},
+            #{item.followTime,jdbcType=TIMESTAMP},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TEMP
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update PLMS_LA_APPL_OUTSRC_COLLECT T
+            <set>
+                <if test="item.applId != null" >
+                    T.APPL_ID = #{item.applId,jdbcType=BIGINT},
+                </if>
+                <if test="item.cntrctId != null" >
+                    T.CNTRCT_ID = #{item.cntrctId,jdbcType=BIGINT},
+                </if>
+                <if test="item.comId != null" >
+                    T.COM_ID = #{item.comId,jdbcType=BIGINT},
+                </if>
+                <if test="item.overduePeriod != null" >
+                    T.OVERDUE_PERIOD = #{item.overduePeriod,jdbcType=INTEGER},
+                </if>
+                <if test="item.overdueDays != null" >
+                    T.OVERDUE_DAYS = #{item.overdueDays,jdbcType=INTEGER},
+                </if>
+                <if test="item.controlStatus != null" >
+                    T.CONTROL_STATUS = #{item.controlStatus,jdbcType=VARCHAR},
+                </if>
+                <if test="item.recivAmt != null" >
+                    T.RECIV_AMT = #{item.recivAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.recycleAmt != null" >
+                    T.RECYCLE_AMT = #{item.recycleAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.followTime != null" >
+                    T.FOLLOW_TIME = #{item.followTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createdBy != null">
+                    T.CREATED_BY = #{item.createdBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createTime != null">
+                    T.CREATE_TIME = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatedBy != null">
+                    T.UPDATED_BY = #{item.updatedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    T.UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.recVer != null">
+                    T.REC_VER = #{item.recVer,jdbcType=BIGINT} + 1,
+                </if>
+                <if test="item.tagSeq != null">
+                    T.TAG_SEQ = #{item.tagSeq,jdbcType=BIGINT},
+                </if>
+            </set>
+            where T.ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+        ;end;
+    </update>
+
+    <!--分页条件查询-->
+    <select id="selectByExampleAndPage" resultType="com.ljwd.plms.web.vo.outsource.OutsrcCollectPageDto"
+            parameterType="com.ljwd.plms.web.vo.outsource.OutsrcCollectPageExample">
+        select collect.id as id,
+               collect.appl_id as applId,
+               collect.cntrct_id as cntrctId,
+               collect.com_id as comId,
+               collect.overdue_period as overduePeriod,
+               collect.overdue_days as overdueDays,
+               collect.control_status as controlStatus,
+               collect.reciv_amt as recivAmt,
+               collect.recycle_amt as recycleAmt,
+               collect.follow_time as followTime,
+
+               cntrct.cntrct_no as cntrctNo,
+               cust.cust_name as custName,
+               cust.id_card_no as idCardNo,
+               com.outsrc_com_name as comName,
+               control.val as controlStatusText
+        from plms_la_appl_outsrc_collect collect
+        inner join ln_cntrct cntrct on cntrct.id = collect.cntrct_id
+        inner join cl_cust cust on cust.appl_id = collect.appl_id
+        left join plms_outsrc_com com on com.id = collect.com_id
+        left join plms_l_collect_control control on control.code = collect.control_status
+        where 1 = 1
+        <if test="custName != null and custName != ''">
+            and cust.CUST_NAME = #{custName}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            and cust.ID_CARD_NO = #{idCardNo}
+        </if>
+        <if test="cntrctNo != null and cntrctNo != ''">
+            and cntrct.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <if test="controlStatus != null and controlStatus != ''">
+            and collect.CONTROL_STATUS = #{controlStatus}
+        </if>
+        <if test="comId != null">
+            and collect.COM_ID = #{comId}
+        </if>
+        <if test="cntrctId != null">
+            and collect.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and collect.APPL_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and collect.Id = #{id}
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by collect.ID desc
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.report.PlmsLaOutvisiteIncomeMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncome" >
+    <id column="RPMNT_ID" property="rpmntId" jdbcType="BIGINT" />
+    <result column="OUT_VISIT" property="outVisit" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="OUT_VISIT_ID" property="outVisitId" jdbcType="BIGINT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    RPMNT_ID, OUT_VISIT,OUT_VISIT_ID, IS_ACTIVE, CREATE_TIME, CREATED_BY, UPDATE_TIME, UPDATED_BY, 
+    REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncomeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LA_OUTVISITE_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_OUTVISITE_INCOME
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_LA_OUTVISITE_INCOME
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncomeExample" >
+    delete from PLMS_LA_OUTVISITE_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncome" >
+    insert into PLMS_LA_OUTVISITE_INCOME (RPMNT_ID, OUT_VISIT,OUT_VISIT_ID, IS_ACTIVE, 
+      CREATE_TIME, CREATED_BY, UPDATE_TIME, 
+      UPDATED_BY, REC_VER, TAG_SEQ
+      )
+    values (#{rpmntId,jdbcType=BIGINT}, #{outVisit,jdbcType=VARCHAR},#{outVisitId,jdbcType=BIGINT}, #{isActive,jdbcType=CHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncome" >
+    insert into PLMS_LA_OUTVISITE_INCOME
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rpmntId != null" >
+        RPMNT_ID,
+      </if>
+      <if test="outVisit != null" >
+        OUT_VISIT,
+      </if>
+      <if test="outVisitId != null" >
+        OUT_VISIT_ID,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rpmntId != null" >
+        #{rpmntId,jdbcType=BIGINT},
+      </if>
+      <if test="outVisit != null" >
+        #{outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisitId != null" >
+        #{outVisitId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncomeExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LA_OUTVISITE_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LA_OUTVISITE_INCOME
+    <set >
+      <if test="record.rpmntId != null" >
+        RPMNT_ID = #{record.rpmntId,jdbcType=BIGINT},
+      </if>
+      <if test="record.outVisit != null" >
+        OUT_VISIT = #{record.outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outVisitId != null" >
+        OUT_VISIT_ID = #{record.outVisitId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LA_OUTVISITE_INCOME
+    set RPMNT_ID = #{record.rpmntId,jdbcType=BIGINT},
+      OUT_VISIT = #{record.outVisit,jdbcType=VARCHAR},
+      OUT_VISIT_ID = #{record.outVisitId,jdbcType=BIGINT},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncome" >
+    update PLMS_LA_OUTVISITE_INCOME
+    <set >
+      <if test="outVisit != null" >
+        OUT_VISIT = #{outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisitId != null" >
+        OUT_VISIT_ID = #{outVisitId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.report.PlmsLaOutvisiteIncome" >
+    update PLMS_LA_OUTVISITE_INCOME
+    set OUT_VISIT = #{outVisit,jdbcType=VARCHAR},
+    	OUT_VISIT_ID = #{outVisitId,jdbcType=BIGINT},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 删除指定日期的外访实收数据 -->
+   <delete id="deletePlmsLaOutVisitIncome" parameterType="map">
+  	delete from PLMS_LA_OUTVISITE_INCOME outincome where outincome.RPMNT_ID in (
+  		select lr.id from lf_rpmnt lr where lr.appl_id in 
+  			(select outinfo.appl_id
+  			from PLMS_OVM_OUT_VISIT_INFO outinfo  
+  			where	outinfo.status in ('Overdued','Outsourced','Closed','Normal','Settle')
+			AND outinfo.END_DATE is not null  and outinfo.visit_by is not null
+			<if test='type=="yesterday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(sysdate-1))
+			</if>
+			<if test='type=="everyday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(#{createDataDate}))
+			</if>
+  			)
+  	)and outincome.OUT_VISIT_ID in (
+  		select outinfo.id 
+  			from PLMS_OVM_OUT_VISIT_INFO outinfo  
+  			where	outinfo.status in ('Overdued','Outsourced','Closed','Normal','Settle')
+			AND outinfo.END_DATE is not null  and outinfo.visit_by is not null
+			<if test='type=="yesterday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(sysdate-1))
+			</if>
+			<if test='type=="everyday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(#{createDataDate}))
+			</if>
+  	)
+  </delete>
+  <!-- 批量插入 -->
+   <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_LA_OUTVISITE_INCOME inco ( <include refid="Base_Column_List"/> )
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                       #{item.rpmntId,jdbcType=BIGINT},
+                       #{item.outVisit,jdbcType=VARCHAR},
+                       #{item.outVisitId,jdbcType=BIGINT},
+                       #{item.isActive,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       0,1
+                from dual
+            </foreach>
+  </insert>
+  
+  
+</mapper>  
+  

@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsLnApplInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="LOAN_COMPANY" property="loanCompany" jdbcType="VARCHAR" />
+    <result column="APPL_CODE" property="applCode" jdbcType="VARCHAR" />
+    <result column="CNTRCT_NO" property="cntrctNo" jdbcType="VARCHAR" />
+    <result column="LOAN_PERIOD" property="loanPeriod" jdbcType="INTEGER" />
+    <result column="LOAN_AMT" property="loanAmt" jdbcType="DECIMAL" />
+    <result column="LOAN_STATE" property="loanState" jdbcType="VARCHAR" />
+    <result column="APPL_DATE" property="applDate" jdbcType="TIMESTAMP" />
+    <result column="PAY_DATE" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="CLEAR_DATE" property="clearDate" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="clCustIdByApplId != null">
+            and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{clCustIdByApplId})
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.LOAN_COMPANY,
+    T.APPL_CODE,
+    T.CNTRCT_NO,
+    T.LOAN_PERIOD,
+    T.LOAN_AMT,
+    T.LOAN_STATE,
+    T.APPL_DATE,
+    T.PAY_DATE,
+    T.CLEAR_DATE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LN_APPL_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LN_APPL_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_LN_APPL_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfoExample" >
+    delete from PLMS_LN_APPL_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_appl_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_APPL_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{loanCompany,jdbcType=VARCHAR},
+      #{applCode,jdbcType=VARCHAR},
+      #{cntrctNo,jdbcType=VARCHAR},
+      #{loanPeriod,jdbcType=INTEGER},
+      #{loanAmt,jdbcType=DECIMAL},
+      #{loanState,jdbcType=VARCHAR},
+      #{applDate,jdbcType=TIMESTAMP},
+      #{payDate,jdbcType=TIMESTAMP},
+      #{clearDate,jdbcType=TIMESTAMP},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_appl_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_APPL_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="loanCompany != null" >
+          T.LOAN_COMPANY,
+      </if>
+      <if test="applCode != null" >
+          T.APPL_CODE,
+      </if>
+      <if test="cntrctNo != null" >
+          T.CNTRCT_NO,
+      </if>
+      <if test="loanPeriod != null" >
+          T.LOAN_PERIOD,
+      </if>
+      <if test="loanAmt != null" >
+          T.LOAN_AMT,
+      </if>
+      <if test="loanState != null" >
+          T.LOAN_STATE,
+      </if>
+      <if test="applDate != null" >
+          T.APPL_DATE,
+      </if>
+      <if test="payDate != null" >
+          T.PAY_DATE,
+      </if>
+      <if test="clearDate != null" >
+          T.CLEAR_DATE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="loanCompany != null" >
+        #{loanCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="applCode != null" >
+        #{applCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cntrctNo != null" >
+        #{cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="loanPeriod != null" >
+        #{loanPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="loanAmt != null" >
+        #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="loanState != null" >
+        #{loanState,jdbcType=VARCHAR},
+      </if>
+      <if test="applDate != null" >
+        #{applDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clearDate != null" >
+        #{clearDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LN_APPL_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LN_APPL_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.loanCompany != null" >
+          T.LOAN_COMPANY = #{record.loanCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applCode != null" >
+          T.APPL_CODE = #{record.applCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cntrctNo != null" >
+          T.CNTRCT_NO = #{record.cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanPeriod != null" >
+          T.LOAN_PERIOD = #{record.loanPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.loanAmt != null" >
+          T.LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.loanState != null" >
+          T.LOAN_STATE = #{record.loanState,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applDate != null" >
+          T.APPL_DATE = #{record.applDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.payDate != null" >
+          T.PAY_DATE = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.clearDate != null" >
+          T.CLEAR_DATE = #{record.clearDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LN_APPL_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.LOAN_COMPANY = #{record.loanCompany,jdbcType=VARCHAR},
+      T.APPL_CODE = #{record.applCode,jdbcType=VARCHAR},
+      T.CNTRCT_NO = #{record.cntrctNo,jdbcType=VARCHAR},
+      T.LOAN_PERIOD = #{record.loanPeriod,jdbcType=INTEGER},
+      T.LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      T.LOAN_STATE = #{record.loanState,jdbcType=VARCHAR},
+      T.APPL_DATE = #{record.applDate,jdbcType=TIMESTAMP},
+      T.PAY_DATE = #{record.payDate,jdbcType=TIMESTAMP},
+      T.CLEAR_DATE = #{record.clearDate,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" >
+    update PLMS_LN_APPL_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="loanCompany != null" >
+          T.LOAN_COMPANY = #{loanCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="applCode != null" >
+          T.APPL_CODE = #{applCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cntrctNo != null" >
+          T.CNTRCT_NO = #{cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="loanPeriod != null" >
+          T.LOAN_PERIOD = #{loanPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="loanAmt != null" >
+          T.LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="loanState != null" >
+          T.LOAN_STATE = #{loanState,jdbcType=VARCHAR},
+      </if>
+      <if test="applDate != null" >
+          T.APPL_DATE = #{applDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payDate != null" >
+          T.PAY_DATE = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clearDate != null" >
+          T.CLEAR_DATE = #{clearDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" >
+    update PLMS_LN_APPL_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.LOAN_COMPANY = #{loanCompany,jdbcType=VARCHAR},
+      T.APPL_CODE = #{applCode,jdbcType=VARCHAR},
+      T.CNTRCT_NO = #{cntrctNo,jdbcType=VARCHAR},
+      T.LOAN_PERIOD = #{loanPeriod,jdbcType=INTEGER},
+      T.LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      T.LOAN_STATE = #{loanState,jdbcType=VARCHAR},
+      T.APPL_DATE = #{applDate,jdbcType=TIMESTAMP},
+      T.PAY_DATE = #{payDate,jdbcType=TIMESTAMP},
+      T.CLEAR_DATE = #{clearDate,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsLnApplInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        sysu.user_name as salesUser,
+        payment.PAY_AMT as payAmt,
+        t2.val as srcVal
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsLnApplInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_LN_APPL_INFO T
+        left join ln_payment payment on T.appl_id = payment.appl_id
+        left join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        LEFT JOIN LN_APPL_INFO APP ON T.APPL_ID = APP.ID
+        left join sys_user sysu on APP.Sales_User = sysu.user_id
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的借款申请 -->
+    <select id="findMfbmsApplByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select a.id as appl_id,
+               a.appl_code as appl_code,
+               cn.cntrct_no as cntrct_no,
+               cn.loan_period as loan_period,
+               cn.loan_amt as loan_amt,
+               a.appl_date as appl_date,
+               p.pay_date as pay_date,
+               p.clear_date as clear_date,
+               c.id_card_no as docno
+        from LN_APPL_INFO a
+        inner join CL_CUST c on a.id = c.appl_id
+        inner join LN_CNTRCT cn on a.id = cn.appl_id
+        inner join LN_PAYMENT p on a.id = p.appl_id
+        where not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = a.id)
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!-- 查找微贷系统已结清且贷后系统在途中的借款 -->
+    <select id="findSettleApplyFromMfbms" resultMap="BaseResultMap">
+        SELECT T.id,
+               T.REC_VER,
+               T2.clear_date
+        FROM PLMS_LN_APPL_INFO T
+        INNER JOIN ln_payment T2 ON T.appl_id = T2.appl_id
+        WHERE T.loan_state = 'TRANSIT' AND T2.clear_date IS NOT NULL
+    </select>
+
+    <!-- 根据贷后的客户ID,查找最大的未结清的微贷借款ID -->
+    <select id="findNoSettleApplIdByClCustId" resultType="long" parameterType="long">
+        select max(appl.appl_id)
+        from plms_ln_appl_info appl
+        inner join plms_cl_cust_info cust on appl.cl_cust_id = cust.id
+        where appl.loan_state = 'TRANSIT' and cust.id = #{clCustId,jdbcType=BIGINT}
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_LN_APPL_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_ln_appl_info.nextval , TT.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select <!--#{item.id,jdbcType=BIGINT},-->
+                       #{item.clCustId,jdbcType=BIGINT},
+                       #{item.srcCode,jdbcType=VARCHAR},
+                       #{item.applId,jdbcType=BIGINT},
+                       #{item.loanCompany,jdbcType=VARCHAR},
+                       #{item.applCode,jdbcType=VARCHAR},
+                       #{item.cntrctNo,jdbcType=VARCHAR},
+                       #{item.loanPeriod,jdbcType=INTEGER},
+                       #{item.loanAmt,jdbcType=DECIMAL},
+                       #{item.loanState,jdbcType=VARCHAR},
+                       #{item.applDate,jdbcType=TIMESTAMP},
+                       #{item.payDate,jdbcType=TIMESTAMP},
+                       #{item.clearDate,jdbcType=TIMESTAMP},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       #{item.recVer,jdbcType=BIGINT},
+                       #{item.tagSeq,jdbcType=BIGINT}
+                from dual
+            </foreach>
+        ) TT
+    </insert>
+
+    <!--批量更新-->
+    <update id="updateBatch" parameterType="java.util.List" >
+        <foreach collection="list" item="item" open="begin" close=";end;" separator=";">
+            update PLMS_LN_APPL_INFO T
+            <set>
+                <if test="item.clCustId != null" >
+                    T.CL_CUST_ID = #{item.clCustId,jdbcType=BIGINT},
+                </if>
+                <if test="item.srcCode != null" >
+                    T.SRC_CODE = #{item.srcCode,jdbcType=VARCHAR},
+                </if>
+                <if test="item.applId != null" >
+                    T.APPL_ID = #{item.applId,jdbcType=BIGINT},
+                </if>
+                <if test="item.loanCompany != null" >
+                    T.LOAN_COMPANY = #{item.loanCompany,jdbcType=VARCHAR},
+                </if>
+                <if test="item.applCode != null" >
+                    T.APPL_CODE = #{item.applCode,jdbcType=VARCHAR},
+                </if>
+                <if test="item.cntrctNo != null" >
+                    T.CNTRCT_NO = #{item.cntrctNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.loanPeriod != null" >
+                    T.LOAN_PERIOD = #{item.loanPeriod,jdbcType=INTEGER},
+                </if>
+                <if test="item.loanAmt != null" >
+                    T.LOAN_AMT = #{item.loanAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.loanState != null" >
+                    T.LOAN_STATE = #{item.loanState,jdbcType=VARCHAR},
+                </if>
+                <if test="item.applDate != null" >
+                    T.APPL_DATE = #{item.applDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.payDate != null" >
+                    T.PAY_DATE = #{item.payDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.clearDate != null" >
+                    T.CLEAR_DATE = #{item.clearDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createdBy != null" >
+                    T.CREATED_BY = #{item.createdBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createTime != null" >
+                    T.CREATE_TIME = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatedBy != null" >
+                    T.UPDATED_BY = #{item.updatedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null" >
+                    T.UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.recVer != null" >
+                    T.REC_VER = #{item.recVer,jdbcType=BIGINT} + 1,
+                </if>
+                <if test="item.tagSeq != null" >
+                    T.TAG_SEQ = #{item.tagSeq,jdbcType=BIGINT},
+                </if>
+            </set>
+            where T.ID = #{item.id,jdbcType=BIGINT} and T.REC_VER = #{item.recVer,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!--联金催收APP数据 通过微贷系统订单ID查询订单信息-->
+    <select id="selectByApplId" resultType="com.ljwd.plms.mapp.vo.customer.APPApplInfoVo" parameterType="java.lang.Long">
+        SELECT appl.ID,cntrct.CNTRCT_NO,cntrct.LOAN_AMT,cntrct.LOAN_PERIOD
+        ,appl.APPL_AMT, appl.APPL_CODE,cust.ID_CARD_NO
+        FROM LN_APPL_INFO appl
+        INNER JOIN LN_CNTRCT cntrct on cntrct.APPL_ID = appl.ID
+        INNER JOIN CL_CUST cust ON cust.APPL_ID = appl.ID
+        WHERE appl.ID = #{id}
+    </select>
+</mapper>

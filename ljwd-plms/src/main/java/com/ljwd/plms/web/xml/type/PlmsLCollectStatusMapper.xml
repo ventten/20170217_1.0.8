@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.type.PlmsLCollectStatusMapper">
+
+    <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.type.PlmsLCollectStatus">
+        <id column="CODE" jdbcType="VARCHAR" property="code" />
+        <result column="VAL" jdbcType="VARCHAR" property="val" />
+        <result column="SEQ" jdbcType="INTEGER" property="seq" />
+        <result column="IS_ACTIVE" jdbcType="CHAR" property="isActive" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+        <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+        <result column="GRP_NAME" jdbcType="VARCHAR" property="grpName" />
+        <result column="COLLECT_CODE_GROUP" jdbcType="VARCHAR" property="collectCodeGroup" />
+        <result column="IS_SELECTED" jdbcType="VARCHAR" property="isSelected" />
+    </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isSelected != null and isSelected != ''">
+            and T.IS_SELECTED = #{isSelected}
+        </if>
+        <if test="grpName != null and grpName != ''">
+            and T.GRP_NAME = #{grpName}
+        </if>
+        <if test="isActive != null and isActive != ''">
+            and T.IS_ACTIVE = #{isActive}
+        </if>
+        <if test="code != null and code != ''">
+            and T.CODE = #{code}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.isSelected != null and example.isSelected != ''">
+                and T.IS_SELECTED = #{example.isSelected}
+            </if>
+            <if test="example.grpName != null and example.grpName != ''">
+                and T.GRP_NAME = #{example.grpName}
+            </if>
+            <if test="example.isActive != null and example.isActive != ''">
+                and T.IS_ACTIVE = #{example.isActive}
+            </if>
+            <if test="example.code != null and example.code != ''">
+                and T.CODE = #{example.code}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Base_Column_List">
+        T.CODE,
+        T.VAL,
+        T.SEQ,
+        T.IS_ACTIVE,
+        T.REMARK,
+        T.CREATED_BY,
+        T.CREATE_TIME,
+        T.UPDATED_BY,
+        T.UPDATE_TIME,
+        T.REC_VER,
+        T.TAG_SEQ,
+        T.GRP_NAME,
+        T.COLLECT_CODE_GROUP,
+        T.IS_SELECTED
+    </sql>
+    <select id="selectByExample" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatusExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from PLMS_L_COLLECT_STATUS T
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from PLMS_L_COLLECT_STATUS T
+        where T.CODE = #{code,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from PLMS_L_COLLECT_STATUS T
+        where T.CODE = #{code,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatusExample">
+        delete from PLMS_L_COLLECT_STATUS T
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+
+    <insert id="insert" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatus">
+        insert into PLMS_L_COLLECT_STATUS T (<include refid="Base_Column_List" />)
+        values
+        (
+        #{code,jdbcType=VARCHAR},
+        #{val,jdbcType=VARCHAR},
+        #{seq,jdbcType=INTEGER},
+        #{isActive,jdbcType=CHAR},
+        #{remark,jdbcType=VARCHAR},
+        #{createdBy,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},
+        #{updatedBy,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=TIMESTAMP},
+        #{recVer,jdbcType=BIGINT},
+        #{tagSeq,jdbcType=BIGINT},
+        #{grpName,jdbcType=VARCHAR},
+        #{collectCodeGroup,jdbcType=VARCHAR},
+        #{isSelected,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatus">
+        insert into PLMS_L_COLLECT_STATUS T
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                T.CODE,
+            </if>
+            <if test="val != null">
+                T.VAL,
+            </if>
+            <if test="seq != null">
+                T.SEQ,
+            </if>
+            <if test="isActive != null">
+                T.IS_ACTIVE,
+            </if>
+            <if test="remark != null">
+                T.REMARK,
+            </if>
+            <if test="createdBy != null">
+                T.CREATED_BY,
+            </if>
+            <if test="createTime != null">
+                T.CREATE_TIME,
+            </if>
+            <if test="updatedBy != null">
+                T.UPDATED_BY,
+            </if>
+            <if test="updateTime != null">
+                T.UPDATE_TIME,
+            </if>
+            <if test="recVer != null">
+                T.REC_VER,
+            </if>
+            <if test="tagSeq != null">
+                T.TAG_SEQ,
+            </if>
+            <if test="grpName != null">
+                T.GRP_NAME,
+            </if>
+            <if test="collectCodeGroup != null">
+                T.COLLECT_CODE_GROUP,
+            </if>
+            <if test="isSelected != null">
+                T.IS_SELECTED,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="val != null">
+                #{val,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="isActive != null">
+                #{isActive,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recVer != null">
+                #{recVer,jdbcType=BIGINT},
+            </if>
+            <if test="tagSeq != null">
+                #{tagSeq,jdbcType=BIGINT},
+            </if>
+            <if test="grpName != null">
+                #{grpName,jdbcType=VARCHAR},
+            </if>
+            <if test="collectCodeGroup != null">
+                #{collectCodeGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="isSelected != null">
+                #{isSelected,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatusExample" resultType="int">
+        select count(*) from PLMS_L_COLLECT_STATUS T
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map">
+        update PLMS_L_COLLECT_STATUS T
+        <set>
+            <if test="record.code != null">
+                T.CODE = #{record.code,jdbcType=VARCHAR},
+            </if>
+            <if test="record.val != null">
+                T.VAL = #{record.val,jdbcType=VARCHAR},
+            </if>
+            <if test="record.seq != null">
+                T.SEQ = #{record.seq,jdbcType=INTEGER},
+            </if>
+            <if test="record.isActive != null">
+                T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+            </if>
+            <if test="record.remark != null">
+                T.REMARK = #{record.remark,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createdBy != null">
+                T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.updatedBy != null">
+                T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="record.updateTime != null">
+                T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.recVer != null">
+                T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+            </if>
+            <if test="record.tagSeq != null">
+                T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+            </if>
+            <if test="record.grpName != null">
+                T.GRP_NAME = #{record.grpName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.collectCodeGroup != null">
+                T.COLLECT_CODE_GROUP = #{record.collectCodeGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isSelected != null">
+                T.IS_SELECTED = #{record.isSelected,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByExample" parameterType="map">
+        update PLMS_L_COLLECT_STATUS T
+        set
+        T.CODE = #{record.code,jdbcType=VARCHAR},
+        T.VAL = #{record.val,jdbcType=VARCHAR},
+        T.SEQ = #{record.seq,jdbcType=INTEGER},
+        T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+        T.REMARK = #{record.remark,jdbcType=VARCHAR},
+        T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+        T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+        T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+        T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+        T.GRP_NAME = #{record.grpName,jdbcType=VARCHAR},
+        T.COLLECT_CODE_GROUP = #{record.collectCodeGroup,jdbcType=VARCHAR},
+        T.IS_SELECTED = #{record.isSelected,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatus">
+        update PLMS_L_COLLECT_STATUS T
+        <set>
+            <if test="val != null">
+                T.VAL = #{val,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                T.SEQ = #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="isActive != null">
+                T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+            </if>
+            <if test="remark != null">
+                T.REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updatedBy != null">
+                T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="recVer != null">
+                T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+            </if>
+            <if test="tagSeq != null">
+                T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+            </if>
+            <if test="grpName != null">
+                T.GRP_NAME = #{grpName,jdbcType=VARCHAR},
+            </if>
+            <if test="collectCodeGroup != null">
+                T.COLLECT_CODE_GROUP = #{collectCodeGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="isSelected != null">
+                T.IS_SELECTED = #{isSelected,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where T.CODE = #{code,jdbcType=VARCHAR} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.type.PlmsLCollectStatus">
+        update PLMS_L_COLLECT_STATUS T
+        set
+        T.VAL = #{val,jdbcType=VARCHAR},
+        T.SEQ = #{seq,jdbcType=INTEGER},
+        T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+        T.REMARK = #{remark,jdbcType=VARCHAR},
+        T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+        T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+        T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        T.REC_VER = #{recVer,jdbcType=BIGINT},
+        T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+        T.GRP_NAME = #{grpName,jdbcType=VARCHAR},
+        T.COLLECT_CODE_GROUP = #{collectCodeGroup,jdbcType=VARCHAR},
+        T.IS_SELECTED = #{isSelected,jdbcType=VARCHAR}
+        where T.CODE = #{code,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

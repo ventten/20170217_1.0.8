@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outVisit.PlmsOvmOutVisitPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="INFO_ID" property="infoId" jdbcType="BIGINT" />
+    <result column="PLAN_CODE" property="planCode" jdbcType="VARCHAR" />
+    <result column="PLAN_START_TIME" property="planStartTime" jdbcType="TIMESTAMP" />
+    <result column="PLAN_STATUS" property="planStatus" jdbcType="VARCHAR" />
+    <result column="SIGN_ID" property="signId" jdbcType="BIGINT" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+    <result column="ADDRESS_TYPE" property="addressType" jdbcType="VARCHAR" />
+    <result column="ADDRESS_VALIDITY" property="addressValidity" jdbcType="VARCHAR" />
+    <result column="FOLLOWUP_RESULTS" property="followupResults" jdbcType="VARCHAR" />
+    <result column="ASSIST_BY" property="assistBy" jdbcType="VARCHAR" />
+    <result column="PTP_DATE" property="ptpDate" jdbcType="TIMESTAMP" />
+    <result column="PTP_AMT" property="ptpAmt" jdbcType="DECIMAL" />
+    <result column="OVTRESULT_DETAIL" property="ovtresultDetail" jdbcType="VARCHAR" />
+    <result column="VISIT_CANCEL_TYPE" property="visitCancelType" jdbcType="VARCHAR" />
+    <result column="VISIT_CANCEL_RESION" property="visitCancelResion" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="SIGN_STATUS" property="signStatus" jdbcType="VARCHAR" />
+    <result column="VALID_ADDRESS" property="validAddress" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, APPL_ID, INFO_ID, PLAN_CODE, PLAN_START_TIME, PLAN_STATUS, SIGN_ID, ADDRESS, 
+    ADDRESS_TYPE, ADDRESS_VALIDITY, FOLLOWUP_RESULTS, ASSIST_BY, PTP_DATE, PTP_AMT, OVTRESULT_DETAIL, 
+    VISIT_CANCEL_TYPE, VISIT_CANCEL_RESION, REMARK, CREATED_BY, CREATE_TIME, UPDATED_BY, 
+    UPDATE_TIME, REC_VER, TAG_SEQ,SIGN_STATUS,VALID_ADDRESS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlanExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_PLAN
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_PLAN
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_OVM_OUT_VISIT_PLAN
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlanExample" >
+    delete from PLMS_OVM_OUT_VISIT_PLAN
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" >
+    insert into PLMS_OVM_OUT_VISIT_PLAN (ID, APPL_ID, INFO_ID, 
+      PLAN_CODE, PLAN_START_TIME, PLAN_STATUS, 
+      SIGN_ID, ADDRESS, ADDRESS_TYPE, 
+      ADDRESS_VALIDITY, FOLLOWUP_RESULTS, ASSIST_BY, 
+      PTP_DATE, PTP_AMT, OVTRESULT_DETAIL, 
+      VISIT_CANCEL_TYPE, VISIT_CANCEL_RESION, REMARK, 
+      CREATED_BY, CREATE_TIME, UPDATED_BY, 
+      UPDATE_TIME, REC_VER, TAG_SEQ,SIGN_STATUS,VALID_ADDRESS
+      )
+    values (#{id,jdbcType=BIGINT}, #{applId,jdbcType=BIGINT}, #{infoId,jdbcType=BIGINT}, 
+      #{planCode,jdbcType=VARCHAR}, #{planStartTime,jdbcType=TIMESTAMP}, #{planStatus,jdbcType=VARCHAR}, 
+      #{signId,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, #{addressType,jdbcType=VARCHAR}, 
+      #{addressValidity,jdbcType=VARCHAR}, #{followupResults,jdbcType=VARCHAR}, #{assistBy,jdbcType=VARCHAR}, 
+      #{ptpDate,jdbcType=TIMESTAMP}, #{ptpAmt,jdbcType=DECIMAL}, #{ovtresultDetail,jdbcType=VARCHAR}, 
+      #{visitCancelType,jdbcType=VARCHAR}, #{visitCancelResion,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT},#{signStatus,jdbcType=VARCHAR},
+      #{validAddress,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" >
+  	<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_OVM_OUT_VISIT_PLAN.Nextval as ID from DUAL  
+	</selectKey>
+    insert into PLMS_OVM_OUT_VISIT_PLAN
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applId != null" >
+        APPL_ID,
+      </if>
+      <if test="infoId != null" >
+        INFO_ID,
+      </if>
+      <if test="planCode != null" >
+        PLAN_CODE,
+      </if>
+      <if test="planStartTime != null" >
+        PLAN_START_TIME,
+      </if>
+      <if test="planStatus != null" >
+        PLAN_STATUS,
+      </if>
+      <if test="signId != null" >
+        SIGN_ID,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+      <if test="addressType != null" >
+        ADDRESS_TYPE,
+      </if>
+      <if test="addressValidity != null" >
+        ADDRESS_VALIDITY,
+      </if>
+      <if test="followupResults != null" >
+        FOLLOWUP_RESULTS,
+      </if>
+      <if test="assistBy != null" >
+        ASSIST_BY,
+      </if>
+      <if test="ptpDate != null" >
+        PTP_DATE,
+      </if>
+      <if test="ptpAmt != null" >
+        PTP_AMT,
+      </if>
+      <if test="ovtresultDetail != null" >
+        OVTRESULT_DETAIL,
+      </if>
+      <if test="visitCancelType != null" >
+        VISIT_CANCEL_TYPE,
+      </if>
+      <if test="visitCancelResion != null" >
+        VISIT_CANCEL_RESION,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ,
+      <if test="signStatus != null" >
+        SIGN_STATUS,
+      </if>
+      <if test="validAddress != null" >
+        VALID_ADDRESS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="infoId != null" >
+        #{infoId,jdbcType=BIGINT},
+      </if>
+      <if test="planCode != null" >
+        #{planCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planStartTime != null" >
+        #{planStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planStatus != null" >
+        #{planStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="signId != null" >
+        #{signId,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressType != null" >
+        #{addressType,jdbcType=VARCHAR},
+      </if>
+      <if test="addressValidity != null" >
+        #{addressValidity,jdbcType=VARCHAR},
+      </if>
+      <if test="followupResults != null" >
+        #{followupResults,jdbcType=VARCHAR},
+      </if>
+      <if test="assistBy != null" >
+        #{assistBy,jdbcType=VARCHAR},
+      </if>
+      <if test="ptpDate != null" >
+        #{ptpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ptpAmt != null" >
+        #{ptpAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="ovtresultDetail != null" >
+        #{ovtresultDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="visitCancelType != null" >
+        #{visitCancelType,jdbcType=VARCHAR},
+      </if>
+      <if test="visitCancelResion != null" >
+        #{visitCancelResion,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      0,1,
+      <if test="signStatus != null" >
+        #{signStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="validAddress != null" >
+        #{validAddress,jdbcType=VARCHAR},
+      </if>
+      </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlanExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OVM_OUT_VISIT_PLAN
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_PLAN
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+        APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.infoId != null" >
+        INFO_ID = #{record.infoId,jdbcType=BIGINT},
+      </if>
+      <if test="record.planCode != null" >
+        PLAN_CODE = #{record.planCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.planStartTime != null" >
+        PLAN_START_TIME = #{record.planStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.planStatus != null" >
+        PLAN_STATUS = #{record.planStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.signId != null" >
+        SIGN_ID = #{record.signId,jdbcType=BIGINT},
+      </if>
+      <if test="record.address != null" >
+        ADDRESS = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressType != null" >
+        ADDRESS_TYPE = #{record.addressType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addressValidity != null" >
+        ADDRESS_VALIDITY = #{record.addressValidity,jdbcType=VARCHAR},
+      </if>
+      <if test="record.followupResults != null" >
+        FOLLOWUP_RESULTS = #{record.followupResults,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assistBy != null" >
+        ASSIST_BY = #{record.assistBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ptpDate != null" >
+        PTP_DATE = #{record.ptpDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ptpAmt != null" >
+        PTP_AMT = #{record.ptpAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ovtresultDetail != null" >
+        OVTRESULT_DETAIL = #{record.ovtresultDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitCancelType != null" >
+        VISIT_CANCEL_TYPE = #{record.visitCancelType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitCancelResion != null" >
+        VISIT_CANCEL_RESION = #{record.visitCancelResion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.signStatus != null" >
+        SIGN_STATUS = #{record.signStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validAddress != null" >
+        VALID_ADDRESS = #{record.validAddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_PLAN
+    set ID = #{record.id,jdbcType=BIGINT},
+      APPL_ID = #{record.applId,jdbcType=BIGINT},
+      INFO_ID = #{record.infoId,jdbcType=BIGINT},
+      PLAN_CODE = #{record.planCode,jdbcType=VARCHAR},
+      PLAN_START_TIME = #{record.planStartTime,jdbcType=TIMESTAMP},
+      PLAN_STATUS = #{record.planStatus,jdbcType=VARCHAR},
+      SIGN_ID = #{record.signId,jdbcType=BIGINT},
+      ADDRESS = #{record.address,jdbcType=VARCHAR},
+      ADDRESS_TYPE = #{record.addressType,jdbcType=VARCHAR},
+      ADDRESS_VALIDITY = #{record.addressValidity,jdbcType=VARCHAR},
+      FOLLOWUP_RESULTS = #{record.followupResults,jdbcType=VARCHAR},
+      ASSIST_BY = #{record.assistBy,jdbcType=VARCHAR},
+      PTP_DATE = #{record.ptpDate,jdbcType=TIMESTAMP},
+      PTP_AMT = #{record.ptpAmt,jdbcType=DECIMAL},
+      OVTRESULT_DETAIL = #{record.ovtresultDetail,jdbcType=VARCHAR},
+      VISIT_CANCEL_TYPE = #{record.visitCancelType,jdbcType=VARCHAR},
+      VISIT_CANCEL_RESION = #{record.visitCancelResion,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      SIGN_STATUS = #{record.signStatus,jdbcType=VARCHAR},
+      VALID_ADDRESS =  #{record.validAddress,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" >
+    update PLMS_OVM_OUT_VISIT_PLAN
+    <set >
+      <if test="applId != null" >
+        APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="infoId != null" >
+        INFO_ID = #{infoId,jdbcType=BIGINT},
+      </if>
+      <if test="planCode != null" >
+        PLAN_CODE = #{planCode,jdbcType=VARCHAR},
+      </if>
+      <if test="planStartTime != null" >
+        PLAN_START_TIME = #{planStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="planStatus != null" >
+        PLAN_STATUS = #{planStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="signId != null" >
+        SIGN_ID = #{signId,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressType != null" >
+        ADDRESS_TYPE = #{addressType,jdbcType=VARCHAR},
+      </if>
+      <if test="addressValidity != null" >
+        ADDRESS_VALIDITY = #{addressValidity,jdbcType=VARCHAR},
+      </if>
+      <if test="followupResults != null" >
+        FOLLOWUP_RESULTS = #{followupResults,jdbcType=VARCHAR},
+      </if>
+      <if test="assistBy != null" >
+        ASSIST_BY = #{assistBy,jdbcType=VARCHAR},
+      </if>
+        PTP_DATE = #{ptpDate,jdbcType=TIMESTAMP},
+        PTP_AMT = #{ptpAmt,jdbcType=DECIMAL},
+        OVTRESULT_DETAIL = #{ovtresultDetail,jdbcType=VARCHAR},
+      <if test="visitCancelType != null" >
+        VISIT_CANCEL_TYPE = #{visitCancelType,jdbcType=VARCHAR},
+      </if>
+      <if test="visitCancelResion != null" >
+        VISIT_CANCEL_RESION = #{visitCancelResion,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="signStatus != null" >
+        SIGN_STATUS = #{signStatus,jdbcType=VARCHAR},
+      </if>
+        VALID_ADDRESS = #{validAddress,jdbcType=VARCHAR}
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" >
+    update PLMS_OVM_OUT_VISIT_PLAN
+    set APPL_ID = #{applId,jdbcType=BIGINT},
+      INFO_ID = #{infoId,jdbcType=BIGINT},
+      PLAN_CODE = #{planCode,jdbcType=VARCHAR},
+      PLAN_START_TIME = #{planStartTime,jdbcType=TIMESTAMP},
+      PLAN_STATUS = #{planStatus,jdbcType=VARCHAR},
+      SIGN_ID = #{signId,jdbcType=BIGINT},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      ADDRESS_TYPE = #{addressType,jdbcType=VARCHAR},
+      ADDRESS_VALIDITY = #{addressValidity,jdbcType=VARCHAR},
+      FOLLOWUP_RESULTS = #{followupResults,jdbcType=VARCHAR},
+      ASSIST_BY = #{assistBy,jdbcType=VARCHAR},
+      PTP_DATE = #{ptpDate,jdbcType=TIMESTAMP},
+      PTP_AMT = #{ptpAmt,jdbcType=DECIMAL},
+      OVTRESULT_DETAIL = #{ovtresultDetail,jdbcType=VARCHAR},
+      VISIT_CANCEL_TYPE = #{visitCancelType,jdbcType=VARCHAR},
+      VISIT_CANCEL_RESION = #{visitCancelResion,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      SIGN_STATUS = #{signStatus,jdbcType=VARCHAR},
+      VALID_ADDRESS =  #{validAddress,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量修改外访计划 -->
+   <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_OVM_OUT_VISIT_PLAN 
+            <set>
+            <if test="item.planStatus != null" >
+		        PLAN_STATUS = #{item.planStatus},
+		    </if>
+		    <if test="item.visitCancelType != null" >
+		        VISIT_CANCEL_TYPE = #{item.visitCancelType},
+		    </if>
+		    <if test="item.visitCancelResion != null" >
+		        VISIT_CANCEL_RESION = #{item.visitCancelResion},
+		    </if>
+		     <if test="item.updatedBy != null" >
+		        UPDATED_BY = #{item.updatedBy},
+		      </if>
+		      <if test="item.updateTime != null" >
+		        UPDATE_TIME = #{item.updateTime},
+		      </if>
+		       <if test="item.recVer != null" >
+		        REC_VER = #{item.recVer} + 1,
+		      </if>
+            </set>
+            where id = #{item.id}
+            </foreach>
+    ;end;
+    </update>
+  
+  
+  <resultMap type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitPlan" id="BaseResultMap_01">
+          <result column="planStatusName" property="planStatusName" jdbcType="VARCHAR"/>
+          <result column="addressTypeName" property="addressTypeName" jdbcType="VARCHAR"/>
+          <result column="visitCancelTypeName" property="visitCancelTypeName" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <select id="searchByMap" resultMap="BaseResultMap_01" parameterType="map">
+  	 select plan.*,
+  	 	decode(plan.PLAN_STATUS,'Start','计划中','Cancel','取消外访','End','已外访')  as planStatusName,
+  	 	T1.val as addressTypeName,
+  	 	t2.val as visitCancelTypeName
+  	  from plms_ovm_out_visit_plan plan
+  	  inner join PLMS_L_ADDRESS_TYPE T1 on plan.ADDRESS_TYPE = T1.CODE
+	  left join PLMS_OVM_CANCEL_TYPE t2 on plan.VISIT_CANCEL_TYPE = t2.code
+  	 <where>
+  	 	<if test="planCode !=null">
+  	 		and plan.plan_code like '%'||#{planCode}||'%' 
+  	 	</if>
+  	 	<if test="infoId !=null">
+  	 		and plan.info_id = #{infoId}
+  	 	</if>
+  	 	<if test="address !=null">
+  	 		and plan.ADDRESS = #{address}
+  	 	</if> 	 	
+  	 	<if test="addrType !=null">
+  	 		and plan.ADDRESS_TYPE = #{addrType}
+  	 	</if>
+  	 	<if test="planStatus !=null">
+  	 	  	and plan.PLAN_STATUS = #{planStatus}
+  	 	</if>
+  	 	<if test="applId !=null">
+			and plan.APPL_ID = #{applId}
+  	 	</if>
+  	 	<if test="planStatus !=null">
+			and plan.PLAN_STATUS = #{planStatus}
+  	 	</if>
+  	 </where>
+		order by plan.CREATE_TIME desc
+		
+  </select>
+
+  <!-- APP外访计划数据查询 visitInfo.STATUS = 'NoVisit' 暂不考虑 -->
+  <select id="selectWithApp" resultType="com.ljwd.plms.mapp.vo.egress.AppOutVisitPlanResultVo" parameterType="java.util.Map">
+  <!--微贷客户信息-->
+    SELECT
+      visitPlan.ID, visitPlan.ADDRESS, visitInfo.APPL_ID, cust.CUST_NAME, cust.ID AS custId
+      ,visitPlan.PLAN_CODE, visitPlan.PLAN_START_TIME
+    FROM PLMS_OVM_OUT_VISIT_INFO visitInfo
+    INNER JOIN PLMS_OVM_OUT_VISIT_PLAN visitPlan ON visitPlan.INFO_ID = visitInfo.ID
+    INNER JOIN CL_CUST cust ON cust.APPL_ID = visitInfo.APPL_ID
+    WHERE visitPlan.PLAN_START_TIME BETWEEN #{param.visitStartDate} AND #{param.visitEndDate}
+      AND visitInfo.VISIT_BY = #{param.visitUser}
+      AND visitPlan.PLAN_STATUS = #{param.planStatus}
+      <if test="param.containsKey('visitType')">AND visitInfo.VISIT_TYPE = #{param.visitType}</if>
+    <!--贷后自建客户信息
+    SELECT
+      visitPlan.ID, visitPlan.ADDRESS, visitInfo.APPL_ID, clCust.CUST_NAME, clCust.ID AS custId
+      ,visitPlan.PLAN_CODE, visitPlan.PLAN_START_TIME
+    FROM PLMS_OVM_OUT_VISIT_INFO visitInfo
+    INNER JOIN PLMS_OVM_OUT_VISIT_PLAN visitPlan ON visitPlan.INFO_ID = visitInfo.ID
+    INNER JOIN CL_CUST cust ON cust.APPL_ID = visitInfo.APPL_ID
+    INNER JOIN PLMS_CL_CUST_INFO clCust ON clCust.DOCNO = cust.ID_CARD_NO
+    WHERE visitPlan.PLAN_START_TIME BETWEEN #{param.visitStartDate} AND #{param.visitEndDate}
+    AND visitInfo.VISIT_BY = #{param.visitUser}
+    AND visitPlan.PLAN_STATUS = #{param.planStatus}
+    <if test="param.containsKey('visitType')">AND visitInfo.VISIT_TYPE = #{param.visitType}</if>
+    -->
+  </select>
+
+  <!-- APP外访计划历史任务数据查询 -->
+  <select id="selecthistory" resultType="com.ljwd.plms.mapp.vo.egress.AppOutVisitPlanResultVo" parameterType="java.util.Map">
+    SELECT
+    visitPlan.ID, visitPlan.ADDRESS, visitInfo.APPL_ID, cust.CUST_NAME, cust.ID AS custId
+    ,visitPlan.PLAN_CODE, visitSign.SIGN_TIME AS planStartTime
+    FROM PLMS_OVM_OUT_VISIT_INFO visitInfo
+    INNER JOIN PLMS_OVM_OUT_VISIT_PLAN visitPlan ON visitPlan.INFO_ID = visitInfo.ID
+    LEFT JOIN PLMS_OVM_OUT_VISIT_SIGN visitSign ON visitSign.PLAN_ID = visitPlan.ID
+    INNER JOIN CL_CUST cust ON cust.APPL_ID = visitInfo.APPL_ID
+    WHERE visitPlan.PLAN_START_TIME BETWEEN #{param.visitStartDate} AND #{param.visitEndDate}
+    AND visitInfo.VISIT_BY = #{param.visitUser}
+    AND visitPlan.PLAN_STATUS = 'End'
+    ORDER BY visitSign.SIGN_TIME DESC
+  </select>
+  
+  <!-- 全部外访计划分页 -->
+  <select id="selectAllOutVisitPlanByExampleAndPage" resultType="com.ljwd.plms.web.vo.outVisit.AllOutVisitPlanResult" parameterType="com.ljwd.plms.web.vo.outVisit.AllOutVisitPlanParamDto" >
+  		select 
+		  outplan.appl_id as appl_id ,
+		  outplan.info_id as infoid,
+		  outplan.id as planId,
+		  outplan.plan_code as plancode,
+		  outplan.plan_start_time as planstarttime,
+		  decode(outinfo.visit_type,'1','考察','2','协催') as visittype,
+		  cust.cust_name          as      custname,
+		  decode(outplan.address_type ,'REGISTER','户籍地址','COMPANY','单位地址','HOUSE','住宅地址','其它地址') as addresstype,
+		  outinfo.visit_by as outvisiter,
+		  sysuser.user_name as outvisitername,
+		  outplan.PLAN_STATUS as planStatus,
+		  decode(outplan.PLAN_STATUS,'Start','计划中','Cancel','已取消','End','已外访') as planStatusName,
+		  case 
+		    when outplan.address_validity ='Y' then '有效' 
+		    when outplan.address_validity ='N' then '无效' 
+		    else ''
+		  end as addressvalidity,
+		  outResult.val as followupresults,
+		  outinfo.expect_close_time as expectCloseTime
+		from plms_ovm_out_visit_plan outplan
+		left join plms_ovm_out_visit_info outinfo on outinfo.id= outplan.info_id
+		left join cl_cust cust on cust.appl_id = outplan.appl_id
+		left join sys_user sysuser on sysuser.user_id = outinfo.visit_by
+		left join PLMS_OVM_RESULT_TYPE outResult on outResult.code = outplan.followup_results
+  		left join( 
+             select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+    	)area on area.infoId = outplan.info_id
+    	left join ln_cntrct cntrct on cntrct.appl_id = outplan.appl_id
+    	<where>
+  		<if test='areaId !=null and areaId !=""'>
+      			and area.areaId = #{areaId}
+      	</if>
+      	<if test='outVisiterName !=null and outVisiterName !=""'>
+				and sysuser.user_name = #{outVisiterName}
+		</if>
+		<if test='planStatus !=null and planStatus !=""'>
+        		and outplan.PLAN_STATUS = #{planStatus}
+        </if>
+		<if test='planDateStart !=null and planDateStart !=""'>
+        		and trunc(outplan.plan_start_time) >= trunc(#{planDateStart})
+        </if>
+        <if test='planDateEnd !=null and planDateEnd !=""'>
+        		and trunc(outplan.plan_start_time) &lt;= trunc(#{planDateEnd})
+        </if>		
+  		<if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outinfo.assign_date) >= trunc(#{assignDateStart})
+        </if>
+        <if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outinfo.assign_date) &lt;= trunc(#{assignDateEnd})
+        </if>
+        <if test='visitType !=null and visitType !=""'>
+        		and outinfo.visit_type = #{visitType}
+        </if>
+        <if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        </if> 
+        <if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        </if>
+        <if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        </if>  
+        </where>   
+        <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by outplan.id desc 
+            </otherwise>
+        </choose>
+         
+        
+  </select>
+  
+  
+  <!-- 外访计划详情  客户信息 -->
+  <select id="selectAllOutPlanCustDetail" resultType="com.ljwd.plms.web.vo.outVisit.AllOutVisitPlanDetailCustResult" parameterType="map" >
+  	select 
+      applinfo.appl_code as applyno,
+	  cntrct.cntrct_no as cntrctno,
+      cust.cust_name   as   custname,
+      decode(outinfo.cust_type, 'Bouncing', '多次跳票', 'Lost', '失联', 'Others', '其他') 		as		custtype,
+      cntrct.loan_amt as loanamt,
+	  cntrct.loan_period as periodNum,
+	  outinfo.overdue_day as overdueday,
+	  decode(outplan.plan_status,'Start','计划中','Cancel','已取消','End','已外访') as planstatus,
+	  decode(outplan.address_type ,'REGISTER','户籍地址','COMPANY','单位地址','HOUSE','住宅地址','其它地址') as addresstype,
+      outplan.address as address,
+      cust.ID_CARD_NO as idCardNo
+		from plms_ovm_out_visit_info outinfo 
+		left join ln_appl_info applinfo on outinfo.appl_id  = applinfo.id
+		left join  ln_cntrct cntrct on cntrct.appl_id = outinfo.appl_id
+		left join cl_cust cust on cust.appl_id = outinfo.appl_id
+		left join plms_ln_appl_info pinfo on pinfo.appl_id = outinfo.appl_id
+     left join  plms_ovm_out_visit_plan outplan on outplan.info_id = outinfo.id and outplan.id= #{planId}
+		where outinfo.id=#{infoId}	
+  </select>
+  
+    <!-- 外访计划详情  外访信息 -->
+  <select id="selectAllOutPlanInfoDetail" resultType="com.ljwd.plms.web.vo.outVisit.AllOutVisitDetailInfoResult" parameterType="map" >
+		  	select 
+		  	outplan.id as id,
+		  	outplan.appl_id as applId,
+		  	outplan.info_id as infoId,
+		    outplan.plan_code as plancode,
+		    outplan.plan_start_time as planstarttime,
+		    sysuser.user_name||to_char(outsign.sign_time,'yyyy-mm-dd hh24:mi:ss') as signinfo,
+		    outsign.sign_address as signaddress,
+		    outplan.assist_by as assistby,
+		    outplan.followup_results as followupResults,
+		    ovmResult.val as followupResultsVal,
+		    outplan.ptp_amt as ptpAmt,
+		    outplan.ptp_date as ptpdate,
+		    to_char(outplan.ptp_date,'yyyy-mm-dd') as ptpdateStr,
+		    decode(outplan.address_validity,'Y','有效','N','无效','') as addressvalidityVal,
+		    outplan.address_validity as addressvalidity,
+		    outplan.address as address,
+		    outplan.OVTRESULT_DETAIL as ovtresultDetail,
+		    outplan.VALID_ADDRESS as validAddress
+		from plms_ovm_out_visit_plan outplan
+		left join plms_ovm_out_visit_sign outsign on outsign.plan_id = outplan.id
+		left join sys_user sysuser on sysuser.user_id = outsign.sign_by
+		left join plms_ovm_result_type ovmresult on ovmresult.code = outplan.followup_results
+		where outplan.id= #{planId}
+  </select>
+  
+  
+  	<!-- 判断此计划是否是此外访案件最新的计划   -->
+	<select id="isTheMaxDatePlan"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select outplan.* 
+		from plms_ovm_out_visit_plan outplan
+		where outplan.info_id = #{infoId}
+		and outplan.create_time > = (select max(outplan1.create_time) from plms_ovm_out_visit_plan outplan1 where outplan1.info_id =#{infoId}  group by outplan1.info_id)
+	</select>
+	
+	<!-- 外访路线分页显示 -->
+	<select id="selectPageOutVisitRouteData" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitRouteParamDto" resultType="com.ljwd.plms.web.vo.outVisit.OutVisitRouteResult">
+		select temp.* ,sysuser.user_name as outVisiterName from 
+		(select 
+		     outInfo.VISIT_BY as outVisiter,
+		     listagg(outPlan.ADDRESS,',') within group (order by  outInfo.VISIT_BY) as address,
+		     listagg(outPlan.ASSIST_BY,',') within group (order by  outInfo.VISIT_BY) as assistBy,
+		     outPlan.PLAN_START_TIME as outVisitDate
+				from PLMS_OVM_OUT_VISIT_PLAN outPlan
+				left join PLMS_OVM_OUT_VISIT_INFO outInfo on outInfo.id = outPlan.info_id
+				where   outplan.SIGN_STATUS ='Signned'
+				<if test='outVisitDate !=null and outVisitDate !=""'>
+					and trunc (outPlan.PLAN_START_TIME) = trunc(#{outVisitDate})
+				</if>
+		    group by outInfo.VISIT_BY,outPlan.PLAN_START_TIME
+		)temp
+		left join sys_user sysuser on sysuser.user_id = temp.outVisiter
+		<where>
+			<if test='outVisiterName !=null and outVisiterName !=""'>
+				and sysuser.user_name = #{outVisiterName}
+			</if>
+		</where>
+		<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by temp.outVisitDate desc  
+            </otherwise>
+        </choose>
+		
+	</select>
+	<!-- 查询有效的外访计划条数 -->
+	<select id="countByOutVisitUser" resultType="java.lang.Integer" parameterType="map">
+		select count(*) from plms_ovm_out_visit_plan
+		where info_id = #{infoId} and plan_status = #{planStatus} and  CREATE_TIME &lt;#{inputTime}
+	</select>
+	
+	<!-- 查询某次外访最早的有效外访计划 -->
+	<select id="selectMinTimeIsActivePlan" parameterType="map" resultMap="BaseResultMap">
+		select min(plan.CREATE_TIME) as createTime
+			from PLMS_OVM_OUT_VISIT_PLAN plan 
+			where plan.info_id = #{infoId} and plan.PLAN_STATUS = 'End'
+	</select>
+	
+</mapper>

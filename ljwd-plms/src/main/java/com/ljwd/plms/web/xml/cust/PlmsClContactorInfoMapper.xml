@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClContactorInfoMapper">
+    
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="RLTNSHP" property="rltnshp" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TEL_TYPE" property="telType" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+    <result column="TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="EXT" property="ext" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="ext != null and ext != ''">
+            and T.EXT = #{ext}
+        </if>
+        <if test="area != null and area != ''">
+            and T.AREA = #{area}
+        </if>
+        <if test="telType != null and telType != ''">
+            and T.TEL_TYPE = #{telType}
+        </if>
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="name != null and name != ''">
+            and T.NAME = #{name}
+        </if>
+        <if test="tel != null and tel != ''">
+            and T.TEL = #{tel}
+        </if>
+        <if test="notThisId != null">
+            and T.ID != #{notThisId}
+        </if>
+        <if test="clCustIdByApplId != null">
+            and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{clCustIdByApplId})
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="applIdOrNull != null">
+            and (T.APPL_ID = #{applIdOrNull} or T.APPL_ID is null) and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{applIdOrNull})
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause">
+        <where >
+            <if test="example.ext != null and example.ext != ''">
+                and T.EXT = #{example.ext}
+            </if>
+            <if test="example.area != null and example.area != ''">
+                and T.AREA = #{example.area}
+            </if>
+            <if test="example.telType != null and example.telType != ''">
+                and T.TEL_TYPE = #{example.telType}
+            </if>
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.name != null and example.name != ''">
+                and T.NAME = #{example.name}
+            </if>
+            <if test="example.tel != null and example.tel != ''">
+                and T.TEL = #{example.tel}
+            </if>
+            <if test="example.clCustIdByApplId != null">
+                and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{example.clCustIdByApplId})
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.applIdOrNull != null">
+                and (t.appl_id = #{example.applIdOrNull} or t.appl_id is null) and t.cl_cust_id = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{example.applIdOrNull})
+            </if>
+        </where>
+    </sql>
+    
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.RLTNSHP,
+    T.NAME,
+    T.TEL_TYPE,
+    T.AREA,
+    T.TEL,
+    T.EXT,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+    
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List"/>
+    <if test="isSelectCall == true">
+        ,
+        CALL.maxCreateTime,
+        CALL.maxCallDate
+    </if>
+    from PLMS_CL_CONTACTOR_INFO T
+    <if test="isSelectCall == true">
+        left join(
+            select call.phone AS phone,
+                   max(call.create_time) AS maxCreateTime,
+                   max(case when call.cloudcall_status = '15' then call.call_date else null end) AS maxCallDate
+            from PLMS_LN_SURVEY_CALL call
+            where 1 = 1
+            <if test="applId != null">
+                and call.apply_id = #{applId}
+            </if>
+            group by call.phone
+        ) CALL on ( (case when T.AREA is null then '' else T.AREA || '-' end) || T.TEL || (case when T.EXT is null then '' else '-' || T.EXT end) ) = CALL.phone
+    </if>
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+    
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_CONTACTOR_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+    
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_CONTACTOR_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+    
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfoExample" >
+    delete from PLMS_CL_CONTACTOR_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+    <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" >
+        <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+            SELECT seq_plms_cl_contactor_info.nextval FROM dual
+        </selectKey>
+        insert into PLMS_CL_CONTACTOR_INFO T ( <include refid="Base_Column_List"/> )
+        values (
+        #{id,jdbcType=BIGINT},
+        #{clCustId,jdbcType=BIGINT},
+        #{srcCode,jdbcType=VARCHAR},
+        #{applId,jdbcType=BIGINT},
+        #{rltnshp,jdbcType=VARCHAR},
+        #{name,jdbcType=VARCHAR},
+        #{telType,jdbcType=VARCHAR},
+        #{area,jdbcType=VARCHAR},
+        #{tel,jdbcType=VARCHAR},
+        #{ext,jdbcType=VARCHAR},
+        #{isActive,jdbcType=CHAR},
+        #{createdBy,jdbcType=VARCHAR},
+        sysdate,
+        #{updatedBy,jdbcType=VARCHAR},
+        sysdate,
+        0,
+        1
+        )
+    </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_contactor_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_CONTACTOR_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP,
+      </if>
+      <if test="name != null" >
+          T.NAME,
+      </if>
+      <if test="telType != null" >
+          T.TEL_TYPE,
+      </if>
+      <if test="area != null" >
+          T.AREA,
+      </if>
+      <if test="tel != null" >
+          T.TEL,
+      </if>
+      <if test="ext != null" >
+          T.EXT,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+        #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telType != null" >
+        #{telType,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{AREA,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="ext != null" >
+        #{EXT,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+    
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_CONTACTOR_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+    
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_CONTACTOR_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rltnshp != null" >
+          T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+          T.NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.telType != null" >
+          T.TEL_TYPE = #{record.telType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.area != null" >
+          T.AREA = #{record.area,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+          T.TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ext != null" >
+          T.EXT = #{record.ext,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+    <update id="updateByExample" parameterType="map" >
+        update PLMS_CL_CONTACTOR_INFO T
+        set
+        T.ID = #{record.id,jdbcType=BIGINT},
+        T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+        T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+        T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+        T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+        T.NAME = #{record.name,jdbcType=VARCHAR},
+        T.TEL_TYPE = #{record.telType,jdbcType=VARCHAR},
+        T.AREA = #{record.area,jdbcType=VARCHAR},
+        T.TEL = #{record.tel,jdbcType=VARCHAR},
+        T.EXT = #{record.ext,jdbcType=VARCHAR},
+        T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+        T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+        T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+        T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+        T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" >
+    update PLMS_CL_CONTACTOR_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+          T.NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="telType != null" >
+          T.TEL_TYPE = #{telType,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+          T.AREA = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+          T.TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="ext != null" >
+          T.EXT = #{ext,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" >
+        update PLMS_CL_CONTACTOR_INFO T
+        set
+        T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+        T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+        T.APPL_ID = #{applId,jdbcType=BIGINT},
+        T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+        T.NAME = #{name,jdbcType=VARCHAR},
+        T.TEL_TYPE = #{telType,jdbcType=VARCHAR},
+        T.AREA = #{area,jdbcType=VARCHAR},
+        T.TEL = #{tel,jdbcType=VARCHAR},
+        T.EXT = #{ext,jdbcType=VARCHAR},
+        T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+        T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+        T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+        T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        T.REC_VER = #{recVer,jdbcType=BIGINT},
+        T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+        where T.ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="rltnshpVal" property="rltnshpVal" jdbcType="VARCHAR"/>
+        <result column="telTypeVal" property="telTypeVal" jdbcType="VARCHAR"/>
+
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="mobile2" property="mobile2" jdbcType="VARCHAR" />
+        <result column="mobile3" property="mobile3" jdbcType="VARCHAR" />
+        <result column="UNIT_TEL" property="unitTel" jdbcType="VARCHAR" />
+
+        <result column="docno" property="docno" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        t3.val as rltnshpVal,
+        t4.val as telTypeVal,
+        updateUser.USER_NAME as updatedUserName
+        <if test="isSelectCall == true">
+            ,
+            CALL.maxCreateTime,
+            CALL.maxCallDate
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultType="com.ljwd.plms.web.model.cust.PlmsClContactorInfo" parameterType="com.ljwd.plms.web.model.cust.PlmsClContactorInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+            T.ID id,
+		    T.CL_CUST_ID clCustId,
+		    T.SRC_CODE srcCode,
+		    T.APPL_ID applId,
+		    T.RLTNSHP rltnshp,
+		    T.NAME name,
+		    T.TEL_TYPE telType,
+		    T.AREA area,
+		    T.TEL tel,
+		    T.EXT ext,
+		    T.IS_ACTIVE isActive,
+		    T.CREATED_BY createdBy,
+		    T.CREATE_TIME createTime,
+		    T.UPDATED_BY updatedBy,
+		    T.UPDATE_TIME updateTime,
+		    T.REC_VER recVer,
+		    T.TAG_SEQ tagSeq,
+		    t2.val as srcVal,
+	        t3.val as rltnshpVal,
+	        t4.val as telTypeVal,
+	        updateUser.USER_NAME as updatedUserName
+        <if test="isSelectCall == true">
+            ,
+            CALL.maxCreateTime,
+            CALL.maxCallDate
+        </if>
+        from PLMS_CL_CONTACTOR_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join L_RLTNSHP T3 on T.RLTNSHP = T3.CODE
+        left join PLMS_L_TEL_TYPE T4 on T.TEL_TYPE = T4.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="isSelectCall == true">
+            left join(
+                select call.phone AS phone,
+                       max(call.create_time) AS maxCreateTime,
+                       max(case when call.cloudcall_status = '15' then call.call_date else null end) AS maxCallDate
+                from PLMS_LN_SURVEY_CALL call
+                where 1 = 1
+                <if test="applId != null">
+                    and call.apply_id = #{applId}
+                </if>
+                group by call.phone
+            ) CALL on ( (case when T.AREA is null then '' else T.AREA || '-' end) || T.TEL || (case when T.EXT is null then '' else '-' || T.EXT end) ) = CALL.phone
+        </if>
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext"/>
+        </if>
+        order by case T.RLTNSHP when '12' then 1
+                                when '13' then 2
+                                when '14' then 3
+                                when '11' then 4
+                                when '1' then 5
+                                when '2' then 6
+                                when '5' then 7
+                                when '7' then 8
+                                when '8' then 9
+                                when '6' then 10
+                                when '17' then 11
+                                when '18' then 12
+                                when '3' then 13
+                                when '15' then 14
+                                when '4' then 15
+                                when '9' then 16
+                                when '10' then 17
+                                when '16' then 18
+                                when '19' then 19
+                                when '20' then 20
+                                when '21' then 21
+                                else 22 end,
+                 (case T.TEL_TYPE when 'MOBPHONE' then 1 when 'UNIT' then 2 when 'FIXPHONE' then 3 else 4 end),
+                 (case T.IS_ACTIVE when 'Y' then 1 else 2 end),
+                 T.update_time desc
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的联系人信息(从电核表取数) -->
+    <select id="findMfbmsContactorByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select  'WIN' as src_code,
+                (cust.appl_id) as appl_id,
+                (NVL(dtl.rltnshp,
+                        case when dtl.phone_type = 'OFFICE' or dtl.phone_type = 'MOBILE' or dtl.phone_type = 'HOME' then '12'
+                             when dtl.phone_type = 'COUPLE' then '11'
+                             when dtl.phone_type = 'RELATIVE' then '7'
+                             when dtl.phone_type = 'FRIEND' then '6'
+                             else dtl.rltnshp end
+                        )
+                ) as rltnshp,
+                (NVL(dtl.person_name,cust.cust_name)) as name,
+                (dtl.phone) as tel,
+                (dtl.extension) as ext,
+                (case when regexp_like(dtl.phone,'^1[3|4|5|7|8][0-9]\d{8}$') then 'MOBPHONE'
+                         when (dtl.phone_type = 'MOBILEPHONE' or dtl.phone_type = 'MOBILE') then 'MOBPHONE'
+                         when (dtl.phone_type = 'OFFICETEL' or dtl.phone_type = 'OFFICE') then 'UNIT'
+                         when dtl.phone_type = 'FAX' then 'FAX'
+                         else 'FIXPHONE' end) as tel_type,
+                (cust.id_card_no) as docno
+        from ln_survey_phone_dtl dtl
+        inner join ln_survey_phone phone on dtl.survey_phone_id = phone.id
+        inner join cl_cust cust on cust.appl_id = phone.appl_id
+        where not exists (
+            select 1 from plms_cl_contactor_info contactor
+            inner join plms_cl_cust_info clCust on contactor.cl_cust_id = clCust.id
+            where ((case when contactor.area is not null then contactor.area || '-' else '' end) || contactor.tel) = dtl.phone
+                  and nvl(contactor.ext,'ext is null') = nvl(dtl.extension,'ext is null')
+                  and contactor.tel_type = (case when regexp_like(dtl.phone,'^1[3|4|5|7|8][0-9]\d{8}$') then 'MOBPHONE'
+                                                 when (dtl.phone_type = 'MOBILEPHONE' or dtl.phone_type = 'MOBILE') then 'MOBPHONE'
+                                                 when (dtl.phone_type = 'OFFICETEL' or dtl.phone_type = 'OFFICE') then 'UNIT'
+                                                 when dtl.phone_type = 'FAX' then 'FAX'
+                                                 else 'FIXPHONE' end)
+                  and nvl(contactor.name,'name is null') = nvl(dtl.person_name,'name is null')
+                  and clCust.docno = cust.id_card_no
+        )
+        and regexp_like(dtl.phone,'^[0-9\-]*$')
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = cust.appl_id)
+        and dtl.is_active = 'Y'
+        and cust.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的联系人信息(从客户信息、职业信息、联系人信息表取数) -->
+    <select id="findMfbmsContactorByDocnoList2" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        <!--主贷人号码1-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                c.mobile as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.mobile
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.mobile is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人号码2-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                c.mobile2 as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.mobile2
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.mobile2 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人号码3-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                c.mobile3 as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.mobile3
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.mobile3 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人配偶号码1-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '11' as rltnshp,
+                c.spouse_name as name,
+                c.spouse_tel as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.spouse_tel
+            and nvl(con.name,'name is null') = nvl(c.spouse_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.spouse_tel is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人配偶号码2-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '11' as rltnshp,
+                c.spouse_name as name,
+                c.spouse_tel2 as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.spouse_tel2
+            and nvl(con.name,'name is null') = nvl(c.spouse_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.spouse_tel2 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人配偶号码3-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '11' as rltnshp,
+                c.spouse_name as name,
+                c.spouse_tel3 as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.spouse_tel3
+            and nvl(con.name,'name is null') = nvl(c.spouse_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.spouse_tel3 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人配偶单位号码-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '11' as rltnshp,
+                c.spouse_name as name,
+                c.spouse_unit_tel as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_cust c
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = c.spouse_unit_tel
+            and nvl(con.name,'name is null') = nvl(c.spouse_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and c.spouse_unit_tel is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人单位号码1-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                a.tel as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_profession a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.tel
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.tel is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人单位号码2-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                a.tel_2 as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_profession a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.tel_2
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.tel_2 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人单位号码3-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                a.tel_3 as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_profession a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.tel_3
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.tel_3 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人单位号码4-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '12' as rltnshp,
+                c.cust_name as name,
+                a.tel_4 as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_profession a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.tel_4
+            and nvl(con.name,'name is null') = nvl(c.cust_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.tel_4 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--主贷人同事号码-->
+        select  'WIN' as src_code,
+                c.appl_id as appl_id,
+                '8' as rltnshp,
+                a.colleague_name as name,
+                a.colleague_mobile as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from cl_profession a
+        inner join CL_CUST c on a.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.colleague_mobile
+            and nvl(con.name,'name is null') = nvl(a.colleague_name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.colleague_mobile is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--联系人住宅号码-->
+        select  'WIN' as src_code,
+                ai.id as appl_id,
+                a.rltnshp as rltnshp,
+                a.name as name,
+                a.tel as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from CL_CONTACTOR a
+        inner join CL_CUST c on a.cl_cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.tel
+            and nvl(con.name,'name is null') = nvl(a.name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.tel is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--联系人手机号码1-->
+        select  'WIN' as src_code,
+                ai.id as appl_id,
+                a.rltnshp as rltnshp,
+                a.name as name,
+                a.mobile as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from CL_CONTACTOR a
+        inner join CL_CUST c on a.cl_cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.mobile
+            and nvl(con.name,'name is null') = nvl(a.name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.mobile is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--联系人手机号码2-->
+        select  'WIN' as src_code,
+                ai.id as appl_id,
+                a.rltnshp as rltnshp,
+                a.name as name,
+                a.mobile2 as tel,
+                c.id_card_no as docno,
+                'FIXPHONE' as ifTelForType
+        from CL_CONTACTOR a
+        inner join CL_CUST c on a.cl_cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.mobile2
+            and nvl(con.name,'name is null') = nvl(a.name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.mobile2 is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+
+        <!--联系人单位号码-->
+        select  'WIN' as src_code,
+                ai.id as appl_id,
+                a.rltnshp as rltnshp,
+                a.name as name,
+                a.unit_tel as tel,
+                c.id_card_no as docno,
+                'UNIT' as ifTelForType
+        from CL_CONTACTOR a
+        inner join CL_CUST c on a.cl_cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+            select 1
+            from plms_cl_contactor_info con
+            inner join plms_cl_cust_info clc on con.cl_cust_id = clc.id
+            where ( (case when con.AREA is null then '' else con.AREA || '-' end) || con.TEL || (case when con.EXT is null then '' else '-' || con.EXT end) ) = a.unit_tel
+            and nvl(con.name,'name is null') = nvl(a.name,'name is null')
+            and clc.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.unit_tel is not null
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_CONTACTOR_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_contactor_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.rltnshp,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.telType,jdbcType=VARCHAR},
+            #{item.area,jdbcType=VARCHAR},
+            #{item.tel,jdbcType=VARCHAR},
+            #{item.ext,jdbcType=VARCHAR},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+</mapper>

@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outVisit.PlmsOvmOutDelayDtlMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtl" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="DELAY_ID" property="delayId" jdbcType="BIGINT" />
+    <result column="EXPECT_CLOSE_TIME" property="expectCloseTime" jdbcType="TIMESTAMP" />
+    <result column="DELAY_SUBMIT_TIME" property="delaySubmitTime" jdbcType="TIMESTAMP" />
+    <result column="DELAY_SUBMIT_BY" property="delaySubmitBy" jdbcType="VARCHAR" />
+    <result column="DELAY_DURATION" property="delayDuration" jdbcType="VARCHAR" />
+    <result column="DELAY_REASON" property="delayReason" jdbcType="VARCHAR" />
+    <result column="DELAY_AUDIT_RESULT" property="delayAuditResult" jdbcType="VARCHAR" />
+    <result column="DELAY_AUDIT_TIME" property="delayAuditTime" jdbcType="TIMESTAMP" />
+    <result column="DELAY_AUDIT_BY" property="delayAuditBy" jdbcType="VARCHAR" />
+    <result column="DELAY_AUDIT_REFUSE" property="delayAuditRefuse" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      	<if test='id !=null and id !=""'>
+      		and id = #{id}
+      	</if>
+      	<if test='delayId !=null and delayId !=""'>
+      		and DELAY_ID = #{delayId}
+      	</if>
+      	<if test='delayAuditResult !=null and delayAuditResult !=""'>
+      		and DELAY_AUDIT_RESULT = #{delayAuditResult}
+      	</if>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, DELAY_ID, EXPECT_CLOSE_TIME, DELAY_SUBMIT_TIME, DELAY_SUBMIT_BY, DELAY_DURATION,DELAY_REASON,
+    DELAY_AUDIT_RESULT, DELAY_AUDIT_TIME, DELAY_AUDIT_BY, DELAY_AUDIT_REFUSE, CREATED_BY, 
+    CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtlExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_DELAY_DTL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_DELAY_DTL
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_OVM_OUT_DELAY_DTL
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtlExample" >
+    delete from PLMS_OVM_OUT_DELAY_DTL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtl" >
+    insert into PLMS_OVM_OUT_DELAY_DTL (ID, DELAY_ID, EXPECT_CLOSE_TIME, 
+      DELAY_SUBMIT_TIME, DELAY_SUBMIT_BY, DELAY_DURATION, DELAY_REASON,
+      DELAY_AUDIT_RESULT, DELAY_AUDIT_TIME, DELAY_AUDIT_BY, 
+      DELAY_AUDIT_REFUSE, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, REC_VER, 
+      TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{delayId,jdbcType=BIGINT}, #{expectCloseTime,jdbcType=TIMESTAMP}, 
+      #{delaySubmitTime,jdbcType=TIMESTAMP}, #{delaySubmitBy,jdbcType=VARCHAR}, #{delayDuration,jdbcType=VARCHAR}, #{delayReason,jdbcType=VARCHAR},
+      #{delayAuditResult,jdbcType=VARCHAR}, #{delayAuditTime,jdbcType=TIMESTAMP}, #{delayAuditBy,jdbcType=VARCHAR}, 
+      #{delayAuditRefuse,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, 
+      #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtl" >
+   <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_OVM_OUT_DELAY_DTL.Nextval from DUAL  
+	</selectKey> 
+    insert into PLMS_OVM_OUT_DELAY_DTL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="delayId != null" >
+        DELAY_ID,
+      </if>
+      <if test="expectCloseTime != null" >
+        EXPECT_CLOSE_TIME,
+      </if>
+      <if test="delaySubmitTime != null" >
+        DELAY_SUBMIT_TIME,
+      </if>
+      <if test="delaySubmitBy != null" >
+        DELAY_SUBMIT_BY,
+      </if>
+      <if test="delayDuration != null" >
+        DELAY_DURATION,
+      </if>
+      <if test="delayReason != null" >
+        DELAY_REASON,
+      </if>
+      <if test="delayAuditResult != null" >
+        DELAY_AUDIT_RESULT,
+      </if>
+      <if test="delayAuditTime != null" >
+        DELAY_AUDIT_TIME,
+      </if>
+      <if test="delayAuditBy != null" >
+        DELAY_AUDIT_BY,
+      </if>
+      <if test="delayAuditRefuse != null" >
+        DELAY_AUDIT_REFUSE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="delayId != null" >
+        #{delayId,jdbcType=BIGINT},
+      </if>
+      <if test="expectCloseTime != null" >
+        #{expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delaySubmitTime != null" >
+        #{delaySubmitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delaySubmitBy != null" >
+        #{delaySubmitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delayDuration != null" >
+        #{delayDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="delayReason != null" >
+        #{delayReason,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditResult != null" >
+        #{delayAuditResult,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditTime != null" >
+        #{delayAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delayAuditBy != null" >
+        #{delayAuditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditRefuse != null" >
+        #{delayAuditRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      1,0
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtlExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OVM_OUT_DELAY_DTL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OVM_OUT_DELAY_DTL
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.delayId != null" >
+        DELAY_ID = #{record.delayId,jdbcType=BIGINT},
+      </if>
+      <if test="record.expectCloseTime != null" >
+        EXPECT_CLOSE_TIME = #{record.expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delaySubmitTime != null" >
+        DELAY_SUBMIT_TIME = #{record.delaySubmitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delaySubmitBy != null" >
+        DELAY_SUBMIT_BY = #{record.delaySubmitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayDuration != null" >
+        DELAY_DURATION = #{record.delayDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayReason != null" >
+        DELAY_REASON = #{record.delayReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayAuditResult != null" >
+        DELAY_AUDIT_RESULT = #{record.delayAuditResult,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayAuditTime != null" >
+        DELAY_AUDIT_TIME = #{record.delayAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.delayAuditBy != null" >
+        DELAY_AUDIT_BY = #{record.delayAuditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.delayAuditRefuse != null" >
+        DELAY_AUDIT_REFUSE = #{record.delayAuditRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OVM_OUT_DELAY_DTL
+    set ID = #{record.id,jdbcType=BIGINT},
+      DELAY_ID = #{record.delayId,jdbcType=BIGINT},
+      EXPECT_CLOSE_TIME = #{record.expectCloseTime,jdbcType=TIMESTAMP},
+      DELAY_SUBMIT_TIME = #{record.delaySubmitTime,jdbcType=TIMESTAMP},
+      DELAY_SUBMIT_BY = #{record.delaySubmitBy,jdbcType=VARCHAR},
+      DELAY_DURATION = #{record.delayDuration,jdbcType=VARCHAR},
+      DELAY_REASON = #{record.delayReason,jdbcType=VARCHAR},
+      DELAY_AUDIT_RESULT = #{record.delayAuditResult,jdbcType=VARCHAR},
+      DELAY_AUDIT_TIME = #{record.delayAuditTime,jdbcType=TIMESTAMP},
+      DELAY_AUDIT_BY = #{record.delayAuditBy,jdbcType=VARCHAR},
+      DELAY_AUDIT_REFUSE = #{record.delayAuditRefuse,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtl" >
+    update PLMS_OVM_OUT_DELAY_DTL
+    <set >
+      <if test="delayId != null" >
+        DELAY_ID = #{delayId,jdbcType=BIGINT},
+      </if>
+      <if test="expectCloseTime != null" >
+        EXPECT_CLOSE_TIME = #{expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delaySubmitTime != null" >
+        DELAY_SUBMIT_TIME = #{delaySubmitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delaySubmitBy != null" >
+        DELAY_SUBMIT_BY = #{delaySubmitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delayDuration != null" >
+        DELAY_DURATION = #{delayDuration,jdbcType=VARCHAR},
+      </if>
+      <if test="delayReason != null" >
+        DELAY_REASON = #{delayReason,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditResult != null" >
+        DELAY_AUDIT_RESULT = #{delayAuditResult,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditTime != null" >
+        DELAY_AUDIT_TIME = #{delayAuditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delayAuditBy != null" >
+        DELAY_AUDIT_BY = #{delayAuditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delayAuditRefuse != null" >
+        DELAY_AUDIT_REFUSE = #{delayAuditRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayDtl" >
+    update PLMS_OVM_OUT_DELAY_DTL
+    set DELAY_ID = #{delayId,jdbcType=BIGINT},
+      EXPECT_CLOSE_TIME = #{expectCloseTime,jdbcType=TIMESTAMP},
+      DELAY_SUBMIT_TIME = #{delaySubmitTime,jdbcType=TIMESTAMP},
+      DELAY_SUBMIT_BY = #{delaySubmitBy,jdbcType=VARCHAR},
+      DELAY_DURATION = #{delayDuration,jdbcType=VARCHAR},
+      DELAY_REASON = #{delayReason,jdbcType=VARCHAR},
+      DELAY_AUDIT_RESULT = #{delayAuditResult,jdbcType=VARCHAR},
+      DELAY_AUDIT_TIME = #{delayAuditTime,jdbcType=TIMESTAMP},
+      DELAY_AUDIT_BY = #{delayAuditBy,jdbcType=VARCHAR},
+      DELAY_AUDIT_REFUSE = #{delayAuditRefuse,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量修改申请外访延期的数据状态 -->
+    <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_OVM_OUT_DELAY_DTL 
+            <set>
+            	REC_VER = #{item.recVer} + 1,
+            <if test="item.delayAuditResult !=null">
+            	DELAY_AUDIT_RESULT = #{item.delayAuditResult},
+            </if>
+            <if test="item.delayAuditTime !=null">
+            	DELAY_AUDIT_TIME = #{item.delayAuditTime},
+            </if>
+            <if test="item.delayAuditBy !=null">
+            	DELAY_AUDIT_BY = #{item.delayAuditBy},
+            </if>
+            <if test="item.delayAuditRefuse !=null">
+            	DELAY_AUDIT_REFUSE = #{item.delayAuditRefuse},
+            </if>
+            <if test="item.updateTime!=null ">
+                UPDATE_TIME = #{item.updateTime},
+            </if>
+            <if test="item.updatedBy!=null ">
+                UPDATED_BY = #{item.updatedBy},
+            </if>
+            </set>
+            where ID = #{item.id}
+            </foreach>
+        ;end;
+    </update>
+  
+  
+</mapper>

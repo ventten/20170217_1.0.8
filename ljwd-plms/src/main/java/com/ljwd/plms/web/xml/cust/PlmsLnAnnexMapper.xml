@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsLnAnnexMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsLnAnnex" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="TOPIC" property="topic" jdbcType="VARCHAR" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="PATH" property="path" jdbcType="VARCHAR" />
+    <result column="ANNEX_STYLE" property="annexStyle" jdbcType="VARCHAR" />
+    <result column="ANNEX_TYPE" property="annexType" jdbcType="VARCHAR" />
+    <result column="UPLOAD_BY" property="uploadBy" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="OUT_VISIT_PLAN_ID" property="outVisitPlanId" jdbcType="BIGINT" />
+    <result column="IS_DELETED" property="isDeleted" jdbcType="VARCHAR" />
+    <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+    <result column="ANNEX_ID" property="annexId" jdbcType="BIGINT" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="annexType != null and annexType != ''">
+            and T.ANNEX_TYPE = #{annexType}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="applIdOrNull != null">
+            and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{applIdOrNull})
+        </if>
+        <if test="outVisitPlanId !=null">
+        	and T.OUT_VISIT_PLAN_ID = #{outVisitPlanId}
+        </if>
+        <if test="fileType != null and !fileType.isEmpty()">
+        	and T.FILE_TYPE = #{fileType}
+        </if>
+        <if test="isDeleted != null and !isDeleted.isEmpty()">
+        	and T.IS_DELETED = #{isDeleted}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.annexType != null and example.annexType != ''">
+                and T.ANNEX_TYPE = #{example.annexType}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.applIdOrNull != null">
+                and (t.appl_id = #{example.applIdOrNull} or t.appl_id is null) and t.cl_cust_id = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{example.applIdOrNull})
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.TOPIC,
+    T.FILE_NAME,
+    T.PATH,
+    T.ANNEX_STYLE,
+    T.ANNEX_TYPE,
+    T.UPLOAD_BY,
+    T.REMARK,
+    T.OUT_VISIT_PLAN_ID,
+    T.IS_DELETED,
+    T.FILE_TYPE,
+    T.ANNEX_ID,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnexExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LN_ANNEX T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LN_ANNEX T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_LN_ANNEX T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnexExample" >
+    delete from PLMS_LN_ANNEX T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnex">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_annex.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_ANNEX T ( <include refid="Base_Column_List" /> )
+    values (
+          #{id,jdbcType=BIGINT},
+          #{clCustId,jdbcType=BIGINT},
+          #{srcCode,jdbcType=VARCHAR},
+          #{applId,jdbcType=BIGINT},
+          #{topic,jdbcType=VARCHAR},
+          #{fileName,jdbcType=VARCHAR},
+          #{path,jdbcType=VARCHAR},
+          #{annexStyle,jdbcType=VARCHAR},
+          #{annexType,jdbcType=VARCHAR},
+          #{uploadBy,jdbcType=VARCHAR},
+          #{remark,jdbcType=VARCHAR},
+          #{outVisitPlanId,jdbcType=BIGINT},
+          #{isDeleted,jdbcType=VARCHAR},
+          #{fileType,jdbcType=VARCHAR},
+          #{annexId,jdbcType=BIGINT},
+          #{createdBy,jdbcType=VARCHAR},
+          sysdate,
+          #{updatedBy,jdbcType=VARCHAR},
+          sysdate,
+          0,
+          0
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnex" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_annex.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_ANNEX T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="topic != null" >
+          T.TOPIC,
+      </if>
+      <if test="fileName != null" >
+          T.FILE_NAME,
+      </if>
+      <if test="path != null" >
+          T.PATH,
+      </if>
+      <if test="annexStyle != null" >
+          T.ANNEX_STYLE,
+      </if>
+      <if test="annexType != null" >
+          T.ANNEX_TYPE,
+      </if>
+      <if test="uploadBy != null" >
+          T.UPLOAD_BY,
+      </if>
+      <if test="remark != null" >
+          T.REMARK,
+      </if>
+      <if test="outVisitPlanId != null" >
+          T.OUT_VISIT_PLAN_ID,
+      </if>
+      <if test="isDeleted != null" >
+          T.IS_DELETED,
+      </if>
+      <if test="fileType != null" >
+          T.FILE_TYPE,
+      </if>
+      <if test="annexId != null" >
+          T.ANNEX_ID,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="topic != null" >
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+        #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="annexStyle != null" >
+        #{annexStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="annexType != null" >
+        #{annexType,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadBy != null" >
+        #{uploadBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisitPlanId != null" >
+        #{outVisitPlanId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null" >
+        #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+        #{annexId,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnexExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LN_ANNEX T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LN_ANNEX T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.topic != null" >
+          T.TOPIC = #{record.topic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileName != null" >
+          T.FILE_NAME = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.path != null" >
+          T.PATH = #{record.path,jdbcType=VARCHAR},
+      </if>
+      <if test="record.annexStyle != null" >
+          T.ANNEX_STYLE = #{record.annexStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.annexType != null" >
+          T.ANNEX_TYPE = #{record.annexType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.uploadBy != null" >
+          T.UPLOAD_BY = #{record.uploadBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+          T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outVisitPlanId != null" >
+          T.OUT_VISIT_PLAN_ID = #{record.outVisitPlanId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isDeleted != null" >
+          T.IS_DELETED = #{record.isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileType != null" >
+          T.FILE_TYPE = #{record.fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.annexId != null" >
+          T.ANNEX_ID = #{record.annexId,jdbcType=BIGINT},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LN_ANNEX T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.TOPIC = #{record.topic,jdbcType=VARCHAR},
+      T.FILE_NAME = #{record.fileName,jdbcType=VARCHAR},
+      T.PATH = #{record.path,jdbcType=VARCHAR},
+      T.ANNEX_STYLE = #{record.annexStyle,jdbcType=VARCHAR},
+      T.ANNEX_TYPE = #{record.annexType,jdbcType=VARCHAR},
+      T.UPLOAD_BY = #{record.uploadBy,jdbcType=VARCHAR},
+      T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      T.OUT_VISIT_PLAN_ID = #{record.outVisitPlanId,jdbcType=BIGINT},
+      T.IS_DELETED = #{record.isDeleted,jdbcType=VARCHAR},
+      T.FILE_TYPE = #{record.fileType,jdbcType=VARCHAR},
+      T.ANNEX_ID = #{record.annexId,jdbcType=BIGINT},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnex" >
+    update PLMS_LN_ANNEX T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="topic != null" >
+          T.TOPIC = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+          T.FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="path != null" >
+          T.PATH = #{path,jdbcType=VARCHAR},
+      </if>
+      <if test="annexStyle != null" >
+          T.ANNEX_STYLE = #{annexStyle,jdbcType=VARCHAR},
+      </if>
+      <if test="annexType != null" >
+          T.ANNEX_TYPE = #{annexType,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadBy != null" >
+          T.UPLOAD_BY = #{uploadBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+          T.REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisitPlanId != null" >
+          T.OUT_VISIT_PLAN_ID = #{outVisitPlanId,jdbcType=BIGINT},
+      </if>
+      <if test="isDeleted != null" >
+          T.IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+          T.FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="annexId != null" >
+          T.ANNEX_ID = #{annexId,jdbcType=BIGINT},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnex" >
+    update PLMS_LN_ANNEX T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.TOPIC = #{topic,jdbcType=VARCHAR},
+      T.FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      T.PATH = #{path,jdbcType=VARCHAR},
+      T.ANNEX_STYLE = #{annexStyle,jdbcType=VARCHAR},
+      T.ANNEX_TYPE = #{annexType,jdbcType=VARCHAR},
+      T.UPLOAD_BY = #{uploadBy,jdbcType=VARCHAR},
+      T.REMARK = #{remark,jdbcType=VARCHAR},
+      T.OUT_VISIT_PLAN_ID = #{outVisitPlanId,jdbcType=BIGINT},
+      T.IS_DELETED = #{isDeleted,jdbcType=VARCHAR},
+      T.FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      T.ANNEX_ID = #{annexId,jdbcType=BIGINT},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsLnAnnex" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="annexTypeVal" property="annexTypeVal" jdbcType="VARCHAR"/>
+        <result column="annexStyleVal" property="annexStyleVal" jdbcType="VARCHAR"/>
+        <result column="planCode" property="planCode" jdbcType="VARCHAR"/>
+
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        t3.val as annexTypeVal,
+        t4.val as annexStyleVal,
+        t5.PLAN_CODE as planCode
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsLnAnnexExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_LN_ANNEX T
+        left join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join PLMS_L_ANNEX_TYPE T3 on T.ANNEX_TYPE = T3.CODE
+        left join L_ANNEX_STYLE T4 on T.ANNEX_STYLE = T4.CODE
+        left join PLMS_OVM_OUT_VISIT_PLAN T5 on  T5.ID = T.OUT_VISIT_PLAN_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的附件 -->
+    <select id="findMfbmsAnnexByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select (ai.id) as appl_id,
+               (a.topic) as topic,
+               (a.file_name) as file_name,
+               (a.path) as path,
+               (a.annex_style) as annex_style,
+               (a.annex_type) as annex_type,
+               (a.upload_by) as upload_by,
+               (a.remark) as remark,
+               a.id as annex_id,
+               (c.id_card_no) as docno
+        from LN_ANNEX a
+        inner join LN_APPL_INFO ai on a.appl_id = ai.id
+        inner join CL_CUST c on c.appl_id = ai.id
+        where c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_LN_ANNEX T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_ln_annex.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.topic,jdbcType=VARCHAR},
+            #{item.fileName,jdbcType=VARCHAR},
+            #{item.path,jdbcType=VARCHAR},
+            #{item.annexStyle,jdbcType=VARCHAR},
+            #{item.annexType,jdbcType=VARCHAR},
+            #{item.uploadBy,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.outVisitPlanId,jdbcType=BIGINT},
+            #{item.isDeleted,jdbcType=VARCHAR},
+            #{item.fileType,jdbcType=VARCHAR},
+            #{item.annexId,jdbcType=BIGINT},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+    
+</mapper>

@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.report.PlmsLaCollectorIncomeMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.report.PlmsLaCollectorIncome" >
+    <id column="RPMNT_ID" property="rpmntId" jdbcType="BIGINT" />
+    <result column="COLLECTOR" property="collector" jdbcType="VARCHAR" />
+    <result column="COLLECTOR_AGENT" property="collectorAgent" jdbcType="VARCHAR" />
+    <result column="OUT_VISIT" property="outVisit" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    RPMNT_ID, COLLECTOR, COLLECTOR_AGENT, OUT_VISIT, IS_ACTIVE, CREATED_BY,CREATE_TIME,UPDATED_BY, UPDATE_TIME,
+    REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECTOR_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECTOR_INCOME
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_LA_COLLECTOR_INCOME
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" >
+    delete from PLMS_LA_COLLECTOR_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncome" >
+    insert into PLMS_LA_COLLECTOR_INCOME (RPMNT_ID,COLLECTOR, 
+      COLLECTOR_AGENT, OUT_VISIT, IS_ACTIVE, CREATED_BY,
+      CREATE_TIME, UPDATED_BY,UPDATE_TIME, REC_VER, 
+      TAG_SEQ)
+    values (#{rpmntId,jdbcType=BIGINT}, #{collector,jdbcType=VARCHAR}, 
+      #{collectorAgent,jdbcType=VARCHAR}, #{outVisit,jdbcType=VARCHAR}, #{isActive,jdbcType=CHAR}, 
+      #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP},#{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncome" >
+    insert into PLMS_LA_COLLECTOR_INCOME
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="rpmntId != null" >
+        RPMNT_ID,
+      </if>
+      <if test="collector != null" >
+        COLLECTOR,
+      </if>
+      <if test="collectorAgent != null" >
+        COLLECTOR_AGENT,
+      </if>
+      <if test="outVisit != null" >
+        OUT_VISIT,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+       <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="rpmntId != null" >
+        #{rpmntId,jdbcType=BIGINT},
+      </if>
+      <if test="collector != null" >
+        #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="collectorAgent != null" >
+        #{collectorAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisit != null" >
+        #{outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LA_COLLECTOR_INCOME
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LA_COLLECTOR_INCOME
+    <set >
+      <if test="record.rpmntId != null" >
+        RPMNT_ID = #{record.rpmntId,jdbcType=BIGINT},
+      </if>
+      <if test="record.collector != null" >
+        COLLECTOR = #{record.collector,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collectorAgent != null" >
+        COLLECTOR_AGENT = #{record.collectorAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outVisit != null" >
+        OUT_VISIT = #{record.outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LA_COLLECTOR_INCOME
+    set RPMNT_ID = #{record.rpmntId,jdbcType=BIGINT},
+      COLLECTOR = #{record.collector,jdbcType=VARCHAR},
+      COLLECTOR_AGENT = #{record.collectorAgent,jdbcType=VARCHAR},
+      OUT_VISIT = #{record.outVisit,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncome" >
+    update PLMS_LA_COLLECTOR_INCOME
+    <set >
+      <if test="collector != null" >
+        COLLECTOR = #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="collectorAgent != null" >
+        COLLECTOR_AGENT = #{collectorAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="outVisit != null" >
+        OUT_VISIT = #{outVisit,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+       <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncome" >
+    update PLMS_LA_COLLECTOR_INCOME
+    set 
+      COLLECTOR = #{collector,jdbcType=VARCHAR},
+      COLLECTOR_AGENT = #{collectorAgent,jdbcType=VARCHAR},
+      OUT_VISIT = #{outVisit,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where RPMNT_ID = #{rpmntId,jdbcType=BIGINT}
+  </update>
+  <!-- 批量插入还款数据-->
+  <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_LA_COLLECTOR_INCOME inco ( <include refid="Base_Column_List"/> )
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                       #{item.rpmntId,jdbcType=BIGINT},
+                       #{item.collector,jdbcType=VARCHAR},
+                       #{item.collectorAgent,jdbcType=VARCHAR},
+                       #{item.outVisit,jdbcType=VARCHAR},
+                 	   #{item.isActive,jdbcType=VARCHAR},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       0,1
+                from dual
+            </foreach>
+  </insert>
+  
+  <!--  查询昨天的实收情况（非微信还款） -->
+  <select id="searchYesterdayLfRpmnt" parameterType="map" resultType="com.ljwd.plms.web.vo.report.PlmsLaCollectorIncomeDto">
+  select
+        lr.id as rpmnt_id,
+        lr.appl_id as applId,
+        lr.bank_ac_id as bankAcId,
+       <!--  outUser2.outinfoId as outInfoId, -->
+        case when agentUser.user_name is not null then null
+             when su.USER_NAME is null then su2.USER_NAME
+             else su.USER_NAME   
+        end collectUser, 
+        agentUser.user_name collectorAgent,
+        <!-- outUser2.outUserName  outVisit,
+        outUser2.ASSIGN_DATE assignDate, -->
+        lr.INPUT_TIME as inputTime,
+        outsrc.APPROVE_TIME as approveTime
+        from lf_rpmnt lr 
+        left join LN_PAYMENT LP ON LP.APPL_ID = lr.APPL_ID 
+        LEFT JOIN plms_la_collect_alloc LCA ON LCA.APPL_ID = lr.APPL_ID AND LCA.ALLOC_END_DATE IS NULL AND LCA.IS_ACTIVE = 'Y' AND LCA.ALLOC_BEGIN_DATE &lt; lr.INPUT_TIME
+        LEFT JOIN SYS_USER SU ON SU.USER_ID = LCA.COLLECTOR
+        LEFT JOIN plms_la_collect_alloc LCA2 ON LCA2.APPL_ID = lr.APPL_ID AND LCA2.ALLOC_BEGIN_DATE &lt; lr.INPUT_TIME and LCA2.update_time >= lr.INPUT_TIME AND LCA2.IS_ACTIVE = 'Y'
+        LEFT JOIN SYS_USER SU2 ON SU2.USER_ID = LCA2.COLLECTOR
+        LEFT JOIN plms_LA_COLLECT_AGENT collectAgent ON LP.id = collectAgent.PAYMENT_ID 
+         AND collectAgent.ALLOC_BEGIN_DATE &lt;= lr.INPUT_TIME AND collectAgent.ALLOC_END_DATE >= lr.INPUT_TIME
+         AND collectAgent.IS_ACTIVE = 'Y'
+        LEFT JOIN SYS_USER agentUser ON collectAgent.AGENT = agentUser.USER_ID  
+       <!--  LEFT JOIN 
+          (select oovi.appl_id,
+          		  oovi.id as outinfoId,
+          		  outUser.user_name as outUserName ,
+          		  oovi.ASSIGN_DATE ,
+          		  oovi.END_DATE 
+          from plms_ovm_out_visit_info oovi
+          left join SYS_USER outUser on outUser.user_id = oovi.VISIT_BY
+         ) outUser2 on outUser2.appl_id = lr.appl_id and 
+        outUser2.ASSIGN_DATE &lt; lr.INPUT_TIME and (outUser2.END_DATE is null or outUser2.END_DATE >= lr.INPUT_TIME) -->
+        left join (select outsrc.id,outsrc.APPL_ID, outsrc.APPROVE_TIME from plms_la_appl_outsrc outsrc
+					right join (
+					select outsrc.APPL_ID,max(outsrc.id) as id from plms_la_appl_outsrc outsrc group by outsrc.APPL_ID)outsrc2
+					on outsrc2.id = outsrc.id and outsrc.appl_id = outsrc2.appl_id and outsrc.status !='REJECTED'
+				  )outsrc on outsrc.appl_id = lr.appl_id     
+        where 
+        <if test='type == "today"'>
+        	(trunc(#{createDataDate}) - trunc(lr.update_time))= 0 
+        </if>
+        <if test='type == "yesterday"'>
+        	(trunc(sysdate-1) - trunc(lr.update_time))= 0
+        </if>
+         AND (su.USER_NAME IS NOT NULL OR su2.USER_NAME IS NOT NULL ) <!-- OR outUser2.outUserName IS NOT NULL)  -->
+        AND LR.STATUS = 'ADDED' AND LR.POST_AMT > 0 and lr.BANK_AC_ID != 9
+  </select>
+  <!--  查询昨天的实收情况(微信还款) -->
+  <select id="searchYesterdayLfRpmnt_weixin"  parameterType="map" resultType="com.ljwd.plms.web.vo.report.PlmsLaCollectorIncomeDto">
+  	select
+        lr.id as rpmnt_id,
+        lr.appl_id as applId,
+        <!-- outUser2.outinfoId as outInfoId, -->
+        lr.bank_ac_id as bankAcId,
+        su.USER_NAME   collectUser,
+        su2.USER_NAME collectUser2,
+        agentUser.user_name collectorAgent,
+        agentUser2.user_name collectorAgent2,
+        <!-- outUser2.outUserName outVisit,
+        outUser2.ASSIGN_DATE assignDate, -->
+        lr.INPUT_TIME as inputTime,
+        outsrc.APPROVE_TIME as approveTime
+        from lf_rpmnt lr 
+        left join LN_PAYMENT LP ON LP.APPL_ID = lr.APPL_ID 
+        LEFT JOIN plms_la_collect_alloc LCA ON LCA.APPL_ID = lr.APPL_ID AND LCA.ALLOC_END_DATE IS NULL AND LCA.IS_ACTIVE = 'Y'  <!-- AND LCA.create_time &lt; lr.INPUT_TIME -->
+         and
+        <if test='type == "today"'>
+        	trunc(LCA.ALLOC_BEGIN_DATE)&lt;=trunc(#{createDataDate})
+        </if>
+        <if test='type == "yesterday"'>
+        	trunc(LCA.ALLOC_BEGIN_DATE)&lt;=trunc(sysdate-1)
+        </if> 
+        LEFT JOIN SYS_USER SU ON SU.USER_ID = LCA.COLLECTOR
+        LEFT JOIN plms_la_collect_alloc LCA2 ON LCA2.APPL_ID = lr.APPL_ID AND LCA2.ALLOC_BEGIN_DATE &lt; lr.INPUT_TIME and LCA2.update_time >= lr.INPUT_TIME AND LCA2.IS_ACTIVE = 'Y'
+        LEFT JOIN SYS_USER SU2 ON SU2.USER_ID = LCA2.COLLECTOR
+        LEFT JOIN plms_LA_COLLECT_AGENT collectAgent ON LP.id = collectAgent.PAYMENT_ID 
+        AND collectAgent.ALLOC_BEGIN_DATE &lt;= lr.INPUT_TIME AND collectAgent.ALLOC_END_DATE >= lr.INPUT_TIME
+     	AND collectAgent.IS_ACTIVE = 'Y' and collectAgent.CLIENT = LCA.COLLECTOR
+        LEFT JOIN SYS_USER agentUser ON collectAgent.AGENT = agentUser.USER_ID  
+        LEFT JOIN plms_LA_COLLECT_AGENT collectAgent2 ON LP.id = collectAgent2.PAYMENT_ID 
+        AND collectAgent2.ALLOC_BEGIN_DATE &lt;= lr.INPUT_TIME AND collectAgent2.ALLOC_END_DATE >= lr.INPUT_TIME
+         AND collectAgent2.IS_ACTIVE = 'Y' and collectAgent2.CLIENT = LCA2.COLLECTOR
+        LEFT JOIN SYS_USER agentUser2 ON collectAgent2.AGENT = agentUser2.USER_ID 
+        <!-- LEFT JOIN 
+          (select oovi.appl_id,
+          		  oovi.id as outinfoId,
+          		  outUser.user_name as outUserName ,
+          		  oovi.ASSIGN_DATE ,
+          		  oovi.END_DATE 
+          		  from plms_ovm_out_visit_info oovi
+          left join SYS_USER outUser on outUser.user_id = oovi.VISIT_BY
+         ) outUser2 on outUser2.appl_id = lr.appl_id and 
+        outUser2.ASSIGN_DATE &lt; lr.INPUT_TIME and (outUser2.END_DATE is null or outUser2.END_DATE >= lr.INPUT_TIME) -->
+        left join (select outsrc.id,outsrc.APPL_ID, outsrc.APPROVE_TIME from plms_la_appl_outsrc outsrc
+					right join (
+					select outsrc.APPL_ID,max(outsrc.id) as id from plms_la_appl_outsrc outsrc group by outsrc.APPL_ID)outsrc2
+					on outsrc2.id = outsrc.id and outsrc.appl_id = outsrc2.appl_id and outsrc.status !='REJECTED'
+				  )outsrc on outsrc.appl_id = lr.appl_id     
+        where 
+        <if test='type == "today"'>
+        	(trunc(#{createDataDate}) - trunc(lr.update_time))= 0
+        </if>
+        <if test='type == "yesterday"'>
+        	(trunc(sysdate-1) - trunc(lr.update_time))= 0
+        </if>
+        AND (su.USER_NAME IS NOT NULL OR su2.USER_NAME IS NOT NULL or agentUser.user_name is not null or agentUser2.user_name is not null<!--  OR outUser2.outUserName IS NOT NULL -->) 
+        AND LR.STATUS = 'ADDED' AND LR.POST_AMT > 0 
+        and lr.BANK_AC_ID = 9
+  </select>
+  
+  
+  <!-- 删除昨天的实收统计 -->
+  <delete id="deletePlmsLaCollectorIncome" parameterType="map">
+  	delete from PLMS_LA_COLLECTOR_INCOME where RPMNT_ID in (
+  		select lr.id from lf_rpmnt lr where 
+  		<if test='type == "today"'>
+  		(trunc(#{createDataDate}) - trunc(lr.update_time))= 0 
+  		</if>
+  		<if test='type == "yesterday"'>
+  		(trunc(sysdate-1) - trunc(lr.update_time))= 0 
+  		</if>
+		AND LR.STATUS = 'ADDED' AND LR.POST_AMT > 0  
+  	)
+  </delete>
+
+	<!-- 催收实收分页查询 -->
+	<select id="pageAllIncomeData"  parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" resultType="com.ljwd.plms.web.vo.report.PlmsLaCollectorIncomeResult">
+		  SELECT
+            LCI.RPMNT_ID rpmntId,
+            LC.CNTRCT_NO cntrctNo,
+            CC.CUST_NAME custName,
+            CC.ID_CARD_NO idCard,
+            LCI.COLLECTOR collector,
+            LCI.COLLECTOR_AGENT collectorAgent,
+            LCI.OUT_VISIT outVisit,
+            LR.POST_AMT rpmntAmt,
+            LR.TX_DATE rpmntDate,
+            LR.INPUT_TIME operationDate,
+            LR.REFUND_AMT refundAmt,
+            decode(LR.STATUS,'ADDED','正常','REVERSED','作废') status,
+            LR.UPDATE_TIME updatedTime,
+            case 
+            	when LR.STATUS = 'ADDED' AND LR.POST_AMT != 0 then '有效'
+            	when LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0) then '无效'
+            end isActive
+        FROM (
+        	select case 
+          			when a1.rpmnt_id is not null then a1.rpmnt_id
+          			when b.rpmnt_id is not null  then b.rpmnt_id
+         		   end as rpmnt_Id,
+ 			a1.collector,a1.COLLECTOR_AGENT,b.OUT_VISIT 
+ 			from plms_la_collector_income  a1 full join plms_la_outvisite_income b on a1.rpmnt_id = b.rpmnt_id
+        )LCI
+        LEFT JOIN LF_RPMNT LR ON LR.ID = LCI.rpmnt_id
+        LEFT JOIN LN_CNTRCT LC on LC.APPL_ID = lr.APPL_ID
+        LEFT JOIN CL_CUST cc on CC.APPL_ID = LR.APPL_ID
+		<where>
+			<if test='cntrctNo !=null and cntrctNo !=""'>
+				AND  LC.CNTRCT_NO = #{cntrctNo}
+			</if>
+			<if test='collector != null and collector !=""'> 
+            	AND  (LCI.COLLECTOR = #{collector} OR LCI.COLLECTOR_AGENT = #{collector}) 
+	        </if>
+	        <if test='outVisit != null and outVisit !=""'> 
+	            AND  LCI.OUT_VISIT = #{outVisit}
+	        </if>
+	        <if test='enterDateStart != null and enterDateStart != ""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &gt;= #{enterDateStart}
+	        </if>
+	        <if test='enterDateEnd != null and enterDateEnd !=""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &lt;= #{enterDateEnd}
+	        </if>
+	        <if test='repaymentDateStart != null and repaymentDateStart !=""'> 
+	            AND  trunc(LR.TX_DATE) &gt;= trunc(#{repaymentDateStart})
+	        </if>
+	        <if test='repaymentDateEnd != null and repaymentDateEnd !=""'> 
+	            AND  trunc(LR.TX_DATE) &lt;= trunc(#{repaymentDateEnd})
+	        </if>
+	        <if test='status != null and status !=""'> 
+	            AND  LR.STATUS = #{status}
+	        </if>
+	        <if test='isActive != null and isActive != ""'>
+	        	<choose>
+	        		<when test='isActive == "Y"'>
+	        			AND LR.STATUS = 'ADDED' AND LR.POST_AMT != 0
+	        		</when>
+	        		<when test='isActive == "N"'>
+	        			AND (LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0))
+	        		</when>
+	        	</choose>
+	        </if>
+		</where>
+		 <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by LR.INPUT_TIME desc
+            </otherwise>
+        </choose>
+			
+	
+	</select>
+	
+	<!-- 催收实收明细导出 -->
+	<select id="selectByExampleForExport" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" resultType="com.ljwd.plms.web.vo.report.PlmsLaCollectorIncomeExportResult">
+		select rownum rowNo, temp.* 
+			from
+		(	SELECT
+            LCI.RPMNT_ID rpmntId,
+            LC.CNTRCT_NO cntrctNo,
+            CC.CUST_NAME custName,
+            CC.ID_CARD_NO idCard,
+            LCI.COLLECTOR collector,
+            LCI.COLLECTOR_AGENT collectorAgent,
+            LCI.OUT_VISIT outVisit,
+            LR.POST_AMT rpmntAmt,
+            to_char(LR.TX_DATE,'yyyy-mm-dd') rpmntDateFmt,
+            LR.INPUT_TIME operationDate,
+            LR.REFUND_AMT refundAmt,
+            decode(LR.STATUS,'ADDED','正常','REVERSED','作废') status,
+            LR.UPDATE_TIME updatedTime,
+            case 
+            	when LR.STATUS = 'ADDED' AND LR.POST_AMT != 0 then '有效'
+            	when LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0) then '无效'
+            end isActive
+        FROM (
+        	select case 
+          			when a1.rpmnt_id is not null then a1.rpmnt_id
+          			when b.rpmnt_id is not null  then b.rpmnt_id
+         		   end as rpmnt_Id,
+ 			a1.collector,a1.COLLECTOR_AGENT,b.OUT_VISIT 
+ 			from plms_la_collector_income  a1 full join plms_la_outvisite_income b on a1.rpmnt_id = b.rpmnt_id
+        ) LCI
+        LEFT JOIN LF_RPMNT LR ON LR.ID = LCI.rpmnt_id
+        LEFT JOIN LN_CNTRCT LC on LC.APPL_ID = lr.APPL_ID
+        LEFT JOIN CL_CUST cc on CC.APPL_ID = LR.APPL_ID
+		<where>
+			<if test='cntrctNo !=null and cntrctNo !=""'>
+				AND  LC.CNTRCT_NO = #{cntrctNo}
+			</if>
+			<if test='collector != null and collector !=""'> 
+            	AND  (LCI.COLLECTOR = #{collector} OR LCI.COLLECTOR_AGENT = #{collector}) 
+	        </if>
+	        <if test='outVisit != null and outVisit !=""'> 
+	            AND  LCI.OUT_VISIT = #{outVisit}
+	        </if>
+	        <if test='enterDateStart != null and enterDateStart != ""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &gt;= #{enterDateStart}
+	        </if>
+	        <if test='enterDateEnd != null and enterDateEnd !=""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &lt;= #{enterDateEnd}
+	        </if>
+	        <if test='repaymentDateStart != null and repaymentDateStart !=""'> 
+	            AND  trunc(LR.TX_DATE) &gt;= trunc(#{repaymentDateStart})
+	        </if>
+	        <if test='repaymentDateEnd != null and repaymentDateEnd !=""'> 
+	            AND  trunc(LR.TX_DATE) &lt;= trunc(#{repaymentDateEnd})
+	        </if>
+	        <if test='status != null and status !=""'> 
+	            AND  LR.STATUS = #{status}
+	        </if>
+	        <if test='isActive != null and isActive != ""'>
+	        	<choose>
+	        		<when test='isActive == "Y"'>
+	        			AND LR.STATUS = 'ADDED' AND LR.POST_AMT != 0
+	        		</when>
+	        		<when test='isActive == "N"'>
+	        			AND (LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0))
+	        		</when>
+	        	</choose>
+	        </if>
+		</where>
+			order by LR.INPUT_TIME desc
+	)temp
+	</select>
+	<!--催收个人实收明细导出列表  -->
+	<select id="selectByExampleForPersonExport" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" resultType="com.ljwd.plms.web.vo.report.PlmsLaCollectorPersonIncomeExportResult">
+			select rownum rowNo, temp.* 
+			from
+		(	SELECT
+            LCI.RPMNT_ID rpmntId,
+            LC.CNTRCT_NO cntrctNo,
+            CC.CUST_NAME custName,
+            CC.ID_CARD_NO idCard,
+            LCI.COLLECTOR collector,
+            LCI.COLLECTOR_AGENT collectorAgent,
+          <!--   LCI.OUT_VISIT outVisit, -->
+            LR.POST_AMT rpmntAmt,
+            to_char(LR.TX_DATE,'yyyy-mm-dd') rpmntDateFmt,
+            LR.INPUT_TIME operationDate,
+            LR.REFUND_AMT refundAmt,
+            decode(LR.STATUS,'ADDED','正常','REVERSED','作废') status,
+            LR.UPDATE_TIME updatedTime,
+            case 
+            	when LR.STATUS = 'ADDED' AND LR.POST_AMT != 0 then '有效'
+            	when LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0) then '无效'
+            end isActive
+        FROM plms_LA_COLLECTOR_INCOME LCI
+        LEFT JOIN LF_RPMNT LR ON LR.ID = LCI.rpmnt_id
+        LEFT JOIN LN_CNTRCT LC on LC.APPL_ID = lr.APPL_ID
+        LEFT JOIN CL_CUST cc on CC.APPL_ID = LR.APPL_ID
+		<where>
+			<if test='cntrctNo !=null and cntrctNo !=""'>
+				AND  LC.CNTRCT_NO = #{cntrctNo}
+			</if>
+			<if test='collector != null and collector !=""'> 
+            	AND  (LCI.COLLECTOR = #{collector} OR LCI.COLLECTOR_AGENT = #{collector}) 
+	        </if>
+	       <!--  <if test='outVisit != null and outVisit !=""'> 
+	            AND  LCI.OUT_VISIT = #{outVisit}
+	        </if> -->
+	        <if test='enterDateStart != null and enterDateStart != ""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &gt;= #{enterDateStart}
+	        </if>
+	        <if test='enterDateEnd != null and enterDateEnd !=""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &lt;= #{enterDateEnd}
+	        </if>
+	        <if test='repaymentDateStart != null and repaymentDateStart !=""'> 
+	            AND  trunc(LR.TX_DATE) &gt;= trunc(#{repaymentDateStart})
+	        </if>
+	        <if test='repaymentDateEnd != null and repaymentDateEnd !=""'> 
+	            AND  trunc(LR.TX_DATE) &lt;= trunc(#{repaymentDateEnd})
+	        </if>
+	        <if test='status != null and status !=""'> 
+	            AND  LR.STATUS = #{status}
+	        </if>
+	        <if test='isActive != null and isActive != ""'>
+	        	<choose>
+	        		<when test='isActive == "Y"'>
+	        			AND LR.STATUS = 'ADDED' AND LR.POST_AMT != 0
+	        		</when>
+	        		<when test='isActive == "N"'>
+	        			AND (LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0))
+	        		</when>
+	        	</choose>
+	        </if>
+		</where>
+			order by LR.INPUT_TIME desc
+	)temp
+	</select>
+	
+	<!-- 外访个人实收明细导出列表 -->
+	<select id="selectByExampleForPersonOutVisitExport" parameterType="com.ljwd.plms.web.model.report.PlmsLaCollectorIncomeExample" resultType="com.ljwd.plms.web.vo.report.PlmsLaOutVisitPersonIncomeResult">
+	select rownum rowNo, temp.* 
+			from
+		(	SELECT
+            LCI.RPMNT_ID rpmntId,
+            LC.CNTRCT_NO cntrctNo,
+            CC.CUST_NAME custName,
+            CC.ID_CARD_NO idCard,
+          <!--   LCI.COLLECTOR collector,
+            LCI.COLLECTOR_AGENT collectorAgent, -->
+            LCI.OUT_VISIT outVisit, 
+            LR.POST_AMT rpmntAmt,
+            to_char(LR.TX_DATE,'yyyy-mm-dd') rpmntDateFmt,
+            LR.INPUT_TIME operationDate,
+            LR.REFUND_AMT refundAmt,
+            decode(LR.STATUS,'ADDED','正常','REVERSED','作废') status,
+            LR.UPDATE_TIME updatedTime,
+            case 
+            	when LR.STATUS = 'ADDED' AND LR.POST_AMT != 0 then '有效'
+            	when LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0) then '无效'
+            end isActive
+        FROM plms_la_outvisite_income LCI
+        LEFT JOIN LF_RPMNT LR ON LR.ID = LCI.rpmnt_id
+        LEFT JOIN LN_CNTRCT LC on LC.APPL_ID = lr.APPL_ID
+        LEFT JOIN CL_CUST cc on CC.APPL_ID = LR.APPL_ID
+		<where>
+			<if test='cntrctNo !=null and cntrctNo !=""'>
+				AND  LC.CNTRCT_NO = #{cntrctNo}
+			</if>
+			<!-- <if test='collector != null and collector !=""'> 
+            	AND  (LCI.COLLECTOR = #{collector} OR LCI.COLLECTOR_AGENT = #{collector}) 
+	        </if> -->
+	        <if test='outVisit != null and outVisit !=""'> 
+	            AND  LCI.OUT_VISIT = #{outVisit}
+	        </if>
+	        <if test='enterDateStart != null and enterDateStart != ""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &gt;= #{enterDateStart}
+	        </if>
+	        <if test='enterDateEnd != null and enterDateEnd !=""'> 
+	            AND  to_date(to_char(LR.INPUT_TIME,'yyyy-mm-dd'),'yyyy-mm-dd') &lt;= #{enterDateEnd}
+	        </if>
+	        <if test='repaymentDateStart != null and repaymentDateStart !=""'> 
+	            AND  trunc(LR.TX_DATE) &gt;= trunc(#{repaymentDateStart})
+	        </if>
+	        <if test='repaymentDateEnd != null and repaymentDateEnd !=""'> 
+	            AND  trunc(LR.TX_DATE) &lt;= trunc(#{repaymentDateEnd})
+	        </if>
+	        <if test='status != null and status !=""'> 
+	            AND  LR.STATUS = #{status}
+	        </if>
+	        <if test='isActive != null and isActive != ""'>
+	        	<choose>
+	        		<when test='isActive == "Y"'>
+	        			AND LR.STATUS = 'ADDED' AND LR.POST_AMT != 0
+	        		</when>
+	        		<when test='isActive == "N"'>
+	        			AND (LR.STATUS = 'REVERSED' OR (LR.STATUS = 'ADDED' AND LR.POST_AMT = 0))
+	        		</when>
+	        	</choose>
+	        </if>
+		</where>
+			order by LR.INPUT_TIME desc
+	)temp
+	</select>
+	
+	
+	<select id="selectByMap" parameterType="map" resultMap="BaseResultMap">
+		select lci.* from plms_LA_COLLECTOR_INCOME lci where 
+		lci.RPMNT_ID in 
+		<foreach item="item" index="index" collection="rpmntIds" open="(" separator="," close=")">  
+			  			#{item}  
+		</foreach>
+	</select>
+	
+	
+</mapper>

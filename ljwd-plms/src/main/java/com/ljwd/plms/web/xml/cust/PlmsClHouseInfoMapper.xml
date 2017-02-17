@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClHouseInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="HPC_NUMBER" property="hpcNumber" jdbcType="VARCHAR" />
+    <result column="ADDR" property="addr" jdbcType="VARCHAR" />
+    <result column="ADDR_PROVINCE_ID" property="addrProvinceId" jdbcType="BIGINT" />
+    <result column="ADDR_CITY_ID" property="addrCityId" jdbcType="BIGINT" />
+    <result column="ADDR_AREA_ID" property="addrAreaId" jdbcType="BIGINT" />
+    <result column="ADDR_DETAILS" property="addrDetails" jdbcType="VARCHAR" />
+    <result column="PURCHASE_MODE" property="purchaseMode" jdbcType="VARCHAR" />
+    <result column="LOAN_AMT" property="loanAmt" jdbcType="DECIMAL" />
+    <result column="MON_RPMNT" property="monRpmnt" jdbcType="DECIMAL" />
+    <result column="MORTGAGE_DATE" property="mortgageDate" jdbcType="TIMESTAMP" />
+    <result column="MORTGAGE_BANK" property="mortgageBank" jdbcType="VARCHAR" />
+    <result column="RPMNT_DATE" property="rpmntDate" jdbcType="TIMESTAMP" />
+    <result column="ESTIMATION_AMT" property="estimationAmt" jdbcType="DECIMAL" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="hpcNumber != null and hpcNumber != ''">
+            and T.HPC_NUMBER = #{hpcNumber}
+        </if>
+        <if test="addr != null and addr != ''">
+            and T.ADDR = #{addr}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.noThisId != null">
+                and T.ID &lt;&gt; #{example.noThisId}
+            </if>
+            <if test="example.hpcNumber != null and example.hpcNumber != ''">
+                and T.HPC_NUMBER = #{example.hpcNumber}
+            </if>
+            <if test="example.addr != null and example.addr != ''">
+                and T.ADDR = #{example.addr}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.HPC_NUMBER,
+    T.ADDR,
+    T.ADDR_PROVINCE_ID,
+    T.ADDR_CITY_ID,
+    T.ADDR_AREA_ID,
+    T.ADDR_DETAILS,
+    T.PURCHASE_MODE,
+    T.LOAN_AMT,
+    T.MON_RPMNT,
+    T.MORTGAGE_DATE,
+    T.MORTGAGE_BANK,
+    T.RPMNT_DATE,
+    T.ESTIMATION_AMT,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_HOUSE_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_HOUSE_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_HOUSE_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfoExample" >
+    delete from PLMS_CL_HOUSE_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_house_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_HOUSE_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{hpcNumber,jdbcType=VARCHAR},
+      #{addr,jdbcType=VARCHAR},
+      #{addrProvinceId,jdbcType=BIGINT},
+      #{addrCityId,jdbcType=BIGINT},
+      #{addrAreaId,jdbcType=BIGINT},
+      #{addrDetails,jdbcType=VARCHAR},
+      #{purchaseMode,jdbcType=VARCHAR},
+      #{loanAmt,jdbcType=DECIMAL},
+      #{monRpmnt,jdbcType=DECIMAL},
+      #{mortgageDate,jdbcType=TIMESTAMP},
+      #{mortgageBank,jdbcType=VARCHAR},
+      #{rpmntDate,jdbcType=TIMESTAMP},
+      #{estimationAmt,jdbcType=DECIMAL},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_house_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_HOUSE_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="hpcNumber != null" >
+          T.HPC_NUMBER,
+      </if>
+      <if test="addr != null" >
+          T.ADDR,
+      </if>
+      <if test="addrProvinceId != null" >
+          T.ADDR_PROVINCE_ID,
+      </if>
+      <if test="addrCityId != null" >
+          T.ADDR_CITY_ID,
+      </if>
+      <if test="addrAreaId != null" >
+          T.ADDR_AREA_ID,
+      </if>
+      <if test="addrDetails != null" >
+          T.ADDR_DETAILS,
+      </if>
+      <if test="purchaseMode != null" >
+          T.PURCHASE_MODE,
+      </if>
+      <if test="loanAmt != null" >
+          T.LOAN_AMT,
+      </if>
+      <if test="monRpmnt != null" >
+          T.MON_RPMNT,
+      </if>
+      <if test="mortgageDate != null" >
+          T.MORTGAGE_DATE,
+      </if>
+      <if test="mortgageBank != null" >
+          T.MORTGAGE_BANK,
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE,
+      </if>
+      <if test="estimationAmt != null" >
+          T.ESTIMATION_AMT,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="hpcNumber != null" >
+        #{hpcNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvinceId != null" >
+          #{addrProvinceId,jdbcType=BIGINT},
+      </if>
+      <if test="addrCityId != null" >
+          #{addrCityId,jdbcType=BIGINT},
+      </if>
+      <if test="addrAreaId != null" >
+          #{addrAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="addrDetails != null" >
+          #{addrDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="purchaseMode != null" >
+        #{purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+        #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="monRpmnt != null" >
+        #{monRpmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageDate != null" >
+        #{mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mortgageBank != null" >
+        #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+        #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="estimationAmt != null" >
+        #{estimationAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_HOUSE_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_HOUSE_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.hpcNumber != null" >
+          T.HPC_NUMBER = #{record.hpcNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null" >
+          T.ADDR = #{record.addr,jdbcType=VARCHAR},
+      </if>
+        <if test="record.addrProvinceId != null" >
+            T.ADDR_PROVINCE_ID = #{record.addrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrCityId != null" >
+            T.ADDR_CITY_ID = #{record.addrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrAreaId != null" >
+            T.ADDR_AREA_ID = #{record.addrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrDetails != null" >
+            T.ADDR_DETAILS = #{record.addrDetails,jdbcType=VARCHAR},
+        </if>
+      <if test="record.purchaseMode != null" >
+          T.PURCHASE_MODE = #{record.purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanAmt != null" >
+          T.LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.monRpmnt != null" >
+          T.MON_RPMNT = #{record.monRpmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgageDate != null" >
+          T.MORTGAGE_DATE = #{record.mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mortgageBank != null" >
+          T.MORTGAGE_BANK = #{record.mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rpmntDate != null" >
+          T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.estimationAmt != null" >
+          T.ESTIMATION_AMT = #{record.estimationAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_HOUSE_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.HPC_NUMBER = #{record.hpcNumber,jdbcType=VARCHAR},
+      T.ADDR = #{record.addr,jdbcType=VARCHAR},
+      T.ADDR_PROVINCE_ID = #{record.addrProvinceId,jdbcType=BIGINT},
+      T.ADDR_CITY_ID = #{record.addrCityId,jdbcType=BIGINT},
+      T.ADDR_AREA_ID = #{record.addrAreaId,jdbcType=BIGINT},
+      T.ADDR_DETAILS = #{record.addrDetails,jdbcType=VARCHAR},
+      T.PURCHASE_MODE = #{record.purchaseMode,jdbcType=VARCHAR},
+      T.LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      T.MON_RPMNT = #{record.monRpmnt,jdbcType=DECIMAL},
+      T.MORTGAGE_DATE = #{record.mortgageDate,jdbcType=TIMESTAMP},
+      T.MORTGAGE_BANK = #{record.mortgageBank,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      T.ESTIMATION_AMT = #{record.estimationAmt,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" >
+    update PLMS_CL_HOUSE_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="hpcNumber != null" >
+          T.HPC_NUMBER = #{hpcNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+          T.ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+        <if test="addrProvinceId != null" >
+            T.ADDR_PROVINCE_ID = #{addrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="addrCityId != null" >
+            T.ADDR_CITY_ID = #{addrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="addrAreaId != null" >
+            T.ADDR_AREA_ID = #{addrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="addrDetails != null" >
+            T.ADDR_DETAILS = #{addrDetails,jdbcType=VARCHAR},
+        </if>
+      <if test="purchaseMode != null" >
+          T.PURCHASE_MODE = #{purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+          T.LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="monRpmnt != null" >
+          T.MON_RPMNT = #{monRpmnt,jdbcType=DECIMAL},
+      </if>
+        <if test="monRpmntIsNull != null and monRpmntIsNull == true" >
+            T.MON_RPMNT = null,
+        </if>
+      <if test="mortgageDate != null" >
+          T.MORTGAGE_DATE = #{mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+        <if test="mortgageDateIsNull != null and mortgageDateIsNull == true" >
+            T.MORTGAGE_DATE = null,
+        </if>
+      <if test="mortgageBank != null" >
+          T.MORTGAGE_BANK = #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+        <if test="rpmntDateIsNull != null and rpmntDateIsNull == true" >
+            T.RPMNT_DATE = null,
+        </if>
+      <if test="estimationAmt != null" >
+          T.ESTIMATION_AMT = #{estimationAmt,jdbcType=DECIMAL},
+      </if>
+        <if test="estimationAmtIsNull != null and estimationAmtIsNull == true" >
+            T.ESTIMATION_AMT = null,
+        </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" >
+    update PLMS_CL_HOUSE_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.HPC_NUMBER = #{hpcNumber,jdbcType=VARCHAR},
+      T.ADDR = #{addr,jdbcType=VARCHAR},
+      T.ADDR_PROVINCE_ID = #{addrProvinceId,jdbcType=BIGINT},
+      T.ADDR_CITY_ID = #{addrCityId,jdbcType=BIGINT},
+      T.ADDR_AREA_ID = #{addrAreaId,jdbcType=BIGINT},
+      T.ADDR_DETAILS = #{addrDetails,jdbcType=VARCHAR},
+      T.PURCHASE_MODE = #{purchaseMode,jdbcType=VARCHAR},
+      T.LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      T.MON_RPMNT = #{monRpmnt,jdbcType=DECIMAL},
+      T.MORTGAGE_DATE = #{mortgageDate,jdbcType=TIMESTAMP},
+      T.MORTGAGE_BANK = #{mortgageBank,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      T.ESTIMATION_AMT = #{estimationAmt,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClHouseInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClHouseInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_HOUSE_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的房产信息 -->
+    <select id="findMfbmsHouseByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        select  'WIN' as SRC_CODE,
+                (ai.id) as appl_id,
+                (a.hpc_number) as hpc_number,
+                (a.addr) as addr,
+                (a.house_addr_province_id) as addr_province_id,
+                (a.house_addr_city_id) as addr_city_id,
+                (a.house_addr_area_id) as addr_area_id,
+                (a.addr_1) as addr_details,
+                (a.rpmnt_amt) as mon_rpmnt,
+                (c.id_card_no) as docno
+        from cl_house_info a
+        inner join cl_cust c on a.cust_id = c.id
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_house_info house
+            inner join plms_cl_cust_info cust on house.cl_cust_id = cust.id
+            where house.hpc_number = a.hpc_number
+              and house.addr = a.addr
+              and cust.docno = c.id_card_no
+        )
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        and a.owner_type &lt;&gt; 'RESIDENCE'
+        and a.house_type = 'OWNER'
+        and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_HOUSE_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_house_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.hpcNumber,jdbcType=VARCHAR},
+            #{item.addr,jdbcType=VARCHAR},
+            #{item.addrProvinceId,jdbcType=BIGINT},
+            #{item.addrCityId,jdbcType=BIGINT},
+            #{item.addrAreaId,jdbcType=BIGINT},
+            #{item.addrDetails,jdbcType=VARCHAR},
+            #{item.purchaseMode,jdbcType=VARCHAR},
+            #{item.loanAmt,jdbcType=DECIMAL},
+            #{item.monRpmnt,jdbcType=DECIMAL},
+            #{item.mortgageDate,jdbcType=TIMESTAMP},
+            #{item.mortgageBank,jdbcType=VARCHAR},
+            #{item.rpmntDate,jdbcType=TIMESTAMP},
+            #{item.estimationAmt,jdbcType=DECIMAL},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+</mapper>

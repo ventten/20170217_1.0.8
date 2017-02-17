@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LnCntrctMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LnCntrct">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="CNTRCT_NO" jdbcType="VARCHAR" property="cntrctNo" />
+    <result column="LOAN_AMT" jdbcType="DECIMAL" property="loanAmt" />
+    <result column="LOAN_PERIOD" jdbcType="DECIMAL" property="loanPeriod" />
+    <result column="INT_RATE" jdbcType="DECIMAL" property="intRate" />
+    <result column="CNTRCT_STATUS" jdbcType="VARCHAR" property="cntrctStatus" />
+    <result column="SIGN_USER" jdbcType="VARCHAR" property="signUser" />
+    <result column="SIGN_TIME" jdbcType="TIMESTAMP" property="signTime" />
+    <result column="APPOINT_TIME" jdbcType="TIMESTAMP" property="appointTime" />
+    <result column="APPOINT_NOTE" jdbcType="VARCHAR" property="appointNote" />
+    <result column="APPOINTED_BY" jdbcType="VARCHAR" property="appointedBy" />
+    <result column="CNTRCT_SN" jdbcType="DECIMAL" property="cntrctSn" />
+    <result column="SITE_CODE" jdbcType="VARCHAR" property="siteCode" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="DELAY_DAY" jdbcType="INTEGER" property="delayDay" />
+    <result column="APPR_AMT" jdbcType="DECIMAL" property="apprAmt" />
+    <result column="LOAN_DAY" jdbcType="INTEGER" property="loanDay" />
+    <result column="IS_SIGNAL" jdbcType="CHAR" property="isSignal" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="cntrctNo != null and cntrctNo != ''">
+            and T.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.APPL_ID,
+    T.CNTRCT_NO,
+    T.LOAN_AMT,
+    T.LOAN_PERIOD,
+    T.INT_RATE,
+    T.CNTRCT_STATUS,
+    T.SIGN_USER,
+    T.SIGN_TIME,
+    T.APPOINT_TIME,
+    T.APPOINT_NOTE,
+    T.APPOINTED_BY,
+    T.CNTRCT_SN,
+    T.SITE_CODE,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.DELAY_DAY,
+    T.APPR_AMT,
+    T.LOAN_DAY,
+    T.IS_SIGNAL
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnCntrctExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LN_CNTRCT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LN_CNTRCT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByCntrctNo" parameterType="string" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from LN_CNTRCT T
+    where T.CNTRCT_NO = #{value,jdbcType=VARCHAR}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnCntrctExample" resultType="java.lang.Integer">
+    select count(*) from LN_CNTRCT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <!--根据合同编号查找-->
+  <select id="selectCntrctAllocByCntrctNo" resultType="com.ljwd.plms.web.vo.case_collection.CntrctAllocDto" parameterType="string">
+      select cntrct.cntrct_no as cntrctNo,
+             cntrct.appl_id as applId,
+             minRec.PERIOD_NUM as overduePeriod,
+             minRec.overDays as overDays,
+             maxAlloc.collector as collector,
+             minAgent.agent as agent
+      from ln_cntrct cntrct
+      left join (
+          SELECT MIN(cn.appl_id) appl_id,
+                 MIN(rec.PERIOD_NUM) PERIOD_NUM,
+                 MAX(trunc(SYSDATE) - trunc(rec.RPMNT_DATE)) overDays
+          FROM LF_RECIV rec
+          inner join ln_cntrct cn on rec.cntrct_id = cn.id
+          WHERE rec.STATUS != 'PAID' AND rec.IS_DELETED = 'N' AND trunc(rec.MAX_RPMNT_DATE) &lt; trunc(SYSDATE) AND cn.cntrct_no = #{cntrctNo}
+      ) minRec on cntrct.appl_id = minRec.appl_id
+      left join (
+          select *
+          from plms_la_collect_alloc maxAlloc
+          where maxAlloc.Id =
+            ( select
+              max(alloc.id)
+              from plms_la_collect_alloc alloc
+              inner join ln_cntrct cn on alloc.appl_id = cn.appl_id
+              where alloc.Is_Active = 'Y' AND alloc.Alloc_Begin_Date &lt;= SYSDATE AND alloc.Alloc_End_Date is null and cn.cntrct_no = #{cntrctNo})
+      ) maxAlloc on cntrct.appl_id = maxAlloc.appl_id
+      left join (
+          select *
+          from plms_la_collect_agent minAgent
+          where minAgent.id =
+            ( select min(agent.id)
+              from plms_la_collect_agent agent
+              inner join ln_cntrct cn on agent.appl_id = cn.appl_id
+              where agent.Is_Active = 'Y' AND agent.Alloc_Begin_Date &lt;= SYSDATE AND SYSDATE &lt;= agent.Alloc_End_Date and agent.Alloc_End_Date &gt; agent.Alloc_Begin_Date and cn.cntrct_no = #{cntrctNo})
+      ) minAgent on maxAlloc.appl_id = minAgent.appl_id
+      and minAgent.alloc_begin_date &gt;= maxAlloc.alloc_begin_date
+      and minAgent.client = maxAlloc.collector
+      where cntrct.cntrct_no = #{cntrctNo}
+  </select>
+
+</mapper>

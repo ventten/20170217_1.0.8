@@ -1,0 +1,1587 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outVisit.PlmsOvmOutVisitInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CUST_TYPE" property="custType" jdbcType="VARCHAR" />
+    <result column="SUBMIT_DATE" property="submitDate" jdbcType="TIMESTAMP" />
+    <result column="SUBMIT_BY" property="submitBy" jdbcType="VARCHAR" />
+    <result column="SUBMIT_REASON" property="submitReason" jdbcType="VARCHAR" />
+    <result column="AUDIT_DATE" property="auditDate" jdbcType="TIMESTAMP" />
+    <result column="AUDIT_BY" property="auditBy" jdbcType="VARCHAR" />
+    <result column="AUDIT_REFUSE_REASON" property="auditRefuseReason" jdbcType="VARCHAR" />
+    <result column="ASSIGN_DATE" property="assignDate" jdbcType="TIMESTAMP" />
+    <result column="ASSIGN_BY" property="assignBy" jdbcType="VARCHAR" />
+    <result column="VISIT_BY" property="visitBy" jdbcType="VARCHAR" />
+    <result column="ASSIST_BY" property="assistBy" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="END_BY" property="endBy" jdbcType="VARCHAR" />
+    <result column="EXPECT_CLOSE_TIME" property="expectCloseTime" jdbcType="TIMESTAMP" />
+    <result column="REMAINDER_PRINCIPAL" property="remainderPrincipal" jdbcType="DECIMAL" />
+    <result column="OVERDUE_DAY" property="overdueDay" jdbcType="BIGINT" />
+    <result column="VISIT_PLAN_NUM" property="visitPlanNum" jdbcType="BIGINT" />
+    <result column="VISIT_OVER_NUM" property="visitOverNum" jdbcType="BIGINT" />
+    <result column="REGISTER_OVER_NUM" property="registerOverNum" jdbcType="BIGINT" />
+    <result column="HOUSE_OVER_NUM" property="houseOverNum" jdbcType="BIGINT" />
+    <result column="COMPANY_OVER_NUM" property="companyOverNum" jdbcType="BIGINT" />
+    <result column="CASE_TYPE" property="caseType" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="CLOSED_DATE" property="closedDate" jdbcType="TIMESTAMP" />
+    <result column="CLOSED_TYPE" property="closedType" jdbcType="VARCHAR" />
+    <result column="CLOSED_REASON" property="closedReason" jdbcType="VARCHAR" />
+    <result column="VISIT_TYPE" property="visitType" jdbcType="CHAR" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, APPL_ID, STATUS, CUST_TYPE, SUBMIT_DATE, SUBMIT_BY, SUBMIT_REASON, AUDIT_DATE, 
+    AUDIT_BY, AUDIT_REFUSE_REASON, ASSIGN_DATE, ASSIGN_BY, VISIT_BY, ASSIST_BY, END_DATE, 
+    END_BY, EXPECT_CLOSE_TIME, REMAINDER_PRINCIPAL, OVERDUE_DAY, VISIT_PLAN_NUM, VISIT_OVER_NUM, 
+    CASE_TYPE, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ,CLOSED_DATE,CLOSED_TYPE,CLOSED_REASON,VISIT_TYPE,
+    REGISTER_OVER_NUM,HOUSE_OVER_NUM,COMPANY_OVER_NUM
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_INFO
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_VISIT_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_OVM_OUT_VISIT_INFO
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfoExample" >
+    delete from PLMS_OVM_OUT_VISIT_INFO
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+    insert into PLMS_OVM_OUT_VISIT_INFO (ID, APPL_ID, STATUS, 
+      CUST_TYPE, SUBMIT_DATE, SUBMIT_BY, 
+      SUBMIT_REASON, AUDIT_DATE, AUDIT_BY, 
+      AUDIT_REFUSE_REASON, ASSIGN_DATE, ASSIGN_BY, 
+      VISIT_BY, ASSIST_BY, END_DATE, 
+      END_BY, EXPECT_CLOSE_TIME, REMAINDER_PRINCIPAL, 
+      OVERDUE_DAY, VISIT_PLAN_NUM, VISIT_OVER_NUM, 
+      CASE_TYPE, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, REC_VER, 
+      TAG_SEQ,CLOSED_DATE,CLOSED_TYPE,CLOSED_REASON,VISIT_TYPE,
+      REGISTER_OVER_NUM,HOUSE_OVER_NUM,COMPANY_OVER_NUM
+      )
+    values (#{id,jdbcType=BIGINT}, #{applId,jdbcType=BIGINT}, #{status,jdbcType=VARCHAR}, 
+      #{custType,jdbcType=VARCHAR}, #{submitDate,jdbcType=TIMESTAMP}, #{submitBy,jdbcType=VARCHAR}, 
+      #{submitReason,jdbcType=VARCHAR}, #{auditDate,jdbcType=TIMESTAMP}, #{auditBy,jdbcType=VARCHAR}, 
+      #{auditRefuseReason,jdbcType=VARCHAR}, #{assignDate,jdbcType=TIMESTAMP}, #{assignBy,jdbcType=VARCHAR}, 
+      #{visitBy,jdbcType=VARCHAR}, #{assistBy,jdbcType=VARCHAR}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{endBy,jdbcType=VARCHAR}, #{expectCloseTime,jdbcType=TIMESTAMP}, #{remainderPrincipal,jdbcType=DECIMAL}, 
+      #{overdueDay,jdbcType=BIGINT}, #{visitPlanNum,jdbcType=BIGINT}, #{visitOverNum,jdbcType=BIGINT}, 
+      #{caseType,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, 
+      #{tagSeq,jdbcType=BIGINT}, #{closedDate,jdbcType=TIMESTAMP},#{closedType,jdbcType=VARCHAR}, #{closedReason,jdbcType=VARCHAR},
+      #{visitType,jdbcType=CHAR}, #{registerOverNum,jdbcType=BIGINT},#{houseOverNum,jdbcType=BIGINT},#{companyOverNum,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo">
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_OVM_OUT_VISIT_INFO.Nextval from DUAL  
+	</selectKey> 
+    insert into PLMS_OVM_OUT_VISIT_INFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applId != null" >
+        APPL_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="custType != null" >
+        CUST_TYPE,
+      </if>
+      <if test="submitDate != null" >
+        SUBMIT_DATE,
+      </if>
+      <if test="submitBy != null" >
+        SUBMIT_BY,
+      </if>
+      <if test="submitReason != null" >
+        SUBMIT_REASON,
+      </if>
+      <if test="auditDate != null" >
+        AUDIT_DATE,
+      </if>
+      <if test="auditBy != null" >
+        AUDIT_BY,
+      </if>
+      <if test="auditRefuseReason != null" >
+        AUDIT_REFUSE_REASON,
+      </if>
+      <if test="assignDate != null" >
+        ASSIGN_DATE,
+      </if>
+      <if test="assignBy != null" >
+        ASSIGN_BY,
+      </if>
+      <if test="visitBy != null" >
+        VISIT_BY,
+      </if>
+      <if test="assistBy != null" >
+        ASSIST_BY,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="endBy != null" >
+        END_BY,
+      </if>
+      <if test="expectCloseTime != null" >
+        EXPECT_CLOSE_TIME,
+      </if>
+      <if test="remainderPrincipal != null" >
+        REMAINDER_PRINCIPAL,
+      </if>
+      <if test="overdueDay != null" >
+        OVERDUE_DAY,
+      </if>
+      <if test="visitPlanNum != null" >
+        VISIT_PLAN_NUM,
+      </if>
+      <if test="visitOverNum != null" >
+        VISIT_OVER_NUM,
+      </if>
+      <if test="caseType != null" >
+        CASE_TYPE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ,
+       <if test="closedDate != null" >
+			CLOSED_DATE,     
+	   </if>
+       <if test="closedType != null" >
+			CLOSED_TYPE,      
+		</if>
+       <if test="closedReason != null" >
+           CLOSED_REASON ,
+      </if> 
+      <if test="visitType != null" >
+           VISIT_TYPE ,
+      </if> 
+      <if test="registerOverNum != null" >
+           REGISTER_OVER_NUM ,
+      </if>
+      <if test="houseOverNum != null" >
+           HOUSE_OVER_NUM ,
+      </if>
+      <if test="companyOverNum != null" >
+           COMPANY_OVER_NUM ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null" >
+        #{custType,jdbcType=VARCHAR},
+      </if>
+      <if test="submitDate != null" >
+        #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitBy != null" >
+        #{submitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="submitReason != null" >
+        #{submitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null" >
+        #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null" >
+        #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRefuseReason != null" >
+        #{auditRefuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="assignDate != null" >
+        #{assignDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="assignBy != null" >
+        #{assignBy,jdbcType=VARCHAR},
+      </if>
+      <if test="visitBy != null" >
+        #{visitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="assistBy != null" >
+        #{assistBy,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endBy != null" >
+        #{endBy,jdbcType=VARCHAR},
+      </if>
+      <if test="expectCloseTime != null" >
+        #{expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainderPrincipal != null" >
+        #{remainderPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="overdueDay != null" >
+        #{overdueDay,jdbcType=BIGINT},
+      </if>
+      <if test="visitPlanNum != null" >
+        #{visitPlanNum,jdbcType=BIGINT},
+      </if>
+      <if test="visitOverNum != null" >
+        #{visitOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="caseType != null" >
+        #{caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      0,1,
+      <if test="closedDate != null" >
+        #{closedDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="closedType != null" >
+        #{closedType,jdbcType=VARCHAR},
+      </if>
+      <if test="closedReason != null" >
+        #{closedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitType != null" >
+        #{visitType,jdbcType=CHAR},
+      </if>
+      <if test="registerOverNum != null" >
+        #{registerOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="houseOverNum != null" >
+        #{houseOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="companyOverNum != null" >
+        #{companyOverNum,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OVM_OUT_VISIT_INFO
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_INFO
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+        APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.custType != null" >
+        CUST_TYPE = #{record.custType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitDate != null" >
+        SUBMIT_DATE = #{record.submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.submitBy != null" >
+        SUBMIT_BY = #{record.submitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitReason != null" >
+        SUBMIT_REASON = #{record.submitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditDate != null" >
+        AUDIT_DATE = #{record.auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.auditBy != null" >
+        AUDIT_BY = #{record.auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditRefuseReason != null" >
+        AUDIT_REFUSE_REASON = #{record.auditRefuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignDate != null" >
+        ASSIGN_DATE = #{record.assignDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.assignBy != null" >
+        ASSIGN_BY = #{record.assignBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitBy != null" >
+        VISIT_BY = #{record.visitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assistBy != null" >
+        ASSIST_BY = #{record.assistBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endDate != null" >
+        END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endBy != null" >
+        END_BY = #{record.endBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expectCloseTime != null" >
+        EXPECT_CLOSE_TIME = #{record.expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remainderPrincipal != null" >
+        REMAINDER_PRINCIPAL = #{record.remainderPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.overdueDay != null" >
+        OVERDUE_DAY = #{record.overdueDay,jdbcType=BIGINT},
+      </if>
+      <if test="record.visitPlanNum != null" >
+        VISIT_PLAN_NUM = #{record.visitPlanNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.visitOverNum != null" >
+        VISIT_OVER_NUM = #{record.visitOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="record.caseType != null" >
+        CASE_TYPE = #{record.caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+       <if test="record.closedDate != null" >
+        CLOSED_DATE = #{record.closedDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.closedType != null" >
+        CLOSED_TYPE = #{record.closedType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.closedReason != null" >
+        CLOSED_REASON = #{record.closedReason,jdbcType=VARCHAR},
+      </if>
+       <if test="record.visitType != null" >
+        VISIT_TYPE = #{record.visitType,jdbcType=CHAR},
+      </if>
+       <if test="record.registerOverNum != null" >
+        REGISTER_OVER_NUM = #{record.registerOverNum,jdbcType=BIGINT},
+      </if>
+       <if test="record.houseOverNum != null" >
+        HOUSE_OVER_NUM = #{record.houseOverNum,jdbcType=BIGINT},
+      </if>
+       <if test="record.companyOverNum != null" >
+        COMPANY_OVER_NUM = #{record.companyOverNum,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OVM_OUT_VISIT_INFO
+    set ID = #{record.id,jdbcType=BIGINT},
+      APPL_ID = #{record.applId,jdbcType=BIGINT},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      CUST_TYPE = #{record.custType,jdbcType=VARCHAR},
+      SUBMIT_DATE = #{record.submitDate,jdbcType=TIMESTAMP},
+      SUBMIT_BY = #{record.submitBy,jdbcType=VARCHAR},
+      SUBMIT_REASON = #{record.submitReason,jdbcType=VARCHAR},
+      AUDIT_DATE = #{record.auditDate,jdbcType=TIMESTAMP},
+      AUDIT_BY = #{record.auditBy,jdbcType=VARCHAR},
+      AUDIT_REFUSE_REASON = #{record.auditRefuseReason,jdbcType=VARCHAR},
+      ASSIGN_DATE = #{record.assignDate,jdbcType=TIMESTAMP},
+      ASSIGN_BY = #{record.assignBy,jdbcType=VARCHAR},
+      VISIT_BY = #{record.visitBy,jdbcType=VARCHAR},
+      ASSIST_BY = #{record.assistBy,jdbcType=VARCHAR},
+      END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      END_BY = #{record.endBy,jdbcType=VARCHAR},
+      EXPECT_CLOSE_TIME = #{record.expectCloseTime,jdbcType=TIMESTAMP},
+      REMAINDER_PRINCIPAL = #{record.remainderPrincipal,jdbcType=DECIMAL},
+      OVERDUE_DAY = #{record.overdueDay,jdbcType=BIGINT},
+      VISIT_PLAN_NUM = #{record.visitPlanNum,jdbcType=BIGINT},
+      VISIT_OVER_NUM = #{record.visitOverNum,jdbcType=BIGINT},
+      CASE_TYPE = #{record.caseType,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      CLOSED_DATE = #{record.closedDate,jdbcType=VARCHAR},
+      CLOSED_TYPE = #{record.closedType,jdbcType=VARCHAR},
+      CLOSED_REASON = #{record.closedReason,jdbcType=VARCHAR},
+      VISIT_TYPE = #{record.visitType,jdbcType=CHAR},
+      REGISTER_OVER_NUM = #{record.registerOverNum,jdbcType=BIGINT},
+      HOUSE_OVER_NUM = #{record.houseOverNum,jdbcType=BIGINT},
+      COMPANY_OVER_NUM = #{record.companyOverNum,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+    update PLMS_OVM_OUT_VISIT_INFO
+    <set >
+      <if test="applId != null" >
+        APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="custType != null" >
+        CUST_TYPE = #{custType,jdbcType=VARCHAR},
+      </if>
+      <if test="submitDate != null" >
+        SUBMIT_DATE = #{submitDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="submitBy != null" >
+        SUBMIT_BY = #{submitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="submitReason != null" >
+        SUBMIT_REASON = #{submitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="auditDate != null" >
+        AUDIT_DATE = #{auditDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null" >
+        AUDIT_BY = #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditRefuseReason != null" >
+        AUDIT_REFUSE_REASON = #{auditRefuseReason,jdbcType=VARCHAR},
+      </if>
+      <if test="assignDate != null" >
+        ASSIGN_DATE = #{assignDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="assignBy != null" >
+        ASSIGN_BY = #{assignBy,jdbcType=VARCHAR},
+      </if>
+      <if test="visitBy != null" >
+        VISIT_BY = #{visitBy,jdbcType=VARCHAR},
+      </if>
+      <if test="assistBy != null" >
+        ASSIST_BY = #{assistBy,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endBy != null" >
+        END_BY = #{endBy,jdbcType=VARCHAR},
+      </if>
+      <if test="expectCloseTime != null" >
+        EXPECT_CLOSE_TIME = #{expectCloseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remainderPrincipal != null" >
+        REMAINDER_PRINCIPAL = #{remainderPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="overdueDay != null" >
+        OVERDUE_DAY = #{overdueDay,jdbcType=BIGINT},
+      </if>
+      <if test="visitPlanNum != null" >
+        VISIT_PLAN_NUM = #{visitPlanNum,jdbcType=BIGINT},
+      </if>
+      <if test="visitOverNum != null" >
+        VISIT_OVER_NUM = #{visitOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="caseType != null" >
+        CASE_TYPE = #{caseType,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="closedDate != null" >
+        CLOSED_DATE = #{closedDate,jdbcType=VARCHAR},
+      </if>
+      <if test="closedType != null" >
+        CLOSED_TYPE = #{closedType,jdbcType=VARCHAR},
+      </if>
+      <if test="closedReason != null" >
+        CLOSED_REASON = #{closedReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitType != null" >
+        VISIT_TYPE = #{visitType,jdbcType=CHAR},
+      </if>
+      <if test="registerOverNum != null" >
+        REGISTER_OVER_NUM = #{registerOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="houseOverNum != null" >
+        HOUSE_OVER_NUM = #{houseOverNum,jdbcType=BIGINT},
+      </if>
+      <if test="companyOverNum != null" >
+        COMPANY_OVER_NUM = #{companyOverNum,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+    update PLMS_OVM_OUT_VISIT_INFO
+    set APPL_ID = #{applId,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CUST_TYPE = #{custType,jdbcType=VARCHAR},
+      SUBMIT_DATE = #{submitDate,jdbcType=TIMESTAMP},
+      SUBMIT_BY = #{submitBy,jdbcType=VARCHAR},
+      SUBMIT_REASON = #{submitReason,jdbcType=VARCHAR},
+      AUDIT_DATE = #{auditDate,jdbcType=TIMESTAMP},
+      AUDIT_BY = #{auditBy,jdbcType=VARCHAR},
+      AUDIT_REFUSE_REASON = #{auditRefuseReason,jdbcType=VARCHAR},
+      ASSIGN_DATE = #{assignDate,jdbcType=TIMESTAMP},
+      ASSIGN_BY = #{assignBy,jdbcType=VARCHAR},
+      VISIT_BY = #{visitBy,jdbcType=VARCHAR},
+      ASSIST_BY = #{assistBy,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      END_BY = #{endBy,jdbcType=VARCHAR},
+      EXPECT_CLOSE_TIME = #{expectCloseTime,jdbcType=TIMESTAMP},
+      REMAINDER_PRINCIPAL = #{remainderPrincipal,jdbcType=DECIMAL},
+      OVERDUE_DAY = #{overdueDay,jdbcType=BIGINT},
+      VISIT_PLAN_NUM = #{visitPlanNum,jdbcType=BIGINT},
+      VISIT_OVER_NUM = #{visitOverNum,jdbcType=BIGINT},
+      CASE_TYPE = #{caseType,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      CLOSED_DATE = #{closedDate,jdbcType=VARCHAR},
+      CLOSED_TYPE = #{closedType,jdbcType=VARCHAR},
+      CLOSED_REASON = #{closedReason,jdbcType=VARCHAR},
+      VISIT_TYPE = #{visitType,jdbcType=CHAR},
+      REGISTER_OVER_NUM = #{registerOverNum,jdbcType=BIGINT},
+      HOUSE_OVER_NUM = #{houseOverNum,jdbcType=BIGINT},
+      COMPANY_OVER_NUM = #{companyOverNum,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+   <!-- 批量修改外访信息表中的数据 -->
+    <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_OVM_OUT_VISIT_INFO 
+            <set>
+            <if test="item.status != null" >
+		        STATUS = #{item.status},
+		    </if>
+             <if test="item.auditDate != null" >
+		        AUDIT_DATE = #{item.auditDate},
+		      </if>
+		      <if test="item.auditBy != null" >
+		        AUDIT_BY = #{item.auditBy},
+		      </if>
+		      <if test="item.auditRefuseReason != null" >
+		        AUDIT_REFUSE_REASON = #{item.auditRefuseReason},
+		      </if>
+		      <if test="item.assignDate != null" >
+		        ASSIGN_DATE = #{item.assignDate},
+		      </if>
+		      <if test="item.assignBy != null" >
+		        ASSIGN_BY = #{item.assignBy},
+		      </if>
+		      <if test="item.visitBy != null" >
+		        VISIT_BY = #{item.visitBy},
+		      </if>
+		      <if test="item.assistBy != null" >
+		        ASSIST_BY = #{assistBy},
+		      </if>
+		      <if test="item.endDate != null" >
+		        END_DATE = #{item.endDate},
+		      </if>
+		      <if test="item.endBy != null" >
+		        END_BY = #{item.endBy},
+		      </if>
+		      <if test="item.expectCloseTime != null" >
+		        EXPECT_CLOSE_TIME = #{item.expectCloseTime},
+		      </if>
+		      <if test="item.remainderPrincipal != null" >
+		        REMAINDER_PRINCIPAL = #{item.remainderPrincipal},
+		      </if>
+		      <if test="item.overdueDay != null" >
+		        OVERDUE_DAY = #{item.overdueDay},
+		      </if>
+		      <if test="item.visitPlanNum != null" >
+		        VISIT_PLAN_NUM = #{item.visitPlanNum},
+		      </if>
+		      <if test="item.visitOverNum != null" >
+		        VISIT_OVER_NUM = #{item.visitOverNum},
+		      </if>
+		      <if test="item.caseType != null" >
+		        CASE_TYPE = #{item.caseType},
+		      </if>
+		      <if test="item.updatedBy != null" >
+		        UPDATED_BY = #{item.updatedBy},
+		      </if>
+		      <if test="item.updateTime != null" >
+		        UPDATE_TIME = #{item.updateTime},
+		      </if>
+		       <if test="item.recVer != null" >
+		        REC_VER = #{item.recVer} + 1,
+		      </if>
+		      <if test="item.tagSeq != null" >
+		        TAG_SEQ = #{item.tagSeq},
+		      </if>
+		      <if test="item.closedDate != null" >
+		        CLOSED_DATE = #{item.closedDate},
+		      </if>
+		      <if test="item.closedType != null" >
+		        CLOSED_TYPE = #{item.closedType},
+		      </if>
+		      <if test="item.closedReason != null" >
+		        CLOSED_REASON = #{item.closedReason},
+		      </if>
+		      <if test="item.registerOverNum != null" >
+      			REGISTER_OVER_NUM = #{item.registerOverNum},
+		      </if>
+		      <if test="item.houseOverNum != null" >
+      			HOUSE_OVER_NUM = #{item.houseOverNum},
+		      </if>
+		      <if test="item.companyOverNum != null" >
+      			COMPANY_OVER_NUM = #{item.companyOverNum},
+		      </if>
+            </set>
+            where id = #{item.id}
+            </foreach>
+        ;end;
+    </update>
+  
+  
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" extends="BaseResultMap">
+        <result column="custName" property="custName" jdbcType="VARCHAR"/>       
+   </resultMap>
+  
+  
+  <!--  此案件已经存在已提交/已审核/已分配的外访记录，不能再提交 -->
+    <select id="checkIfExistOutVisitInfo" parameterType="map" resultMap="BaseResultMap_Ext" >
+  		select outVisit.*, cust.CUST_NAME as custName
+	    from PLMS_OVM_OUT_VISIT_INFO outVisit 
+	    left join cl_cust cust on cust.APPL_ID = outVisit.APPL_ID
+	    where 1=1
+	    <if test='applIds !=null and applIds !=""'>
+	    		and  outVisit.APPL_ID in
+		    <foreach item="item" index="index" collection="applIds" open="(" separator="," close=")">  
+				  			#{item}  
+			</foreach>
+	    </if>
+	    <if test='applId !=null and applId !=""'>
+		    and  outVisit.APPL_ID = #{applId}
+	    </if>
+	    and outVisit.status in ('Submitted', 'Audited', 'Assigned', 'Planing', 'Visited', 'NoVisit', 'Outsourced')
+  	</select>
+  	
+  	<!-- 外访审核分页 -->
+  	<select id="selectAuditByExampleAndPage" resultType="com.ljwd.plms.web.vo.outVisit.OutVisitAuditResult" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitAuditParamDto">
+  		  SELECT 
+  		  outVisitInfo.ID                     AS id,
+  		  outVisitInfo.APPL_ID                AS applId,
+          payment.ID                          AS paymentId,
+          payment_type.TYPE_NAME              AS paymentName,
+          cntrct.CNTRCT_NO                    AS cntrctNo,
+          cust.CUST_NAME                      AS custName,
+          cust.ID_CARD_NO                     AS docno,
+          sys_user.user_name                  as submitBy,
+          sysOrg.ORG_NAME                     AS submitOrgName,
+          outVisitInfo.SUBMIT_DATE            AS submitDate,
+          site.SITE_NAME                      AS siteName,
+          payment.PAY_AMT                     AS loanAmt,
+          outVisitInfo.CUST_TYPE              AS custType,              
+          DECODE(outVisitInfo.CUST_TYPE, 'Bouncing', '多次跳票', 'Lost', '失联', 'Others', '其他') 		AS		custTypeName,
+          (nvl(cntrct.LOAN_AMT,0)-NVL(applAc.REPAID_PRINCIPAL,0) - NVL(returnRec.RETURN_AMT,0)) AS remainingPrincipal,
+          recivB.overdueDays                  AS overDays,
+          outVisitInfo.STATUS                 AS auditStatus,
+          CASE outVisitInfo.STATUS  WHEN 'Submitted' THEN '未审核'  
+                                    WHEN 'AuditRefused' THEN '审核拒绝'  
+                                    ELSE '已审核' 
+                                    END AS		auditStatusName,
+              
+          outVisitInfo.AUDIT_DATE             AS auditDate,
+          aa.submitdNum                      AS submitdNum,
+          outVisitInfo.SUBMIT_REASON          AS remark
+          
+        FROM   plms_OVM_OUT_VISIT_INFO outVisitInfo
+        LEFT JOIN            
+          LN_CNTRCT cntrct ON cntrct.APPL_ID = outVisitInfo.APPL_ID
+        LEFT JOIN
+          CL_CUST cust ON cust.APPL_ID = outVisitInfo.APPL_ID
+        LEFT JOIN
+          SYS_USER sys_user ON sys_user.USER_ID = outVisitInfo.SUBMIT_BY
+        LEFT JOIN
+          SYS_EMP emp ON emp.ID = sys_user.EMP_ID
+        LEFT JOIN
+          SYS_ORG sysOrg ON sysOrg.ID = emp.ORG_ID
+        LEFT JOIN
+          SYS_SITE site ON site.SITE_CODE = cntrct.SITE_CODE
+        LEFT JOIN
+          LN_PAYMENT payment ON payment.APPL_ID = outVisitInfo.APPL_ID
+        LEFT JOIN
+          LN_APPL_INFO appl ON appl.ID = outVisitInfo.APPL_ID
+        LEFT JOIN
+          SYS_PAYMENT_TYPE payment_type  ON payment_type.code  = appl.payment_type
+        LEFT JOIN 
+        (
+          SELECT appl_id, max(ceil(to_date(to_char(sysdate,'yyyy-mm-dd'),'yyyy-mm-dd') - rpmnt_date)) overdueDays  
+          from lf_reciv
+          WHERE status &lt;&gt; 'PAID' AND max_rpmnt_date &lt; to_date(to_char(sysdate,'yyyy-mm-dd'),'yyyy-mm-dd') AND is_deleted = 'N'
+          GROUP BY appl_id
+        ) recivB ON recivB.appl_id = outVisitInfo.APPL_ID
+        LEFT JOIN LF_APPL_AC applAc on applAc.appl_id = outVisitInfo.APPL_ID        
+        LEFT JOIN 
+        (
+            SELECT DISTINCT retRec.* FROM
+            (
+            SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT FROM  
+            LF_RECIV rec 
+            INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') 
+            where 
+            rec.RETURN_AMT > 0 
+            ) retRec
+        )returnRec ON returnRec.APPL_ID = outVisitInfo.APPL_ID  
+        LEFT JOIN
+        (
+            select distinct visitinfo.appl_id appl_id,  count(*) submitdnum
+            from plms_OVM_OUT_VISIT_INFO visitinfo 
+            group by visitinfo.appl_id
+          ) aa ON aa.appl_id = outVisitInfo.APPL_ID  
+        WHERE   1=1        
+         <if test='custType !=null and custType !=""'>
+         	and outVisitInfo.CUST_TYPE = #{custType}
+         </if>
+         <if test='cntrctNo !=null and cntrctNo !=""'>
+         	and cntrct.CNTRCT_NO  = #{cntrctNo}       
+         </if>
+         <if test='custName != null and custName !=""'> 
+            AND  cust.CUST_NAME = #{custName}
+         </if>
+         <if test='docno != null and docno !=""'> 
+            AND cust.ID_CARD_NO = #{docno}
+         </if>
+         <if test='auditeStatus !=null and auditeStatus !=""'>
+         	<if test="auditeStatus == 'Audited'">
+         		and outVisitInfo.status in ('Audited', 'Assigned', 'Planing', 'Visited', 'NoVisit', 'Closed', 'Overdued', 'Settle')
+         	</if>
+         	 <if test="auditeStatus != 'Audited'"> 
+              	AND outVisitInfo.STATUS = #{auditeStatus}
+            </if>
+         </if>
+         <if test='orgId !=null and orgId !=""'>
+         	    AND sysOrg.ID IN (select id from SYS_ORG start with id =#{orgId}  connect by prior id = pid)    
+         </if>
+          <if test='submitDateStart != null and  submitDateStart !=""'> 
+            AND trunc(outVisitInfo.SUBMIT_DATE) &gt;= trunc(#{submitDateStart})
+          </if>
+          <if test='submitDateEnd != null and submitDateEnd !=""'> 
+            AND trunc(outVisitInfo.SUBMIT_DATE) &lt;= trunc(#{submitDateEnd})
+          </if>
+          <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                ORDER BY outVisitInfo.ID  desc  
+            </otherwise>
+        </choose>
+        
+  	</select>
+  	
+  	<!--此案件历史审核通过次数  -->
+  	<select id="checkIsAuditedOutVisitInfo" parameterType="java.lang.Long" resultType="java.lang.Long" >
+  		select count(*) from plms_OVM_OUT_VISIT_INFO
+  		where appl_id = #{applId} and status in ('Audited', 'Assigned', 'Planing', 'Visited', 'NoVisit', 'Closed', 'Overdued', 'Settle', 'Outsourced', 'Normal')
+  	
+  	</select>
+  	<!--  此案件最早逾期期数   -->
+  	<select id="searchMinOverduePeriodByApplId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+  		 select recieve.period_num
+ 				from lf_reciv recieve
+                where recieve.appl_id = #{applId}
+                     and recieve.status &lt;&gt; 'PAID'
+                     and recieve.max_rpmnt_date &lt;= (sysdate - 1)
+                     AND RECIEVE.PERIOD_NUM = (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID AND rec.STATUS != 'PAID' )
+  	</select>
+  	
+  	<!-- 外访分配分页 -->
+  	<select id="selectAssignByExampleAndPage" resultType="com.ljwd.plms.web.vo.outVisit.OutVisitAssignResult" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitAssignParamDto">
+  	select  
+        outvisitinfo.id as id,
+        outvisitinfo.appl_id as applId,
+        decode(outvisitinfo.cust_type,'Lost','失联','Bouncing','多次跳票','Others','其他') as custType,
+        outvisitinfo.submit_date as submitDate,
+        outvisitinfo.assign_date as assignDate,
+        applinfo.appl_code as applyNo,
+        cntrct.cntrct_no as cntrctNo,
+        cust.cust_name          as      custname,
+        product.prd_name as proName,
+        sysuser.user_name as submitby,
+        outuser.user_name as visitby,
+        area.areaName as areaname,
+        area.areaId as areaId,
+        case 
+                when outvisitinfo.status = 'Audited' then '未分配' 
+                when outvisitinfo.status = 'Closed' then '手工结案'
+                else '已分配' 
+        END as assignStatus,
+        outvisitinfo.status as outVisitStatus,
+        decode(outvisitinfo.visit_type,'1','考察','2','协催') as visitType,
+        outvisitinfo.AUDIT_DATE as  auditDate,
+        site.site_name as siteName
+        from plms_ovm_out_visit_info  outvisitinfo
+        left join( 
+            select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+        )area on area.infoId = outvisitinfo.id
+        left join ln_appl_info applinfo on applinfo.id = outvisitinfo.appl_id
+        left join ln_cntrct cntrct on cntrct.appl_id = outvisitinfo.appl_id
+        LEFT JOIN SYS_SITE site ON site.SITE_CODE = cntrct.SITE_CODE
+        left join cl_cust cust on cust.appl_id = outvisitinfo.appl_id
+        left join sys_prd product on product.id = applinfo.prd_id
+        left join  sys_user sysuser on sysuser.user_id = outvisitinfo.submit_by
+        left join (select outuser.user_id,syu.user_name,outuser.AREA_ID areaId  from plms_ovm_out_visit_user outuser 
+        inner join sys_user syu on syu.user_id = outuser.USER_ID
+                )outUser on   outUser. user_id =  outvisitinfo.visit_by <!-- and area.areaId = outUser.areaId  -->
+        where  outvisitinfo.status not in('Submitted', 'AuditRefused')
+        	<if test='custType !=null and custType !=""'>
+        		and  outvisitinfo.cust_type = #{custType}
+        	</if>
+        	<if test='areaId !=null and areaId !=""'>
+          		and area.areaId = #{areaId}
+            </if>
+            <if test='outVisiterName !=null and outVisiterName !=""'>
+            	and outUser.USER_Name = #{outVisiterName}
+          	</if>
+        	<if test='assignStatus !=null and assignStatus !=""'>
+        		<if test='assignStatus=="Assigned"'>
+        		    and outvisitinfo.status in ('Assigned','Planing','Visited','NoVisit','Closed','Overdued','Settle','Outsourced','Normal')
+        		    and outvisitinfo.VISIT_BY is not null
+        		</if>
+        		<if test='assignStatus != "Assigned"'>
+        			and outvisitinfo.status = #{assignStatus}
+        		</if>
+        	</if>
+        	<if test='prdNo !=null and prdNo !=""'>
+        		and product.PRD_NO = #{prdNo}
+        	</if>
+        	<if test='visitType !=null and visitType !=""'>
+        		and outvisitinfo.visit_type = #{visitType}
+        	</if>
+        	<if test='applyNo !=null and applyNo !=""'>
+        		and  applinfo.appl_code = #{applyNo}
+        	</if>
+        	<if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        	</if>
+        	<if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        	</if>
+        	<if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        	</if>
+        	<if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outvisitinfo.assign_date) >= trunc(#{assignDateStart})
+        	</if>
+        	<if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outvisitinfo.assign_date) &lt;= trunc(#{assignDateEnd})
+        	</if>
+        	<if test='submitDateStart !=null and submitDateStart !=""'>
+        		and trunc(outvisitinfo.submit_date) >= trunc(#{submitDateStart})
+        	</if>
+        	<if test='submitDateEnd !=null and submitDateEnd !=""'>
+        		and trunc(outvisitinfo.submit_date) &lt;= trunc(#{submitDateEnd})
+        	</if>  	
+  			<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by assignDate desc,id desc  
+            </otherwise>
+        	</choose>  
+  			        
+  	</select>
+  	
+  	<!-- 根据Map条件查询外访信息表 -->
+  	<select id="searchInfoByMap" parameterType="map" resultMap="BaseResultMap">
+  		select * from plms_ovm_out_visit_info 
+  		<where>
+  			<if test='ids !=null and ids !=""'>
+  				and id in
+  				<foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+			  			#{item}  
+				</foreach>
+  			</if>
+  			<if test='applId != null and  applId !=""'>
+  				and appl_id = #{applId}
+  				and status not in ('Normal','Closed','Overdued','Outsourced','Settle')
+  				and id >=(select max(id) from plms_ovm_out_visit_info info where info.appl_id = #{applId} group by appl_id)
+  			</if>
+  		</where>
+  	</select>
+  	<!-- 我的外访分页 -->
+  	<select id="selectMyOutVisitByExampleAndPage" resultType="com.ljwd.plms.web.vo.outVisit.MyOutVisitResult" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitAssignParamDto">
+  	select 
+		outvisitinfo.id as id,
+		applinfo.id as applId,
+		outvisitinfo.assign_date as assignDate,
+		outvisitinfo.expect_close_time as expectCloseTime,
+		decode(outvisitinfo.visit_type,'1','考察','2','协催') as visitType,
+		decode(outvisitinfo.cust_type,'Lost','失联','Bouncing','多次跳票','Others','其他') as custType,
+		case 
+		                when outvisitinfo.status = 'Visited' then '已外访' 
+		                when outvisitinfo.status = 'NoVisit' then '已取消'
+		               <!--  when outvisitinfo.status = 'Closed' then '手工结案'
+		                when outvisitinfo.status = 'Overdued' then '已过期'
+		                when outvisitinfo.status = 'Settle' then '已结清'
+		                when outvisitinfo.status = 'Outsourced' then '已外包'
+		                when outvisitinfo.status = 'Normal' then '已正常' -->
+		                else '处理中' 
+		END as statusVal,
+		outvisitinfo.status  as status,
+		applinfo.appl_code as applyNo,
+		cntrct.cntrct_no as cntrctNo,
+		cust.cust_name          as      custName,
+		outvisitinfo.overdue_day as overdueday,
+		overday.overdays as overduedayNow,
+		nvl(outvisitinfo.visit_plan_num,0) as planNum,
+		nvl(outvisitinfo.VISIT_OVER_NUM,0) as finishNum,
+		nvl(hist.historynum,0) as historyNum,
+		outvisitinfo.CASE_TYPE as casetype,
+		overday.period_num as overduePeriod,
+		case
+				when nvl(outvisitinfo.visit_plan_num,0)=0 then'未创建'
+				else '已创建'
+		
+		end as isSetUp,
+		decode(outvisitinfo.CASE_TYPE,'CASE_ADD','新增案件','CASE_DELAYING','延期申请中','CASE_DELAY','延期案件') as casetypeName
+		from plms_ovm_out_visit_info outvisitinfo
+		left join ln_appl_info applinfo on applinfo.id = outvisitinfo.appl_id
+		left join ln_cntrct cntrct on cntrct.appl_id = outvisitinfo.appl_id
+		left join cl_cust cust on cust.appl_id = outvisitinfo.appl_id
+		left join(
+		  select appl_id ,max(TRUNC(SYSDATE) - reciv.RPMNT_DATE) as overDays,MIN(PERIOD_NUM) as period_num
+		  from lf_reciv reciv
+		  where reciv.STATUS !='PAID' and trunc(reciv.MAX_RPMNT_DATE) &lt;=trunc(sysdate) and reciv.IS_DELETED ='N'
+		  group by reciv.appl_id
+		)overday on  overday.appl_id = outvisitinfo.appl_id
+		left join (
+     		select appl_id,sum(visit_over_num) historynum from plms_ovm_out_visit_info group by appl_id
+    	)hist on hist.appl_id =  outvisitinfo.appl_id
+		 where 
+		(outvisitinfo.status = 'Assigned' or outvisitinfo.status = 'Planing' or outvisitinfo.status = 'Visited' or outvisitinfo.status = 'NoVisit')
+		<!-- where outvisitinfo.status not in ('Submitted','Audited','AuditRefused') -->
+		and outvisitinfo.VISIT_BY = #{loginUser}
+		<if test='custType !=null and custType !=""'>
+        		and  outvisitinfo.cust_type = #{custType}
+        </if>
+		<if test='applyNo !=null and applyNo !=""'>
+        		and  applinfo.appl_code = #{applyNo}
+        </if>
+        <if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        </if>
+        <if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        </if>
+        <if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        </if>
+		<if test='status !=null and status !=""'>
+			<choose>
+				<when test='status != "DOING"'>
+				       and outvisitinfo.status = #{status}
+				</when>
+				<otherwise>
+					and outvisitinfo.status in ('Assigned','Planing')
+				</otherwise>
+			</choose>       
+        </if>
+        <if test='visitType !=null and visitType !=""'>
+        		and outvisitinfo.visit_type = #{visitType}
+        </if>
+        <if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outvisitinfo.assign_date) >= trunc(#{assignDateStart})
+        </if>
+        <if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outvisitinfo.assign_date) &lt;= trunc(#{assignDateEnd})
+        </if>
+        <if test='isSetUp !=null and isSetUp !=""'>
+        		<choose>
+        			<when test='isSetUp =="1"'>
+        			and nvl(outvisitinfo.visit_plan_num,0)>0
+        			</when>
+        			<otherwise>
+        			and nvl(outvisitinfo.visit_plan_num,0)=0
+        			</otherwise>
+        		</choose>
+        		
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by outvisitinfo.id  desc
+            </otherwise>
+        </choose>  
+  	</select>
+  	
+  	<!-- 外访详情客户信息 -->
+  	<select id="selectOutVisitDetail" resultType="com.ljwd.plms.web.vo.outVisit.OutVisitPlanDetailResult" parameterType="map">
+  		select 
+		  outinfo.assign_date as assigndate,
+		  outinfo.expect_close_time as expectclosetime,
+		  decode(outinfo.cust_type, 'Bouncing', '多次跳票', 'Lost', '失联', 'Others', '其他') 		as		custtype,
+		  outinfo.overdue_day as overdueday,
+		  sysuser.user_name as submitby,
+		  nvl(outinfo.visit_over_num,0) as historynum,
+		  case 
+				                when outinfo.status = 'Visited' then '已外访' 
+				                when outinfo.status = 'NoVisit' then '已取消'
+				                when outinfo.status = 'Closed' then '手动结案'
+				                when outinfo.status = 'Overdued' then '已过期'
+				                when outinfo.status = 'Settle' then '已结清'
+				                when outinfo.status = 'Outsourced' then '已外包'
+				                when outinfo.status = 'Normal' then '已正常'
+				                else '处理中' 
+				end as casestatus,
+		  applinfo.appl_code as applyno,
+		  cntrct.cntrct_no as cntrctno,
+		  cntrct.loan_amt as loanamt,
+		  cntrct.loan_period as periodNum,
+		  cust.cust_name   as   custname,
+		  cust.mobile as tel,
+ 		  cust.ID_CARD_NO as idCardNo,
+		  pinfo.CL_CUST_ID as custId
+		from plms_ovm_out_visit_info outinfo 
+		left join ln_appl_info applinfo on outinfo.appl_id  = applinfo.id
+		left join  ln_cntrct cntrct on cntrct.appl_id = outinfo.appl_id
+		left join cl_cust cust on cust.appl_id = outinfo.appl_id
+		left join sys_user sysuser on sysuser.user_id = outinfo.submit_by and sysuser.is_active = 'Y'
+		left join plms_ln_appl_info pinfo on pinfo.APPL_ID = outinfo.appl_id	
+		where outinfo.id=#{infoId}
+  	
+  	</select>
+  	
+  	
+  	<!-- 全部外访分页 -->
+  	<select id="selectAllOutVisitByExampleAndPage" resultType="com.ljwd.plms.web.vo.outVisit.AllOutVisitResult" parameterType="com.ljwd.plms.web.vo.outVisit.AllOutVisitParamDto">
+  		select 
+		    outvisit.id as id,
+		    outvisit.appl_id as applId,
+		    applinfo.appl_code as applyNo,
+		    outvisit.assign_date as assignDate,
+		    outvisit.expect_close_time as expectCloseTime,
+		    decode(outvisit.visit_type,'1','考察','2','协催') as visitType,
+		    decode(outvisit.cust_type,'Lost','失联','Bouncing','多次跳票','Others','其他') as custType,
+		    case 
+				                when outvisit.status = 'Visited' then '已外访' 
+				                when outvisit.status = 'NoVisit' then '已取消'
+				                when outvisit.status = 'Closed' then '手工结案'
+				                when outvisit.status = 'Overdued' then '已过期'
+				                when outvisit.status = 'Settle' then '已结清'
+				                when outvisit.status = 'Outsourced' then '已外包'
+				                when outvisit.status = 'Normal' then '已正常'
+				                else '处理中' 
+			end as statusVal,
+			outvisit.status as status,
+		    cntrct.cntrct_no as cntrctNo,
+				cust.cust_name          as      custName,
+		    cust.id_card_no as idCardNo,
+		    cntrct.loan_amt as loanAmt,
+		    outvisit.REMAINDER_PRINCIPAL as remainingPrincipal,
+		    outvisit.overdue_day as overdueDay,
+		    overday.overdueday as overdueDayNow,
+		    overday.PERIOD_NUM as overduePeriod,
+		    nvl(outvisit.visit_plan_num,0) as planNum,
+			nvl(outvisit.visit_over_num,0) as finishNum,
+		    nvl(hist.historynum,0) as historyNum,
+		    nvl(outvisit.register_over_num,0) as registerOverNum,
+		    nvl(outvisit.house_over_num,0) as houseOverNum,
+		    user1.user_name as userName,
+		    nvl(outvisit.company_over_num,0) as companyOverNum,
+		    area.areaName as areaName,
+		    user2.user_name  as outVisitUserName
+		from plms_ovm_out_visit_info outvisit
+		left join( 
+             select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+        )area on area.infoId = outvisit.id
+		left join ln_cntrct cntrct on cntrct.appl_id = outvisit.appl_id
+		left join cl_cust cust on cust.appl_id = outvisit.appl_id
+		left join ln_appl_info applinfo on applinfo.id = outvisit.appl_id
+		left join sys_user user1 on user1.user_id = outvisit.submit_by
+		left join sys_user user2 on user2.user_id = outvisit.VISIT_BY
+		left join(
+						  SELECT 	
+		                  RECIEVE.APPL_ID,		
+		                  RECIEVE.PERIOD_NUM,
+		                  case		
+		                      WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN		
+		                          TRUNC(SYSDATE) - RPMNT_DATE		
+		                      else		
+		                         TRUNC(SYSDATE) - RPMNT_DATE		
+		                      END OVERDUEDAY		
+			                  from lf_reciv recieve		
+		                    where recieve.status != 'PAID'		
+			                   and recieve.max_rpmnt_date &lt;= (sysdate - 1)		
+			                   AND RECIEVE.PERIOD_NUM =		(SELECT MIN(PERIOD_NUM)		 FROM LF_RECIV rec where rec.payment_id = recieve.payment_id	AND rec.STATUS != 'PAID')
+						)overday on  overday.appl_id = outvisit.appl_id
+		left join (
+		     		select appl_id,sum(visit_over_num) historynum from plms_ovm_out_visit_info group by appl_id
+		    	)hist on hist.appl_id =  outvisit.appl_id
+		where outvisit.status not in ('Submitted','Audited','AuditRefused')
+      	<if test='areaId !=null and areaId !=""'>
+      			and area.areaId = #{areaId}
+      	</if>
+  		<if test='custType !=null and custType !=""'>
+        		and  outvisit.cust_type = #{custType}
+        </if>
+        <if test='status !=null and status !=""'>
+			<choose>
+				<when test='status != "DOING"'>
+				       and outvisit.status = #{status}
+				</when>
+				<otherwise>
+					and outvisit.status in ('Assigned','Planing')
+				</otherwise>
+			</choose>       
+        </if>
+        <if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outvisit.assign_date) >= trunc(#{assignDateStart})
+        </if>
+        <if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outvisit.assign_date) &lt;= trunc(#{assignDateEnd})
+        </if>
+		 <if test='visitType !=null and visitType !=""'>
+        		and outvisit.visit_type = #{visitType}
+        </if>
+		<if test='applyNo !=null and applyNo !=""'>
+        		and  applinfo.appl_code = #{applyNo}
+        </if>
+        <if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        </if>
+        <if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        </if>
+        <if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        </if>
+		<if test='outVisiterName !=null and outVisiterName !=""'>
+				and user2.user_name = #{outVisiterName}
+		</if>
+       	<!-- <if test='isOfferReplyFail == "Y"'>
+            and outvisit.appl_id in (SELECT rec.APPL_ID FROM 
+            LF_OFFER_REPLY_DTL replyDtl 
+            INNER JOIN LF_OFFER_REPLY reply ON reply.BAT_CODE = replyDtl.BAT_CODE 
+            INNER JOIN LF_RECIV REC ON to_char(REC.ID) = REPLYDTL.CNTRCT_NO AND REC.STATUS != 'PAID' 
+            WHERE REPLYDTL.PAY_FLAG != 'Y' AND REC.RPMNT_DATE = REPLY.PAY_DATE  AND REPLY.PAY_DATE = TRUNC(SYSDATE) )
+       	</if> -->
+       	<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by outvisit.id desc
+            </otherwise>
+        </choose>
+       	
+  	</select>
+  	
+  	<!-- 全部外访导出数据 -->
+  	<select id="selectByExampleForExport" resultType="com.ljwd.plms.web.vo.outVisit.AllOutVisitExportResult" parameterType="com.ljwd.plms.web.vo.outVisit.AllOutVisitParamDto">
+  	select * from ( select rownum rowNo ,Temp.* from   
+  	(select 
+		    applinfo.appl_code as applyNo,
+		    outvisit.assign_date as assignDate,
+		    outvisit.expect_close_time as expectCloseTime,
+		    decode(outvisit.visit_type,'1','考察','2','协催') as visitType,
+		    decode(outvisit.cust_type,'Lost','失联','Bouncing','多次跳票','Others','其他') as custType,
+		    case 
+				                when outvisit.status = 'Visited' then '已外访' 
+				                when outvisit.status = 'NoVisit' then '已取消'
+				                when outvisit.status = 'Closed' then '手工结案'
+				                when outvisit.status = 'Overdued' then '已过期'
+				                when outvisit.status = 'Settle' then '已结清'
+				                when outvisit.status = 'Outsourced' then '已外包'
+				                when outvisit.status = 'Normal' then '已正常'
+				                else '处理中' 
+			end as statusVal,
+		    cntrct.cntrct_no as cntrctNo,
+			cust.cust_name          as      custName,
+		    cust.id_card_no as idCardNo,
+		    cntrct.loan_amt as loanAmt,
+		    outvisit.REMAINDER_PRINCIPAL as remainingPrincipal,
+		    outvisit.overdue_day as overdueDay,
+		    overday.overdueday as overdueDayNow,
+		    overday.PERIOD_NUM as overduePeriod,
+		    nvl(outvisit.visit_plan_num,0) as planNum,
+			nvl(outvisit.visit_over_num,0) as finishNum,
+		    nvl(hist.historynum,0) as historyNum,
+		    nvl(outvisit.register_over_num,0) as registerOverNum,
+		    nvl(outvisit.house_over_num,0) as houseOverNum,
+		    nvl(outvisit.company_over_num,0) as companyOverNum,
+		    user1.user_name as userName,
+		    user2.user_name as outVisiterName
+		from plms_ovm_out_visit_info outvisit
+		left join( 
+             select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+        )area on area.infoId = outvisit.id
+		left join ln_cntrct cntrct on cntrct.appl_id = outvisit.appl_id
+		left join cl_cust cust on cust.appl_id = outvisit.appl_id
+		left join ln_appl_info applinfo on applinfo.id = outvisit.appl_id
+		left join sys_user user1 on user1.user_id = outvisit.submit_by
+		left join sys_user user2 on user2.user_id = outvisit.VISIT_BY
+		left join(
+						  SELECT 	
+		                  RECIEVE.APPL_ID,		
+		                  RECIEVE.PERIOD_NUM,
+		                  case		
+		                      WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN		
+		                          TRUNC(SYSDATE) - RPMNT_DATE		
+		                      else		
+		                         TRUNC(SYSDATE) - RPMNT_DATE		
+		                      END OVERDUEDAY		
+			                  from lf_reciv recieve		
+		                    where recieve.status != 'PAID'		
+			                   and recieve.max_rpmnt_date &lt;= (sysdate - 1)		
+			                   AND RECIEVE.PERIOD_NUM =		(SELECT MIN(PERIOD_NUM)		 FROM LF_RECIV rec where rec.payment_id = recieve.payment_id	AND rec.STATUS != 'PAID')
+						)overday on  overday.appl_id = outvisit.appl_id
+		left join (
+		     		select appl_id,sum(visit_over_num) historynum from plms_ovm_out_visit_info group by appl_id
+		    	)hist on hist.appl_id =  outvisit.appl_id
+		where outvisit.status not in ('Submitted','Audited','AuditRefused')
+      	<if test='areaId !=null and areaId !=""'>
+      			and area.areaId = #{areaId}
+      	</if>
+  		<if test='custType !=null and custType !=""'>
+        		and  outvisit.cust_type = #{custType}
+        </if>
+        <if test='status !=null and status !=""'>
+			<choose>
+				<when test='status != "DOING"'>
+				       and outvisit.status = #{status}
+				</when>
+				<otherwise>
+					and outvisit.status in ('Assigned','Planing')
+				</otherwise>
+			</choose>       
+        </if>
+        <if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outvisit.assign_date) >= trunc(#{assignDateStart})
+        </if>
+        <if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outvisit.assign_date) &lt;= trunc(#{assignDateEnd})
+        </if>
+		 <if test='visitType !=null and visitType !=""'>
+        		and outvisit.visit_type = #{visitType}
+        </if>
+		<if test='applyNo !=null and applyNo !=""'>
+        		and  applinfo.appl_code = #{applyNo}
+        </if>
+        <if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        </if>
+        <if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        </if>
+        <if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        </if>
+		<if test='outVisiterName !=null and outVisiterName !=""'>
+				and user2.user_name = #{outVisiterName}
+		</if>
+       <!-- 	<if test='isOfferReplyFail == "Y"'>
+            and outvisit.appl_id in (SELECT rec.APPL_ID FROM 
+            LF_OFFER_REPLY_DTL replyDtl 
+            INNER JOIN LF_OFFER_REPLY reply ON reply.BAT_CODE = replyDtl.BAT_CODE 
+            INNER JOIN LF_RECIV REC ON to_char(REC.ID) = REPLYDTL.CNTRCT_NO AND REC.STATUS != 'PAID' 
+            WHERE REPLYDTL.PAY_FLAG != 'Y' AND REC.RPMNT_DATE = REPLY.PAY_DATE  AND REPLY.PAY_DATE = TRUNC(SYSDATE) )
+       	</if> -->
+       	order by outvisit.id desc
+  		)Temp)
+  	</select>
+  	
+  	
+  	<!-- 查询 需要判断是否过期的外访信息 -->
+  	<select id="selectPlmsOutVisitList" resultMap="BaseResultMap" parameterType="map">
+  		select outinfo.* from plms_ovm_out_visit_info outinfo
+		inner join plms_work_order_pool pool on pool.appl_id = outinfo.appl_id
+		<where>
+			<if test="planStatus !=null">
+				and  outinfo.status in 
+  				<foreach item="item" index="index" collection="planStatus" open="(" separator="," close=")">  
+			  			#{item}  
+				</foreach>
+			</if>
+			<if test='poolStatus !=null and poolStatus !=""'>
+				and pool.status = #{poolStatus}
+			</if>
+			<if test="overDue == true">
+				and trunc(outinfo.EXPECT_CLOSE_TIME) &lt; trunc(sysdate)
+			</if>
+		</where>
+  	</select>
+  	
+  	
+  	
+  	<!--根据查询条件查找需要自动分配的外访案件   -->
+  	<select id="selectAutoAssignList" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitAssignParamDto" resultType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+  		select  
+        outvisitinfo.id as id,
+        outvisitinfo.appl_id as applId,
+        decode(outvisitinfo.cust_type,'Lost','失联','Bouncing','多次跳票','Others','其他') as custType,
+        outvisitinfo.submit_date as submitDate,
+        outvisitinfo.assign_date as assignDate,
+        area.areaId as areaId,
+        outvisitinfo.status as status,
+        decode(outvisitinfo.visit_type,'1','考察','2','协催') as visitType
+        from plms_ovm_out_visit_info  outvisitinfo
+        left join( 
+             select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+        )area on area.infoId = outvisitinfo.id
+        left join ln_appl_info applinfo on applinfo.id = outvisitinfo.appl_id
+        left join ln_cntrct cntrct on cntrct.appl_id = outvisitinfo.appl_id
+        left join cl_cust cust on cust.appl_id = outvisitinfo.appl_id
+        left join sys_prd product on product.id = applinfo.prd_id
+        left join  sys_user sysuser on sysuser.user_id = outvisitinfo.submit_by
+        where  outvisitinfo.status not in('Submitted', 'AuditRefused')
+        	<if test='custType !=null and custType !=""'>
+        		and  outvisitinfo.cust_type = #{custType}
+        	</if>
+        	<if test='areaId !=null and areaId !=""'>
+          		and area.areaId = #{areaId}
+            </if>
+        	<if test='assignStatus !=null and assignStatus !=""'>
+        		<if test='assignStatus=="Assigned"'>
+        		    and outvisitinfo.status in ('Assigned','Planing','Visited','NoVisit','Closed','Overdued','Settle','Outsourced','Normal')
+        		    and outvisitinfo.VISIT_BY is not null
+        		</if>
+        		<if test='assignStatus != "Assigned"'>
+        			and outvisitinfo.status = #{assignStatus}
+        		</if>
+        	</if>
+        	<if test='prdNo !=null and prdNo !=""'>
+        		and product.PRD_NO = #{prdNo}
+        	</if>
+        	<if test='visitType !=null and visitType !=""'>
+        		and outvisitinfo.visit_type = #{visitType}
+        	</if>
+        	<if test='applyNo !=null and applyNo !=""'>
+        		and  applinfo.appl_code = #{applyNo}
+        	</if>
+        	<if test='cntrctNo !=null and cntrctNo !=""'>
+        		and  cntrct.cntrct_no = #{cntrctNo}
+        	</if>
+        	<if test='custName !=null and custName !=""'>
+        		and cust.CUST_NAME = #{custName}
+        	</if>
+        	<if test='docno !=null and docno !=""'>
+        		AND cust.ID_CARD_NO = #{docno}
+        	</if>
+        	<if test='assignDateStart !=null and assignDateStart !=""'>
+        		and trunc(outvisitinfo.assign_date) >= trunc(#{assignDateStart})
+        	</if>
+        	<if test='assignDateEnd !=null and assignDateEnd !=""'>
+        		and trunc(outvisitinfo.assign_date) &lt;= trunc(#{assignDateEnd})
+        	</if>
+        	<if test='submitDateStart !=null and submitDateStart !=""'>
+        		and trunc(outvisitinfo.submit_date) >= trunc(#{submitDateStart})
+        	</if>
+        	<if test='submitDateEnd !=null and submitDateEnd !=""'>
+        		and trunc(outvisitinfo.submit_date) &lt;= trunc(#{submitDateEnd})
+        	</if>  	
+  			        order by assignDate desc,submitDate
+  	</select>
+  	
+  	<!-- 根据applId查询最新的外访信息  -->
+  	<select id="getTheNewestOutVisitByApplId" parameterType="java.lang.Long" resultType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo" >
+  			select 
+	  			case 
+					                when outvisit.status = 'Submitted' then '已提交' 
+					                when outvisit.status = 'Audited' then '已审核'
+					                when outvisit.status = 'AuditRefused' then '审核拒绝'
+					                when outvisit.status = 'Assigned' then '未计划'
+					                when outvisit.status = 'Visited' then '已外访' 
+					                when outvisit.status = 'Planing' then '计划中'
+					                when outvisit.status = 'NoVisit' then '已取消'
+					                when outvisit.status = 'Closed' then '手工结案'
+					                when outvisit.status = 'Overdued' then '已过期'
+					                when outvisit.status = 'Settle' then '已结清'
+					                when outvisit.status = 'Outsourced' then '已外包'
+					                when outvisit.status = 'Normal' then '已正常'
+				end as status,
+				sysUser.user_name as visitBy,
+				to_char(outvisit.ASSIGN_DATE,'yyyy-mm-dd') as assignDateStr,
+  				to_char(outvisit.EXPECT_CLOSE_TIME,'yyyy-mm-dd') as expectCloseTimeStr
+  			 from plms_ovm_out_visit_info outvisit
+  			 left join sys_user sysUser on sysUser.user_id = outvisit.VISIT_BY
+				where outvisit.appl_id = #{applId} 
+				and outvisit.create_time > = (select max(create_time) from plms_ovm_out_visit_info where appl_id =#{applId} group by appl_id)
+  	</select>
+  	<!-- 根据applId查询合同编号 -->
+  	<select id="getCntrctNoByApplId" parameterType="java.lang.String" resultType="java.lang.String">
+  		select CNTRCT_NO from LN_CNTRCT where APPL_ID = #{applId}
+	</select>
+	
+	
+	
+	
+	<!-- 查询特定日期结案的外访案件 -->
+	<select id="selectOverOutVisitInfo" parameterType="map" resultType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutVisitInfo">
+		select outinfo.id,outinfo.appl_id,outinfo.status,outinfo.ASSIGN_DATE,
+		outinfo.VISIT_BY,outinfo.END_DATE,outinfo.EXPECT_CLOSE_TIME as expectCloseTime,yuser.user_name as visitByName,
+			to_char(outinfo.EXPECT_CLOSE_TIME,'yyyy-mm-dd') as expectCloseTimeStr
+			from PLMS_OVM_OUT_VISIT_INFO outinfo  
+			left join sys_user yuser on outinfo.VISIT_BY = yuser.user_id
+			where	outinfo.status in ('Overdued','Outsourced','Closed','Normal','Settle')
+			AND outinfo.END_DATE is not null  and outinfo.visit_by is not null
+			<if test='type=="yesterday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(sysdate-1))
+			</if>
+			<if test='type=="everyday"'>
+				AND( trunc(outinfo.END_DATE)=trunc(#{createDataDate}))
+			</if>
+	</select> 
+	
+</mapper>	
+	

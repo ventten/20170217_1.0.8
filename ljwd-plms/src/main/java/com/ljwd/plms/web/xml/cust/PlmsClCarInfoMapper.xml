@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClCarInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClCarInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="LICENSE_NO" property="licenseNo" jdbcType="VARCHAR" />
+    <result column="FRAME_NO" property="frameNo" jdbcType="VARCHAR" />
+    <result column="MODEL" property="model" jdbcType="VARCHAR" />
+    <result column="PRODUCTION_DATE" property="productionDate" jdbcType="TIMESTAMP" />
+    <result column="PURCHASE_MODE" property="purchaseMode" jdbcType="VARCHAR" />
+    <result column="MON_RPMNT" property="monRpmnt" jdbcType="DECIMAL" />
+    <result column="MORTGAGE_DATE" property="mortgageDate" jdbcType="TIMESTAMP" />
+    <result column="MORTGAGE_BANK" property="mortgageBank" jdbcType="VARCHAR" />
+    <result column="RPMNT_DATE" property="rpmntDate" jdbcType="TIMESTAMP" />
+    <result column="ESTIMATION_AMT" property="estimationAmt" jdbcType="DECIMAL" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="noThisId != null">
+          and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="model != null and model != ''">
+            and T.MODEL = #{model}
+        </if>
+        <if test="licenseNo != null and licenseNo != ''">
+            and T.LICENSE_NO = #{licenseNo}
+        </if>
+        <if test="frameNo != null and frameNo != ''">
+            and T.FRAME_NO = #{frameNo}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.noThisId != null">
+              and T.ID &lt;&gt; #{example.noThisId}
+            </if>
+            <if test="example.model != null and example.model != ''">
+              and T.MODEL = #{example.model}
+            </if>
+            <if test="example.licenseNo != null and example.licenseNo != ''">
+              and T.LICENSE_NO = #{example.licenseNo}
+            </if>
+            <if test="example.frameNo != null and example.frameNo != ''">
+                and T.FRAME_NO = #{example.frameNo}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.LICENSE_NO,
+    T.FRAME_NO,
+    T.MODEL,
+    T.PRODUCTION_DATE,
+    T.PURCHASE_MODE,
+    T.MON_RPMNT,
+    T.MORTGAGE_DATE,
+    T.MORTGAGE_BANK,
+    T.RPMNT_DATE,
+    T.ESTIMATION_AMT,
+    T.IS_ACTIVE,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_CAR_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_CAR_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_CAR_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfoExample" >
+    delete from PLMS_CL_CAR_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_car_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_CAR_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{licenseNo,jdbcType=VARCHAR},
+      #{frameNo,jdbcType=VARCHAR},
+      #{model,jdbcType=VARCHAR},
+      #{productionDate,jdbcType=TIMESTAMP},
+      #{purchaseMode,jdbcType=VARCHAR},
+      #{monRpmnt,jdbcType=DECIMAL},
+      #{mortgageDate,jdbcType=TIMESTAMP},
+      #{mortgageBank,jdbcType=VARCHAR},
+      #{rpmntDate,jdbcType=TIMESTAMP},
+      #{estimationAmt,jdbcType=DECIMAL},
+      #{isActive,jdbcType=CHAR},
+      #{remark,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_car_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_CAR_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="licenseNo != null" >
+          T.LICENSE_NO,
+      </if>
+      <if test="frameNo != null" >
+          T.FRAME_NO,
+      </if>
+      <if test="model != null" >
+          T.MODEL,
+      </if>
+      <if test="productionDate != null" >
+          T.PRODUCTION_DATE,
+      </if>
+      <if test="purchaseMode != null" >
+          T.PURCHASE_MODE,
+      </if>
+      <if test="monRpmnt != null" >
+          T.MON_RPMNT,
+      </if>
+      <if test="mortgageDate != null" >
+          T.MORTGAGE_DATE,
+      </if>
+      <if test="mortgageBank != null" >
+          T.MORTGAGE_BANK,
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE,
+      </if>
+      <if test="estimationAmt != null" >
+          T.ESTIMATION_AMT,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="remark != null" >
+          T.REMARK,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="licenseNo != null" >
+        #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNo != null" >
+        #{frameNo,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+        #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+        #{productionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseMode != null" >
+        #{purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="monRpmnt != null" >
+        #{monRpmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="mortgageDate != null" >
+        #{mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mortgageBank != null" >
+        #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+        #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="estimationAmt != null" >
+        #{estimationAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_CAR_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_CAR_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.licenseNo != null" >
+          T.LICENSE_NO = #{record.licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frameNo != null" >
+          T.FRAME_NO = #{record.frameNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.model != null" >
+          T.MODEL = #{record.model,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productionDate != null" >
+          T.PRODUCTION_DATE = #{record.productionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.purchaseMode != null" >
+          T.PURCHASE_MODE = #{record.purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monRpmnt != null" >
+          T.MON_RPMNT = #{record.monRpmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.mortgageDate != null" >
+          T.MORTGAGE_DATE = #{record.mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mortgageBank != null" >
+          T.MORTGAGE_BANK = #{record.mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="record.rpmntDate != null" >
+          T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.estimationAmt != null" >
+          T.ESTIMATION_AMT = #{record.estimationAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null" >
+          T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_CAR_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.LICENSE_NO = #{record.licenseNo,jdbcType=VARCHAR},
+      T.FRAME_NO = #{record.frameNo,jdbcType=VARCHAR},
+      T.MODEL = #{record.model,jdbcType=VARCHAR},
+      T.PRODUCTION_DATE = #{record.productionDate,jdbcType=TIMESTAMP},
+      T.PURCHASE_MODE = #{record.purchaseMode,jdbcType=VARCHAR},
+      T.MON_RPMNT = #{record.monRpmnt,jdbcType=DECIMAL},
+      T.MORTGAGE_DATE = #{record.mortgageDate,jdbcType=TIMESTAMP},
+      T.MORTGAGE_BANK = #{record.mortgageBank,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{record.rpmntDate,jdbcType=TIMESTAMP},
+      T.ESTIMATION_AMT = #{record.estimationAmt,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfo" >
+    update PLMS_CL_CAR_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="licenseNo != null" >
+          T.LICENSE_NO = #{licenseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="frameNo != null" >
+          T.FRAME_NO = #{frameNo,jdbcType=VARCHAR},
+      </if>
+      <if test="model != null" >
+          T.MODEL = #{model,jdbcType=VARCHAR},
+      </if>
+      <if test="productionDate != null" >
+          T.PRODUCTION_DATE = #{productionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="purchaseMode != null" >
+          T.PURCHASE_MODE = #{purchaseMode,jdbcType=VARCHAR},
+      </if>
+      <if test="monRpmnt != null" >
+          T.MON_RPMNT = #{monRpmnt,jdbcType=DECIMAL},
+      </if>
+      <if test="monRpmntIsNull != null and monRpmntIsNull == true" >
+          T.MON_RPMNT = null,
+      </if>
+      <if test="mortgageDate != null" >
+          T.MORTGAGE_DATE = #{mortgageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mortgageDateIsNull != null and mortgageDateIsNull == true" >
+          T.MORTGAGE_DATE = null,
+      </if>
+      <if test="mortgageBank != null" >
+          T.MORTGAGE_BANK = #{mortgageBank,jdbcType=VARCHAR},
+      </if>
+      <if test="rpmntDate != null" >
+          T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="rpmntDateIsNull != null and rpmntDateIsNull == true" >
+          T.RPMNT_DATE = null,
+      </if>
+      <if test="estimationAmt != null" >
+          T.ESTIMATION_AMT = #{estimationAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="estimationAmtIsNull != null and estimationAmtIsNull == true" >
+          T.ESTIMATION_AMT = null,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+          T.REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfo" >
+    update PLMS_CL_CAR_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.LICENSE_NO = #{licenseNo,jdbcType=VARCHAR},
+      T.FRAME_NO = #{frameNo,jdbcType=VARCHAR},
+      T.MODEL = #{model,jdbcType=VARCHAR},
+      T.PRODUCTION_DATE = #{productionDate,jdbcType=TIMESTAMP},
+      T.PURCHASE_MODE = #{purchaseMode,jdbcType=VARCHAR},
+      T.MON_RPMNT = #{monRpmnt,jdbcType=DECIMAL},
+      T.MORTGAGE_DATE = #{mortgageDate,jdbcType=TIMESTAMP},
+      T.MORTGAGE_BANK = #{mortgageBank,jdbcType=VARCHAR},
+      T.RPMNT_DATE = #{rpmntDate,jdbcType=TIMESTAMP},
+      T.ESTIMATION_AMT = #{estimationAmt,jdbcType=DECIMAL},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.REMARK = #{remark,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClCarInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClCarInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_CAR_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的车辆信息 -->
+    <select id="findMfbmsCarByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        <!--select (ai.id) as appl_id,
+               (a.license_no) as license_no,
+               (a.frame_no) as frame_no,
+               (a.model) as model,
+               (a.production_date) as production_date,
+               (a.estimation_amt) as estimation_amt,
+               (c.id_card_no) as docno
+        from LN_VEHICLE_INFO a
+        inner join LN_APPL_INFO ai on a.appl_id = ai.id
+        inner join CL_CUST c on c.appl_id = ai.id
+        where c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+        and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+        union all-->
+        select (ai.id) as appl_id,
+               (car.PLATE_NO) as license_no,
+               (car.CARFRAME_NO) as frame_no,
+               (car.MODEL_NO) as model,
+               (car.PRODUCTION_DATE) as production_date,
+               (car.PRICE) as estimation_amt,
+               (c.id_card_no) as docno
+        from cl_car_info car
+        inner join CL_CUST c on car.cust_id = c.id
+        inner join LN_APPL_INFO ai on c.appl_id = ai.id
+        where not exists (
+          select 1 from plms_cl_car_info info
+          inner join plms_cl_cust_info cust on info.cl_cust_id = cust.id
+          where info.license_no = car.plate_no
+              and info.frame_no = car.carframe_no
+              and info.model = car.model_no
+              and cust.docno = c.id_card_no
+          )
+          and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+          and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_CAR_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_car_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.licenseNo,jdbcType=VARCHAR},
+            #{item.frameNo,jdbcType=VARCHAR},
+            #{item.model,jdbcType=VARCHAR},
+            #{item.productionDate,jdbcType=TIMESTAMP},
+            #{item.purchaseMode,jdbcType=VARCHAR},
+            #{item.monRpmnt,jdbcType=DECIMAL},
+            #{item.mortgageDate,jdbcType=TIMESTAMP},
+            #{item.mortgageBank,jdbcType=VARCHAR},
+            #{item.rpmntDate,jdbcType=TIMESTAMP},
+            #{item.estimationAmt,jdbcType=DECIMAL},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+</mapper>

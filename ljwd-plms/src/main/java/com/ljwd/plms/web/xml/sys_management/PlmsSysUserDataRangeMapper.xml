@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.PlmsSysUserDataRangeMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+    <result column="GENERATED_BY" property="generatedBy" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+     <if test='userId !=null and userId != ""'>
+     	and USER_ID = #{userId}
+     </if>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, USER_ID, ORG_ID, GENERATED_BY, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+    REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRangeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_USER_DATA_RANGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_SYS_USER_DATA_RANGE
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_SYS_USER_DATA_RANGE
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRangeExample" >
+    delete from PLMS_SYS_USER_DATA_RANGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" >
+    insert into PLMS_SYS_USER_DATA_RANGE (ID, USER_ID, ORG_ID, 
+      GENERATED_BY, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, REC_VER, 
+      TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{orgId,jdbcType=BIGINT}, 
+      #{generatedBy,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, 
+      #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" >
+    insert into PLMS_SYS_USER_DATA_RANGE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="generatedBy != null" >
+        GENERATED_BY,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="generatedBy != null" >
+        #{generatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRangeExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_SYS_USER_DATA_RANGE
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_SYS_USER_DATA_RANGE
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.generatedBy != null" >
+        GENERATED_BY = #{record.generatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_SYS_USER_DATA_RANGE
+    set ID = #{record.id,jdbcType=BIGINT},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      GENERATED_BY = #{record.generatedBy,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" >
+    update PLMS_SYS_USER_DATA_RANGE
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="generatedBy != null" >
+        GENERATED_BY = #{generatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" >
+    update PLMS_SYS_USER_DATA_RANGE
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=BIGINT},
+      GENERATED_BY = #{generatedBy,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <resultMap type="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRange" id="BaseResultMap_Ext" extends="BaseResultMap">
+  	        <result column="userOrgId" property="userOrgId" jdbcType="VARCHAR"/>
+  	        <result column="userOrgName" property="userOrgName" jdbcType="VARCHAR"/>
+  	        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+  	        <result column="orgIds" property="orgIds" jdbcType="VARCHAR"/>
+  	        <result column="orgNames" property="orgNames" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 用户数据权限分页查询 -->
+  <select id="selectByExampleAndPage" parameterType="com.ljwd.plms.web.model.sys_management.PlmsSysUserDataRangeExample" resultMap="BaseResultMap_Ext">
+  select 
+	max(sysorg.id) as userOrgId,
+	max(sysorg.org_name) as userOrgName,
+	range.user_id as userId,
+	max(sysemp.EMP_NAME) as userName,
+	to_char(wm_concat(range.org_id)) as orgIds,
+	to_char(wm_concat(sysorgT.org_name)) as orgNames,
+ 	max(range.generated_by) as generatedBy,
+ 	max(range.UPDATE_TIME) as updateTime,
+	max(sysuser2.user_name) as updatedUserName
+	from plms_sys_user_data_range range 
+	left join sys_user  sysuser on sysuser.user_id = range.user_id
+	left join sys_emp sysemp on sysemp.id= sysuser.emp_id
+	left join sys_org sysorg on sysemp.org_id = sysorg.id
+	left join sys_org sysorgT on range.org_id = sysorgT.id
+	left join sys_user  sysuser2 on sysuser2.user_id = range.generated_by
+	<where>
+		<if test='userOrgId !=null and userOrgId !=""'>
+			and sysorg.id = #{userOrgId} 
+		</if>
+		<if test='userName !=null and userName !=""'>
+			and sysemp.EMP_NAME = #{userName}
+		</if>
+	</where>
+	group by range.user_id
+	<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by updateTime desc
+            </otherwise>
+        </choose>
+	
+  </select>
+  
+   <!-- 批量添加 用户数据权限-->
+   <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_SYS_USER_DATA_RANGE T ( <include refid="Base_Column_List"/> )
+        SELECT SEQ_PLMS_SYS_USER_DATA_RANGE.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select 
+            #{item.userId,jdbcType=VARCHAR},
+            #{item.orgId,jdbcType=BIGINT},
+            #{item.generatedBy,jdbcType=VARCHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+    <!-- 根据用户Id查找用户姓名和所属机构  -->
+    <select id="selectByUserId" parameterType="java.lang.String" resultType="com.ljwd.plms.web.vo.sys_management.UserEmpOrgDto">
+    	select 
+			sysuser.user_id as userId,
+			sysuser.user_name as userName,
+			sysemp.id as empId,
+			sysemp.emp_name as empName,
+			sysorg.id as orgId,
+			sysorg.org_name as orgName
+			from sys_user sysuser
+			inner join sys_emp sysemp on sysemp.id = sysuser.emp_id  
+			inner join sys_org sysorg on sysorg.id = sysemp.ORG_ID
+			where sysuser.is_active = 'Y' and sysemp.IS_QUIT = 'N'
+				<if test='userId !=null and userId !=""'>
+					and sysuser.user_id = #{userId}
+				</if>
+				<if test='orgId !=null and orgId !=""'>
+					and sysemp.org_id = #{orgId}
+				</if>
+    </select>
+    
+    <!-- 根据用户Id查找用户姓名和所属机构  -->
+    <select id="selectOrgListByUserId" parameterType="java.lang.String" resultType="java.lang.Long">
+    	select ORG_ID from PLMS_SYS_USER_DATA_RANGE 
+    	<where>
+    		<if test='userId !=null and userId !=""'>
+    		and USER_ID = #{userId}
+    		</if>
+    	</where>
+    </select>
+</mapper>

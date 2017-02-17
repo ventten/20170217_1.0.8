@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.SysOrgMapper">
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.SysOrg">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PID" jdbcType="BIGINT" property="pid" />
+    <result column="ORG_NO" jdbcType="VARCHAR" property="orgNo" />
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="LEADER_USER_ID" jdbcType="VARCHAR" property="leaderUserId" />
+    <result column="LEADER_NAME" jdbcType="VARCHAR" property="leaderName" />
+    <result column="LEADER_TEL" jdbcType="VARCHAR" property="leaderTel" />
+    <result column="FAX" jdbcType="VARCHAR" property="fax" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="ADDR" jdbcType="VARCHAR" property="addr" />
+    <result column="POST" jdbcType="VARCHAR" property="post" />
+    <result column="IS_SITE" jdbcType="CHAR" property="isSite" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="IS_APPR" jdbcType="CHAR" property="isAppr" />
+    <result column="SITE_CODE" jdbcType="VARCHAR" property="siteCode" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="ORG_TYPE" jdbcType="VARCHAR" property="orgType" />
+  </resultMap>
+  
+   <sql id="Where_Clause">
+        <if test="orgNo != null and orgNo != ''">
+            and T.ORG_NO = #{orgNo}
+        </if>
+    </sql>
+    
+   <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+    
+     
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    T.ID, T.PID, T.ORG_NO, T.ORG_NAME, T.LEADER_USER_ID, T.LEADER_NAME, T.LEADER_TEL, T.FAX, T.TEL, T.ADDR, 
+    T.POST, T.IS_SITE, T.REMARK, T.IS_APPR, T.SITE_CODE, T.CREATED_BY, T.CREATE_TIME, T.UPDATED_BY, T.UPDATE_TIME, 
+    T.REC_VER, T.TAG_SEQ, T.ORG_TYPE
+  </sql>
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysOrgExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_ORG T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ORG
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from SYS_ORG
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysOrgExample">
+    delete from SYS_ORG
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.SysOrg">
+    insert into SYS_ORG (ID, PID, ORG_NO, 
+      ORG_NAME, LEADER_USER_ID, LEADER_NAME, 
+      LEADER_TEL, FAX, TEL, 
+      ADDR, POST, IS_SITE, REMARK, 
+      IS_APPR, SITE_CODE, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ, ORG_TYPE
+      )
+    values (#{id,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{orgNo,jdbcType=VARCHAR}, 
+      #{orgName,jdbcType=VARCHAR}, #{leaderUserId,jdbcType=VARCHAR}, #{leaderName,jdbcType=VARCHAR}, 
+      #{leaderTel,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{addr,jdbcType=VARCHAR}, #{post,jdbcType=VARCHAR}, #{isSite,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{isAppr,jdbcType=CHAR}, #{siteCode,jdbcType=VARCHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT}, #{orgType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.SysOrg">
+    insert into SYS_ORG
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="pid != null">
+        PID,
+      </if>
+      <if test="orgNo != null">
+        ORG_NO,
+      </if>
+      <if test="orgName != null">
+        ORG_NAME,
+      </if>
+      <if test="leaderUserId != null">
+        LEADER_USER_ID,
+      </if>
+      <if test="leaderName != null">
+        LEADER_NAME,
+      </if>
+      <if test="leaderTel != null">
+        LEADER_TEL,
+      </if>
+      <if test="fax != null">
+        FAX,
+      </if>
+      <if test="tel != null">
+        TEL,
+      </if>
+      <if test="addr != null">
+        ADDR,
+      </if>
+      <if test="post != null">
+        POST,
+      </if>
+      <if test="isSite != null">
+        IS_SITE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+      <if test="isAppr != null">
+        IS_APPR,
+      </if>
+      <if test="siteCode != null">
+        SITE_CODE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+        REC_VER,
+      </if>
+      <if test="tagSeq != null">
+        TAG_SEQ,
+      </if>
+      <if test="orgType != null">
+        ORG_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pid != null">
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="orgNo != null">
+        #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderUserId != null">
+        #{leaderUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderName != null">
+        #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderTel != null">
+        #{leaderTel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null">
+        #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="isSite != null">
+        #{isSite,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isAppr != null">
+        #{isAppr,jdbcType=CHAR},
+      </if>
+      <if test="siteCode != null">
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="orgType != null">
+        #{orgType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysOrgExample" resultType="java.lang.Integer">
+    select count(*) from SYS_ORG
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update SYS_ORG
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.pid != null">
+        PID = #{record.pid,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgNo != null">
+        ORG_NO = #{record.orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orgName != null">
+        ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leaderUserId != null">
+        LEADER_USER_ID = #{record.leaderUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leaderName != null">
+        LEADER_NAME = #{record.leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.leaderTel != null">
+        LEADER_TEL = #{record.leaderTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fax != null">
+        FAX = #{record.fax,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null">
+        TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null">
+        ADDR = #{record.addr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.post != null">
+        POST = #{record.post,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSite != null">
+        IS_SITE = #{record.isSite,jdbcType=CHAR},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isAppr != null">
+        IS_APPR = #{record.isAppr,jdbcType=CHAR},
+      </if>
+      <if test="record.siteCode != null">
+        SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgType != null">
+        ORG_TYPE = #{record.orgType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update SYS_ORG
+    set ID = #{record.id,jdbcType=BIGINT},
+      PID = #{record.pid,jdbcType=BIGINT},
+      ORG_NO = #{record.orgNo,jdbcType=VARCHAR},
+      ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
+      LEADER_USER_ID = #{record.leaderUserId,jdbcType=VARCHAR},
+      LEADER_NAME = #{record.leaderName,jdbcType=VARCHAR},
+      LEADER_TEL = #{record.leaderTel,jdbcType=VARCHAR},
+      FAX = #{record.fax,jdbcType=VARCHAR},
+      TEL = #{record.tel,jdbcType=VARCHAR},
+      ADDR = #{record.addr,jdbcType=VARCHAR},
+      POST = #{record.post,jdbcType=VARCHAR},
+      IS_SITE = #{record.isSite,jdbcType=CHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      IS_APPR = #{record.isAppr,jdbcType=CHAR},
+      SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      ORG_TYPE = #{record.orgType,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.SysOrg">
+    update SYS_ORG
+    <set>
+      <if test="pid != null">
+        PID = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="orgNo != null">
+        ORG_NO = #{orgNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderUserId != null">
+        LEADER_USER_ID = #{leaderUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderName != null">
+        LEADER_NAME = #{leaderName,jdbcType=VARCHAR},
+      </if>
+      <if test="leaderTel != null">
+        LEADER_TEL = #{leaderTel,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        FAX = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null">
+        ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="post != null">
+        POST = #{post,jdbcType=VARCHAR},
+      </if>
+      <if test="isSite != null">
+        IS_SITE = #{isSite,jdbcType=CHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isAppr != null">
+        IS_APPR = #{isAppr,jdbcType=CHAR},
+      </if>
+      <if test="siteCode != null">
+        SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="orgType != null">
+        ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.SysOrg">
+    update SYS_ORG
+    set PID = #{pid,jdbcType=BIGINT},
+      ORG_NO = #{orgNo,jdbcType=VARCHAR},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      LEADER_USER_ID = #{leaderUserId,jdbcType=VARCHAR},
+      LEADER_NAME = #{leaderName,jdbcType=VARCHAR},
+      LEADER_TEL = #{leaderTel,jdbcType=VARCHAR},
+      FAX = #{fax,jdbcType=VARCHAR},
+      TEL = #{tel,jdbcType=VARCHAR},
+      ADDR = #{addr,jdbcType=VARCHAR},
+      POST = #{post,jdbcType=VARCHAR},
+      IS_SITE = #{isSite,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      IS_APPR = #{isAppr,jdbcType=CHAR},
+      SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      ORG_TYPE = #{orgType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectOutVisitOrgByExample" parameterType="map" resultMap="BaseResultMap">
+  	select * from sys_org where pid in (
+		select id from sys_org where org_name in ('微贷作业部-总部办公','贷后催收组','客服部')
+	)
+  </select>
+  
+  <!-- 根据网点查询作业部下的机构 -->
+  <select id="selectOrgBySiteCode" parameterType="map" resultType="java.lang.Long">
+  		select org.id from 
+			(select org.id, org.site_code from sys_org org 
+			start with org.id = (select id from sys_org where ORG_NO='G0301') connect by org.pid = prior id)org
+			where org.SITE_CODE in
+			<foreach item="item" index="index" collection="siteCodeList" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+  </select>
+</mapper>

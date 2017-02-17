@@ -1,0 +1,21 @@
+package com.ljwd.plms.web.service.type.inf;
+
+import com.ljwd.plms.core.generic.GenericService;
+import com.ljwd.plms.web.model.type.PlmsLAssetsType;
+import com.ljwd.plms.web.model.type.PlmsLAssetsTypeExample;
+
+import java.util.List;
+
+/**
+ * 资产类型,plms_l_assets_type
+ * */
+public interface PlmsLAssetsTypeService  extends GenericService<PlmsLAssetsType,String> {
+
+    /**
+     * 根据查询条件查找
+     * @param example 查询条件
+     * @return 集合
+     * */
+    List<PlmsLAssetsType> selectByExample(PlmsLAssetsTypeExample example);
+
+}

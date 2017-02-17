@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.correspondence.PlmsCorrespondenceMapper" >
+
+       <!--  信函管理分页查询 -->
+     <select id="selectByCorrespondenceAndPage" resultType="com.ljwd.plms.web.model.correspondence.PlmsOverdueClientLetterGenerateDto" parameterType="com.ljwd.plms.web.model.correspondence.PlmsOverdueClientLetterGenerateParamDto">
+       SELECT DISTINCT
+             APPL.ID AS APPLYID,
+			 CASE
+			   WHEN CUSTOMER.ADDR_CITY_ID = '2151' THEN
+			    '深圳'
+			   ELSE
+			    '其他'
+			 END AS SITENAME,
+			 APPL.PAYMENT_TYPE AS PAYMENTTYPE,
+			 PAYMENTTYPE.TYPE_NAME AS PAYMENTTYPENAME,
+			 CUSTOMER.CUST_NAME AS CLIENTNAME,
+			 CUSTOMER.ID_CARD_NO AS IDCARDNO,
+			 CUSTOMER.ADDR AS CLIENTADDR,
+			 CUSTOMER.ADDRTYPE AS ADDRTYPE,
+			 CONTRACT.CNTRCT_NO AS CONTRACTNO,
+			 CONTRACT.LOAN_AMT AS LOANAMOUNT,
+			 PAYMENT.ID AS PAYMENTID,
+			 CONTRACT.ID AS CONTRACTID,
+			 SUMRECEIVABEOVERDUE.RPMNT_DATE AS REPAYMENTDATE,
+			 SUMRECEIVABEOVERDUE.OVERDUEDAY AS OVERDUEDAY
+             FROM (SELECT OVERDUEREC.ID,
+               OVERDUEREC.CNTRCT_ID,
+               OVERDUEREC.APPL_ID,
+               OVERDUEREC.RPMNT_DATE,
+               OVERDUEREC.MAX_RPMNT_DATE,
+               OVERDUEREC.PAYMENT_ID,
+               OVERDUEREC.PERIOD_NUM,
+               CASE
+                 WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) &gt; RPMNT_DATE THEN
+                  TRUNC(SYSDATE) - RPMNT_DATE
+                 ELSE
+                  TRUNC(SYSDATE) - RPMNT_DATE
+               END OVERDUEDAY
+            FROM LF_RECIV OVERDUEREC
+            WHERE OVERDUEREC.STATUS != 'PAID'
+            AND OVERDUEREC.MAX_RPMNT_DATE &lt;= (SYSDATE - 1)
+            AND OVERDUEREC.IS_DELETED = 'N'
+            AND OVERDUEREC.PERIOD_NUM =
+               (SELECT MIN(PERIOD_NUM)
+                  FROM LF_RECIV REC
+                  WHERE REC.IS_DELETED = 'N'
+                  AND REC.PAYMENT_ID = OVERDUEREC.PAYMENT_ID
+                  AND REC.STATUS != 'PAID')) SUMRECEIVABEOVERDUE
+		    INNER JOIN LN_CNTRCT CONTRACT
+		      ON SUMRECEIVABEOVERDUE.CNTRCT_ID = CONTRACT.ID
+		    INNER JOIN LN_APPL_INFO APPL
+		      ON APPL.ID = CONTRACT.APPL_ID
+		    INNER JOIN LN_PAYMENT PAYMENT
+		      ON PAYMENT.ID = SUMRECEIVABEOVERDUE.PAYMENT_ID
+		    INNER JOIN WF_WORKFLOW_INFO WF
+		      ON WF.ID = APPL.WF_ID
+		      AND WF.STATUS != 'CLEAR'
+		    INNER JOIN CL_CUST CUST
+		      ON CUST.APPL_ID = CONTRACT.APPL_ID
+		    LEFT JOIN (SELECT T3.CUST_NAME CUST_NAME,
+                    T3.DOCNO ID_CARD_NO,
+                    T4.ADDR ADDR,
+                    T4.ADDR_CITY_ID,
+                    CASE
+                      WHEN T4.ADDR_TYPE = 'COMPANY' THEN
+                       '公司地址'
+                      WHEN T4.ADDR_TYPE = 'HOUSE' THEN
+                       '住宅地址'
+                      WHEN T4.ADDR_TYPE = 'REGISTER' THEN
+                       '户口地址'
+                    END ADDRTYPE
+               FROM PLMS_CL_CUST_INFO T3
+               LEFT JOIN PLMS_CL_ADDRESS_INFO T4
+                 ON T3.ID = T4.CL_CUST_ID
+              WHERE 1 = 1
+                AND T4.IS_ACTIVE = 'Y'
+                AND T4.ADDR_TYPE IN ('COMPANY', 'REGISTER', 'HOUSE')
+                AND T4.RLTNSHP IN ('12')
+                <if test = "addrType != null and addrType != '' ">
+            AND T4.ADDR_TYPE = #{addrType}
+        </if>            
+             ) CUSTOMER
+			    ON CUST.ID_CARD_NO = CUSTOMER.ID_CARD_NO
+			  LEFT JOIN SYS_PAYMENT_TYPE PAYMENTTYPE
+			    ON PAYMENTTYPE.CODE = APPL.PAYMENT_TYPE
+			  <!-- LEFT JOIN SYS_SITE SITE
+			    ON SITE.SITE_CODE = APPL.SITE_CODE -->
+			  LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+			    ON COLLECTALLOC.PAYMENT_ID = PAYMENT.ID
+			   AND COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+			   AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR
+			       SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+			   AND COLLECTALLOC.IS_ACTIVE = 'Y'
+			  LEFT JOIN PLMS_WORK_ORDER_POOL ORPOOL
+			    ON ORPOOL.APPL_ID = APPL.ID
+			  LEFT JOIN LF_WAIVE_REQ WAIVE
+			    ON WAIVE.APPL_ID = APPL.ID
+			 WHERE PAYMENT.IS_WRITE_OFF = 'N'
+			 AND APPL.ID NOT IN (SELECT TRED.APPL_ID FROM LF_WAIVE_REQ TRED WHERE TRED.STATUS = 'SUBMITTED')
+			  and ORPOOL.STATUS &lt;&gt; (SELECT T.STATUS
+			          FROM PLMS_COLLECTION_RULE_SET T
+			         WHERE T.CIRCU_RULE_CODE = 'OUTSOURC'
+			                AND T.IS_ACTIVE = 'Y')
+			   AND CUSTOMER.ADDR IS NOT NULL
+        <if test="repaymentFrom != null and repaymentFrom != '' ">
+             AND SUMRECEIVABEOVERDUE.RPMNT_DATE &gt;= #{repaymentFrom} 
+        </if>
+        <if test="repaymentTo != null and repaymentTo != '' ">
+            AND SUMRECEIVABEOVERDUE.RPMNT_DATE &lt; #{repaymentTo} + 1 
+        </if>
+        <if test="overdueDayFrom != null and overdueDayFrom != '' ">
+            AND SUMRECEIVABEOVERDUE.OVERDUEDAY &gt;= #{overdueDayFrom} 
+        </if>
+        <if test="overdueDayTo != null and overdueDayTo != '' ">
+            AND SUMRECEIVABEOVERDUE.OVERDUEDAY &lt;= #{overdueDayTo} 
+        </if>
+        <if test="contractNo != null and contractNo != '' "> 
+            AND CONTRACT.CNTRCT_NO = #{contractNo} 
+        </if>
+        <if test="loanName != null and loanName != '' ">
+            AND CUSTOMER.CUST_NAME = #{loanName}  
+        </if>
+        <if test="loanCardId != null and loanCardId != '' ">
+            AND CUSTOMER.ID_CARD_NO = #{loanCardId}   
+        </if>
+        <!-- <if test="siteCode != null and siteCode != '' "> 
+            AND appl.SITE_CODE = #{siteCode} 
+        </if> -->
+        <choose>
+            <!-- 如果城市选择为深圳 -->
+            <when test="siteCode != null and siteCode == '2151' "> 
+                AND CUSTOMER.ADDR_CITY_ID = #{siteCode} 
+            </when>
+            <!-- 如果城市选择为其他 -->
+            <when test="siteCode != null and siteCode == 'other' ">
+                AND CUSTOMER.ADDR_CITY_ID != '2151'
+            </when>
+        </choose>
+        <choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                ORDER BY SUMRECEIVABEOVERDUE.OVERDUEDAY
+            </otherwise>
+        </choose>
+         
+    </select>
+<!--     查询信函生成记录（全部信函） -->
+    <select id="selectLetterGenerateLogAndPage" resultType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogDto" parameterType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogSearchParamDto">
+          SELECT 
+            distinct
+		       GENLOG.ID AS ID,
+		       GENLOG.DOC_CODE AS DOCUMENTCODE,
+		       GENLOG.DOC_NAME AS DOCUMENTNAME,
+		       GENLOG.GEN_TIME AS GENTIME,
+		       GENLOG.GEN_BY AS GENBY,
+		       SYSUSER.USER_NAME AS GENBYNAME,
+		       GENLOG.CNTRCT_ID AS CONTRACTID,
+		       GENLOG.CUTOFF_DATE AS CUTOFFDATE,
+		       GENLOG.PRINCIPAL AS PRINCIPAL,
+		       GENLOG.INT AS INTEREST,
+		       GENLOG.BROKER_FEE AS BROKERFEE,
+		       GENLOG.OVERDUE_INT AS OVERDUEINTEREST,
+		       GENLOG.FAIL_COLLECT_FEE AS FAILCOLLECTFEE,
+		       GENLOG.COLLECT_COST AS COLLECTCOST,
+		       GENLOG.TTL_AMT AS TOTALAMOUNT,
+		       GENLOG.OVERDUE_DAY AS OVERDUEDAY,
+		       (GENLOG.BROKER_FEE + GENLOG.INT) AS BROKERFEEANDOVERDUEINTEREST,
+		       GENLOG.PARAM AS PARAMETER,
+		       CONTRACT.CNTRCT_NO AS CONTRACTNO,
+		       GENLOG.CLIENT_NAME AS CLIENTNAME,
+		       GENLOG.LOAN_NAME AS LOANNAME,
+		       GENLOG.CLIENT_ID_CARD AS IDCARDNO,
+		       GENLOG.CLIENT_ADDR AS ADDRES,
+		       GENLOG.CLIENT_ADDR_TYPE AS ADDRTYPE,
+		       GENLOG.CORRES_STATUS COSTATUS,
+		       GENLOG.CORRES_CODE CORRESCODE,
+		       genLog.UPDATE_TIME
+		  FROM PLMS_LN_DOC_GEN_LOG GENLOG
+		  LEFT JOIN LN_CNTRCT CONTRACT
+		    ON GENLOG.CNTRCT_ID = CONTRACT.ID
+		    LEFT JOIN PLMS_LN_APPL_INFO APPL
+		    ON CONTRACT.APPL_ID = APPL.ID
+		  LEFT JOIN SYS_USER SYSUSER
+		    ON GENLOG.GEN_BY = SYSUSER.USER_ID
+		  LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+		    ON COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+		   AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+		   AND COLLECTALLOC.IS_ACTIVE = 'Y'
+		 WHERE 1 = 1
+        <if test = "corresCode !=null and corresCode != '' "> 
+            AND genLog.corres_code = #{corresCode}
+        </if>
+        <if test = "contractNo !=null and contractNo != '' "> 
+            AND contract.cntrct_no = #{contractNo}
+        </if>
+        <if test = "loanName !=null and loanName !='' "> 
+            AND GENLOG.CLIENT_NAME = #{loanName}
+        </if>
+        <if test = "idCardNo !=null and idCardNo !='' "> 
+            AND GENLOG.CLIENT_ID_CARD = #{idCardNo}
+        </if>
+        <if test = "genDateFrom !=null and genDateFrom !='' "> 
+            AND genLog.gen_time &gt;= #{genDateFrom}
+        </if>
+        <if test = "genDateTo !=null and genDateTo !='' "> 
+            AND genLog.gen_time &lt; #{genDateTo} + 1
+        </if>
+        <if test = "docCode !=null and docCode !='' "> 
+            AND genLog.doc_code = #{docCode}
+        </if>
+        <if test = "coStatus !=null "> 
+            AND genLog.corres_status = #{coStatus}
+        </if>
+        <if test = "genByName !=null and genByName !='' "> 
+            AND SYSUSER.USER_NAME = #{genByName}
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by genLog.UPDATE_TIME desc
+            </otherwise>
+        </choose>
+       
+    
+    </select>
+    <select id="selectCategory" resultType="com.ljwd.plms.web.vo.correspondence.PlmsCorresondenceCategory">
+       <!--  select t.tmpl_code tmplCode,
+             t.tmpl_name tmplName
+             from SYS_TMPL t where t.category = 'LETTER' -->
+             select t.id id,
+                    t.doc_code tmplCode,
+                    t.doc_name tmplName from PLMS_LN_DOC_MANAGE t
+    </select>
+    <update id="updateCorresStatus" parameterType="String">
+        update  PLMS_LN_DOC_GEN_LOG t set t.corres_status = '1' where t.id in 
+            <foreach item="item" index="index" collection="list" 
+                         open="(" separator="," close=")">
+                        #{item}
+                </foreach>
+    </update>
+    <select id="findExportExcelCorres" resultType="com.ljwd.plms.web.vo.correspondence.PlmsCorresExportDto" parameterType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogSearchParamDto">
+         SELECT
+            distinct
+            GENLOG.DOC_NAME AS DOCUMENTNAME , 
+            GENLOG.CLIENT_NAME AS CLIENTNAME ,
+            GENLOG.CLIENT_ID_CARD AS IDCARDNO ,
+            CONTRACT.CNTRCT_NO AS CONTRACTNO ,
+            SYSUSER.USER_NAME AS GENBY ,
+            GENLOG.GEN_TIME AS GENTIME ,
+            GENLOG.OVERDUE_DAY AS OVERDUEDAY ,
+            GENLOG.ADDRTYPE AS ADDRTYPE,
+            GENLOG.ADDRES AS ADDRES,
+            GENLOG.LOAN_NAME AS LOANNAME ,
+            GENLOG.PRINCIPAL AS PRINCIPAL ,
+            GENLOG.OVERDUE_INT AS OVERDUEINTEREST ,
+            GENLOG.FAIL_COLLECT_FEE AS FAILCOLLECTFEE ,
+            (GENLOG.BROKER_FEE + GENLOG.INT) AS BROKERFEE ,
+            GENLOG.COLLECT_COST AS COLLECTCOST ,
+            GENLOG.CREATEDIT_FEE AS createditFee,
+            GENLOG.TTL_AMT AS TOTALAMOUNT ,
+            GENLOG.COLLECTOR_APPELL AS COLLECTOR ,
+            GENLOG.COLLECT_PHONE AS COLLECTPHONE,
+            genLog.UPDATE_TIME
+      FROM PLMS_LN_DOC_GEN_LOG GENLOG
+          LEFT JOIN LN_CNTRCT CONTRACT
+            ON GENLOG.CNTRCT_ID = CONTRACT.ID
+            LEFT JOIN PLMS_LN_APPL_INFO APPL
+            ON CONTRACT.APPL_ID = APPL.ID
+          LEFT JOIN SYS_USER SYSUSER
+            ON GENLOG.GEN_BY = SYSUSER.USER_ID
+          LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+            ON COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+           AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+           AND COLLECTALLOC.IS_ACTIVE = 'Y'
+         WHERE 1 = 1
+        <if test = "corresCode !=null and corresCode != '' "> 
+            AND genLog.corres_code = #{corresCode}
+        </if>
+        <if test = "contractNo !=null and contractNo != '' "> 
+            AND contract.cntrct_no = #{contractNo}
+        </if>
+        <if test = "loanName !=null and loanName !='' "> 
+            AND GENLOG.CLIENT_NAME = #{loanName}
+        </if>
+        <if test = "idCardNo !=null and idCardNo !='' "> 
+            AND GENLOG.CLIENT_ID_CARD = #{idCardNo}
+        </if>
+        <if test = "genDateFrom !=null and genDateFrom !='' "> 
+            AND genLog.gen_time &gt;= #{genDateFrom}
+        </if>
+        <if test = "genDateTo !=null and genDateTo !='' "> 
+            AND genLog.gen_time &lt; #{genDateTo} + 1
+        </if>
+        <if test = "docCode !=null and docCode !='' "> 
+            AND genLog.doc_code = #{docCode}
+        </if>
+        <if test = "coStatus !=null "> 
+            AND genLog.corres_status = #{coStatus}
+        </if>
+        <if test = "genByName !=null and genByName !='' "> 
+            AND SYSUSER.USER_NAME = #{genByName}
+        </if>
+        order by genLog.UPDATE_TIME desc
+    
+    </select>
+    
+    <select id="findSiteCodeSelect" resultType="com.ljwd.plms.web.vo.correspondence.PlmsSiteCodeSelectData">
+        select t.site_code siteCode,
+                t.site_name siteName,
+                t.area_id areaId
+                from SYS_SITE t order by t.site_code
+    </select>
+    
+    <select id="findAddrTypeSelect" resultType="com.ljwd.plms.web.vo.correspondence.PlmsAddrTypeSelectData">
+        select t3.code addCode,t3.val addName from plms_l_address_type t3
+    </select>
+   <!--  获取信函详情信息 -->
+     <select id="selectCorrImfomationById" resultType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogDto" >
+        SELECT
+        DISTINCT
+           GENLOG.DOC_NAME AS DOCUMENTNAME,
+	       GENLOG.CLIENT_NAME AS CLIENTNAME,
+	       CONTRACT.CNTRCT_NO    AS CONTRACTNO,
+	       GENLOG.LOAN_NAME      AS LOANNAME,
+	       GENLOG.CLIENT_ID_CARD AS IDCARDNO,      
+	       SYSUSER.USER_NAME     AS GENBYNAME,
+	       GENLOG.GEN_TIME    AS GENTIME,
+	       GENLOG.OVERDUE_DAY AS OVERDUEDAY,      
+	       GENLOG.PRINCIPAL        AS PRINCIPAL,
+	       GENLOG.OVERDUE_INT      AS OVERDUEINTEREST,
+	       GENLOG.FAIL_COLLECT_FEE AS FAILCOLLECTFEE,       
+	       (GENLOG.BROKER_FEE + GENLOG.INT) AS BROKERFEE,
+	       GENLOG.COLLECT_COST AS COLLECTCOST,
+	       GENLOG.TTL_AMT AS TOTALAMOUNT,     
+	       GENLOG.ADDRTYPE      AS ADDRTYPE,
+	       GENLOG.ADDRES        AS ADDRES,
+	       GENLOG.CORRES_STATUS AS COSTATUS,
+	       GENLOG.CORRES_CODE   AS CORRESCODE,
+	       GENLOG.REBACKTYPE_INFO   AS rebackTypeInfo,
+	       GENLOG.REBACK_DATE   AS rebackDate,
+	       GENLOG.REBACK_INFO   AS rebackInfo,
+	       GENLOG.CREATEDIT_FEE AS creaditFee
+	 FROM PLMS_LN_DOC_GEN_LOG GENLOG
+	  LEFT JOIN LN_CNTRCT CONTRACT
+	    ON GENLOG.CNTRCT_ID = CONTRACT.ID
+	  LEFT JOIN PLMS_CL_CUST_INFO CUST
+	  ON GENLOG.CLIENT_NAME = CUST.CUST_NAME
+	  AND GENLOG.CLIENT_ID_CARD =CUST.DOCNO
+	    LEFT JOIN SYS_USER SYSUSER ON GENLOG.GEN_BY = SYSUSER.USER_ID
+	   LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+	    ON COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+	   AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+	   AND COLLECTALLOC.IS_ACTIVE = 'Y'
+	   WHERE 1 = 1
+        <if test = "corrId !=null and corrId != '' "> 
+            AND genLog.id = #{corrId}
+        </if>
+        <if test="clientName != null and clientName !='' ">
+             AND GENLOG.CLIENT_NAME =  #{clientName}
+        </if>
+    </select> 
+    <!-- 根据合同号查找催收姓氏 -->
+    <select id="selectCollectorInfo" resultType="com.ljwd.plms.web.vo.correspondence.PlmsCollectorInfo">
+       SELECT DISTINCT COLEMP.MESSAGE_NAME AS COLLECTOREMP,
+         USERN.USER_NAME AS COLLECTORNAME,
+         USERN.USER_ID AS COLLECTORID,
+         EMP.OFFICE_TEL AS COLLECTORPHONE,
+         EMP.GENDER AS GENDER
+    FROM PLMS_EMP_COLLECT_SET COLEMP
+   INNER JOIN SYS_USER USERN
+      ON COLEMP.USER_ID = USERN.USER_ID
+    LEFT JOIN SYS_EMP EMP
+      ON USERN.EMP_ID = EMP.ID
+   INNER JOIN (SELECT DISTINCT T1.COLLECTOR, T4.CNTRCT_NO
+                 FROM PLMS_LA_COLLECT_ALLOC T1,
+                      PLMS_EMP_COLLECT_SET  T2,
+                      LN_PAYMENT            T3,
+                      LN_CNTRCT             T4
+                WHERE T1.COLLECTOR = T2.USER_ID
+                  AND T1.PAYMENT_ID = T3.ID
+                  AND T3.CNTRCT_ID = T4.ID
+                AND T1.ID = ( 
+                SELECT MAX(TEMP.ID) FROM
+                 PLMS_LA_COLLECT_ALLOC TEMP 
+                 WHERE TEMP.IS_ACTIVE = 'Y' 
+                 AND TEMP.ALLOC_BEGIN_DATE &lt;= SYSDATE 
+                 AND TEMP.ALLOC_END_DATE IS NULL 
+                 AND TEMP.APPL_ID = T1.APPL_ID)
+) ALLO
+   ON ALLO.COLLECTOR = USERN.USER_ID
+   WHERE 1 = 1
+ <if test="contrctNo != null">
+     AND ALLO.CNTRCT_NO = #{contrctNo}
+ </if>
+    </select>
+    <select id="selectCorrTelImfomationById" resultType="com.ljwd.plms.web.vo.correspondence.PlmsDocumentGenLogTelDto">
+        SELECT *
+		  FROM (SELECT 
+		  T.TEL AS tel,
+		  T.CREATE_TIME AS createTime
+		          FROM PLMS_CL_CONTACTOR_INFO T, PLMS_CL_CUST_INFO T2
+		         WHERE T.CL_CUST_ID = T2.ID
+		           AND T.RLTNSHP = '12'
+		           AND T.SRC_CODE = 'WIN'
+		           AND T.TEL_TYPE = 'MOBPHONE'
+		           AND T.IS_ACTIVE = 'Y'
+		           AND T.NAME = #{clientName}
+		           AND T2.DOCNO = #{idCardNo}
+		         ORDER BY T.CREATE_TIME DESC)
+		 WHERE ROWNUM = 1
+    </select>
+    <update id="updateStatusRebackInfo" parameterType="com.ljwd.plms.web.vo.correspondence.PlmsCorresRebackInfo">
+            update  PLMS_LN_DOC_GEN_LOG t set 
+                <if test="rebackTypeInfo != null and rebackTypeInfo != '' ">
+                    t.REBACKTYPE_INFO = #{rebackTypeInfo},
+                </if>
+                <if test="rebackDate != null and rebackDate != '' ">
+                    T.REBACK_DATE = #{rebackDate},
+                </if>
+                <if test="rebackInfo != null and rebackInfo != '' ">
+                    T.REBACK_INFO = #{rebackInfo}, 
+                </if>
+                <if test="updatedBy != null and updatedBy != '' ">
+                    T.UPDATED_BY = #{updatedBy},
+                </if>
+                T.UPDATE_TIME = sysdate, 
+                t.corres_status = '2'
+                where t.id = #{ids,jdbcType=BIGINT}
+    </update>
+    <select id="selectRebackTypeOne" resultType="com.ljwd.plms.web.model.correspondence.PlmsRebackTypeEntry" parameterType="String">
+            select t2.id as id,
+               t2.rebacktype_code as rebackTypeCode,
+               t2.rebacktype_fa_code as rebackTypeFaCode,
+               t2.rebacktype_name as rebackTypeName 
+               from  PLMS_LN_DOC_RETYPE t2 
+               where 1=1 
+               <choose>
+                <when test="para == null">
+                    and t2.rebacktype_fa_code is null
+                </when>
+                <otherwise>
+                    and t2.rebacktype_fa_code = #{para}
+                </otherwise>
+               </choose>
+    </select>
+    <insert id="insertCorresLog" parameterType="com.ljwd.plms.web.model.correspondence.PlmsLnCorresLog">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+            SELECT SEQ_PLMS_LN_CORRES_LOG.NEXTVAL FROM DUAL
+      </selectKey>  
+      insert into PLMS_LN_CORRES_LOG T ( 
+            t.ID,
+            t.APPL_ID,
+            t.LOG_CONTENT,
+            t.GENBY_NAME,
+            t.CREATED_BY,
+            t.CREATE_TIME,
+            t.UPDATED_BY,
+            t.UPDATE_TIME,
+            t.REC_VER,
+            t.TAG_SEQ
+         )
+    values (
+      #{id,jdbcType=BIGINT},
+      #{applId,jdbcType=VARCHAR},
+      #{logContent,jdbcType=VARCHAR},
+      #{genByName,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,    
+      0,
+      0
+      )
+        
+    </insert>
+    <select id="selectCorresLogAndPage" resultType="com.ljwd.plms.web.vo.correspondence.PlmsCorresLogDto" parameterType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogSearchParamDto">
+        SELECT T.ID ID,
+       T.APPL_ID applId,
+       T.LOG_CONTENT LOGCONTENT,
+       t.GENBY_NAME genByName,
+       T.CREATED_BY genBy,
+       T.CREATE_TIME genTime,
+       T.UPDATED_BY upDateBy,
+       T.UPDATE_TIME upDateTime
+	  FROM PLMS_LN_CORRES_LOG T
+	  WHERE 1=1
+	  <if test="applId != null and applId != '' ">
+	      AND T.APPL_ID = #{applId}  
+	  </if>
+	  order by t.update_time desc
+    </select>
+    <select id="selectCorresLogByLogId" resultType="com.ljwd.plms.web.model.correspondence.PlmsDocumentGenLogDto" parameterType="Long">
+         SELECT
+        DISTINCT
+	        GENLOG.APPL_ID as applyId,
+	       SYSUSER.USER_NAME     AS GENBYNAME,
+	       GENLOG.CORRES_CODE as corresCode
+		   FROM PLMS_LN_DOC_GEN_LOG GENLOG
+		   LEFT JOIN LN_CNTRCT CONTRACT
+		   ON GENLOG.CNTRCT_ID = CONTRACT.ID
+		   LEFT JOIN PLMS_CL_CUST_INFO CUST
+		   ON GENLOG.CLIENT_NAME = CUST.CUST_NAME
+		   AND GENLOG.CLIENT_ID_CARD =CUST.DOCNO
+		   LEFT JOIN SYS_USER SYSUSER ON GENLOG.GEN_BY = SYSUSER.USER_ID
+		   LEFT JOIN PLMS_LA_COLLECT_ALLOC COLLECTALLOC
+		   ON COLLECTALLOC.ALLOC_BEGIN_DATE &lt;= SYSDATE
+		   AND (COLLECTALLOC.ALLOC_END_DATE IS NULL OR SYSDATE &lt;= COLLECTALLOC.ALLOC_END_DATE)
+		   AND COLLECTALLOC.IS_ACTIVE = 'Y'
+		   WHERE 1 = 1
+        <if test = "id !=null and id != '' "> 
+            AND genLog.id = #{id}
+        </if>
+    </select>
+    <!--     查询流水号 -->
+    <select id="selectCorresSNo" resultType="com.ljwd.plms.web.vo.correspondence.PlmCoDig">
+        SELECT T.NOW_TIME AS NOWTIME,
+             T.COUNT_NO AS COUNTNO,
+             T.DIFF_SOURCE AS differ
+             FROM PLMS_CO_DIG T
+             where 1=1
+             <if test="differ != null and differ != ''">
+                and T.DIFF_SOURCE = #{differ}
+            </if>
+    </select>
+    <!--     更新流水号 -->
+    <update id="updateCorresSNo" >
+        UPDATE PLMS_CO_DIG T SET 
+        <if test="nowTime != null and nowTime != ''">
+            T.NOW_TIME = sysdate,
+        </if> 
+        <if test="countNo != null and countNo != '' ">
+            T.COUNT_NO = #{countNo}
+        </if>
+        where 1=1
+        <if test="differ != null and differ != ''">
+                and T.DIFF_SOURCE = #{differ}
+            </if>    
+    </update>
+</mapper>

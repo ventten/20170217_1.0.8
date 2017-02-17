@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outsource.PlmsOutsrcComMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="OUTSRC_COM_NAME" property="outsrcComName" jdbcType="VARCHAR" />
+    <result column="WEIGHT" property="weight" jdbcType="DECIMAL" />
+    <result column="BRIEF" property="brief" jdbcType="VARCHAR" />
+    <result column="WD_CORP_ID" property="wdCorpId" jdbcType="BIGINT" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isActive != null and isActive != ''">
+            and T.IS_ACTIVE = #{isActive}
+        </if>
+        <if test="comName != null and comName != ''">
+            and T.OUTSRC_COM_NAME = #{comName}
+        </if>
+        <if test="outsrcComName != null and outsrcComName != ''">
+            and T.OUTSRC_COM_NAME like '%' || #{outsrcComName} || '%'
+        </if>
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="wdCorpId != null">
+            and T.WD_CORP_ID = #{wdCorpId}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.isActive != null and example.isActive != ''">
+                and T.IS_ACTIVE = #{example.isActive}
+            </if>
+            <if test="example.comName != null and example.comName != ''">
+                and T.OUTSRC_COM_NAME = #{example.comName}
+            </if>
+            <if test="example.outsrcComName != null and example.outsrcComName != ''">
+                and T.OUTSRC_COM_NAME like '%' || #{outsrcComName} || '%'
+            </if>
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.wdCorpId != null">
+                and T.WD_CORP_ID = #{example.wdCorpId}
+            </if>
+            <if test="example.noThisId != null">
+                and T.ID &lt;&gt; #{example.noThisId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.OUTSRC_COM_NAME,
+    T.WEIGHT,
+    T.BRIEF,
+    T.WD_CORP_ID,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcComExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_OUTSRC_COM T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OUTSRC_COM T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="long" >
+    delete from PLMS_OUTSRC_COM T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcComExample" >
+    delete from PLMS_OUTSRC_COM T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_outsrc_com.nextval FROM dual
+      </selectKey>
+    insert into PLMS_OUTSRC_COM T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{outsrcComName,jdbcType=VARCHAR},
+      #{weight,jdbcType=DECIMAL},
+      #{brief,jdbcType=VARCHAR},
+      #{wdCorpId,jdbcType=BIGINT},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_outsrc_com.nextval FROM dual
+      </selectKey>
+    insert into PLMS_OUTSRC_COM T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="outsrcComName != null" >
+          T.OUTSRC_COM_NAME,
+      </if>
+      <if test="weight != null" >
+          T.WEIGHT,
+      </if>
+      <if test="brief != null" >
+          T.BRIEF,
+      </if>
+      <if test="wdCorpId != null" >
+          T.WD_CORP_ID,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="outsrcComName != null" >
+        #{outsrcComName,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+        #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="brief != null" >
+        #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="wdCorpId != null" >
+        #{wdCorpId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcComExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OUTSRC_COM T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OUTSRC_COM T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.outsrcComName != null" >
+          T.OUTSRC_COM_NAME = #{record.outsrcComName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weight != null" >
+          T.WEIGHT = #{record.weight,jdbcType=DECIMAL},
+      </if>
+      <if test="record.brief != null" >
+          T.BRIEF = #{record.brief,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wdCorpId != null" >
+          T.WD_CORP_ID = #{record.wdCorpId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OUTSRC_COM T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.OUTSRC_COM_NAME = #{record.outsrcComName,jdbcType=VARCHAR},
+      T.WEIGHT = #{record.weight,jdbcType=DECIMAL},
+      T.BRIEF = #{record.brief,jdbcType=VARCHAR},
+      T.WD_CORP_ID = #{record.wdCorpId,jdbcType=BIGINT},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" >
+    update PLMS_OUTSRC_COM T
+    <set >
+      <if test="outsrcComName != null" >
+          T.OUTSRC_COM_NAME = #{outsrcComName,jdbcType=VARCHAR},
+      </if>
+      <if test="weight != null" >
+          T.WEIGHT = #{weight,jdbcType=DECIMAL},
+      </if>
+      <if test="brief != null" >
+          T.BRIEF = #{brief,jdbcType=VARCHAR},
+      </if>
+      <if test="wdCorpId != null" >
+          T.WD_CORP_ID = #{wdCorpId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" >
+    update PLMS_OUTSRC_COM T
+    set
+      T.OUTSRC_COM_NAME = #{outsrcComName,jdbcType=VARCHAR},
+      T.WEIGHT = #{weight,jdbcType=DECIMAL},
+      T.BRIEF = #{brief,jdbcType=VARCHAR},
+      T.WD_CORP_ID = #{wdCorpId,jdbcType=BIGINT},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!-- 根据区域ID查询启用的委外机构,并按优先级降序排序(一手案件分配用) -->
+    <select id="selectFirstByRegionId" resultMap="BaseResultMap" parameterType="long">
+        select com.*
+        from PLMS_OUTSRC_COM com
+        inner join PLMS_OUTSRC_COM_REGION region on region.outsrc_com_id = com.id
+        where com.is_active = 'Y' and region.region_id = #{value,jdbcType=BIGINT}
+        order by com.weight desc,com.id desc
+    </select>
+
+    <!-- 根据区域ID查询启用的委外机构和机构二手案件在户数,并按在户数升序、优先级降序排序(二手案件分配用) -->
+    <select id="selectSecondByRegionId" resultMap="BaseResultMap" parameterType="long">
+        select com.*,
+               nvl(approved.approvedCount,0) as approvedCount
+        from PLMS_OUTSRC_COM com
+        inner join PLMS_OUTSRC_COM_REGION region on region.outsrc_com_id = com.id
+        left join (
+             select src.com_id,
+                    count(src.id) approvedCount
+             from plms_la_appl_outsrc src
+             where src.outsrc_type = 'SECOND_HAND' and src.status = 'APPROVED'
+             group by src.com_id
+        ) approved on com.id = approved.com_id
+        where com.is_active = 'Y' and region.region_id = #{regionId,jdbcType=BIGINT}
+        order by nvl(approved.approvedCount,0) ,com.weight desc
+    </select>
+
+    <!-- 根据区域ID查询启用的委外机构,及委外机构的二手案件在户数,并根据借款ID、委外批次编号查询此借款是否委外过给委外机构,并按照是否委外(先否后是)、在户数升序、机构优先级降序排序 -->
+    <select id="selectByRegionIdApplIdLotNo" resultMap="BaseResultMap" parameterType="map">
+        select com.*,
+               nvl(approved.approvedCount,0) as approvedCount,
+               (case when applOut.outsrcCount &gt;= 1 then 1 else 0 end) as isOutsrc
+        from PLMS_OUTSRC_COM com
+        inner join PLMS_OUTSRC_COM_REGION region on region.outsrc_com_id = com.id
+        left join (
+             select src.com_id,
+                    count(src.id) approvedCount
+             from plms_la_appl_outsrc src
+             where src.outsrc_type = 'SECOND_HAND' and src.status = 'APPROVED'
+             group by src.com_id
+        ) approved on com.id = approved.com_id
+        left join (
+          select outsrc.com_id,
+                 count(outsrc.id) as outsrcCount
+          from plms_la_appl_outsrc outsrc
+          where outsrc.status in ('APPROVED','ENDED','BACK') and outsrc.appl_id = #{applId,jdbcType=BIGINT}
+          <if test="lotNo != null and lotNo != ''">
+              and outsrc.lot_no = #{lotNo,jdbcType=VARCHAR}
+          </if>
+          group by outsrc.com_id
+        ) applOut on com.id = applOut.com_id
+        where com.is_active = 'Y' and region.region_id = #{regionId,jdbcType=BIGINT}
+        order by (case when applOut.outsrcCount &gt;= 1 then 1 else 0 end) ,nvl(approved.approvedCount,0) ,com.weight desc
+    </select>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.outsource.PlmsOutsrcCom" extends="BaseResultMap">
+        <association property="regionList" column="ID" select="com.ljwd.plms.web.dao.outsource.PlmsOutsrcComRegionMapper.selectRegionByComId"></association>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        CORP.CORP_NAME as wdCorpName,
+        maxComLog.Content as content,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.outsource.PlmsOutsrcComExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_OUTSRC_COM T
+        inner join SYS_OUTSRC_CORP CORP on CORP.ID = T.WD_CORP_ID
+        left join ( select comLog.*
+                    from plms_outsrc_com_log comLog
+                    inner join (select max(Id) as id,Outsrc_Com_Id from plms_outsrc_com_log group by Outsrc_Com_Id) maxLog on comLog.Id = maxLog.id
+        ) maxComLog on t.id = maxComLog.outsrc_com_id
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--查找微贷有效的外包公司-->
+    <select id="selectWdCorp" resultType="com.ljwd.plms.web.vo.outsource.WdCorpDto">
+        select corp.id as wdCorpId,
+               corp.corp_name as wdCorpName
+        from sys_outsrc_corp corp where corp.is_valid = 'Y'
+    </select>
+
+</mapper>

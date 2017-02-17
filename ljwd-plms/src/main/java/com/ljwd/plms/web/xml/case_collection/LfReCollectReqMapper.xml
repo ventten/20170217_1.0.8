@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfReCollectReqMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfReCollectReq" >
+    <result column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CNTRCT_ID" property="cntrctId" jdbcType="BIGINT" />
+    <result column="PERIOD_NUM" property="periodNum" jdbcType="INTEGER" />
+    <result column="REQ_AMT" property="reqAmt" jdbcType="DECIMAL" />
+    <result column="REQ_BY" property="reqBy" jdbcType="VARCHAR" />
+    <result column="REQ_TIME" property="reqTime" jdbcType="TIMESTAMP" />
+    <result column="OFFER_BAT_DTL_ID" property="offerBatDtlId" jdbcType="BIGINT" />
+    <result column="RPAY_TYPE" property="rpayType" jdbcType="VARCHAR" />
+    <result column="COLLECT_DATE" property="collectDate" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+  <sql id="Where_Clause">
+    <if test="statusS != null">
+      and T.STATUS IN <foreach collection="statusS" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </if>
+    <if test="rpayType != null and rpayType != ''">
+      and T.RPAY_TYPE = #{rpayType}
+    </if>
+    <if test="status != null and status != ''">
+      and T.STATUS = #{status}
+    </if>
+    <if test="cntrctId != null">
+      and T.CNTRCT_ID = #{cntrctId}
+    </if>
+    <if test="id != null">
+      and T.ID = #{id}
+    </if>
+  </sql>
+
+  <sql id="Example_Where_Clause" >
+    <where >
+      <include refid="Where_Clause"/>
+    </where>
+  </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CNTRCT_ID,
+    T.PERIOD_NUM,
+    T.REQ_AMT,
+    T.REQ_BY,
+    T.REQ_TIME,
+    T.OFFER_BAT_DTL_ID,
+    T.RPAY_TYPE,
+    T.COLLECT_DATE,
+    T.STATUS,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_collection.LfReCollectReqExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LF_RE_COLLECT_REQ T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfReCollectReqExample" resultType="int" >
+    select count(*) from LF_RE_COLLECT_REQ T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

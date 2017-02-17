@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LnPaymentMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LnPayment">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="CNTRCT_ID" jdbcType="BIGINT" property="cntrctId" />
+    <result column="LOAN_NO" jdbcType="VARCHAR" property="loanNo" />
+    <result column="PAY_DATE" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="SETTLE_DAY" jdbcType="INTEGER" property="settleDay" />
+    <result column="PAY_AMT" jdbcType="DECIMAL" property="payAmt" />
+    <result column="ACTUAL_PAY_AMT" jdbcType="DECIMAL" property="actualPayAmt" />
+    <result column="DELAY_PAY_DATE_FEE" jdbcType="DECIMAL" property="delayPayDateFee" />
+    <result column="IS_PAID" jdbcType="CHAR" property="isPaid" />
+    <result column="CHECK_BY_PHONE" jdbcType="CHAR" property="checkByPhone" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="IS_WRITE_OFF" jdbcType="CHAR" property="isWriteOff" />
+    <result column="RENEW_AMT" jdbcType="DECIMAL" property="renewAmt" />
+    <result column="IS_ADV_CLEAR" jdbcType="CHAR" property="isAdvClear" />
+    <result column="CLEAR_DATE" jdbcType="TIMESTAMP" property="clearDate" />
+    <result column="CLEAR_PERIOD" jdbcType="INTEGER" property="clearPeriod" />
+    <result column="RETURN_AMT" jdbcType="DECIMAL" property="returnAmt" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.APPL_ID,
+    T.CNTRCT_ID,
+    T.LOAN_NO,
+    T.PAY_DATE,
+    T.START_DATE,
+    T.END_DATE,
+    T.SETTLE_DAY,
+    T.PAY_AMT,
+    T.ACTUAL_PAY_AMT,
+    T.DELAY_PAY_DATE_FEE,
+    T.IS_PAID,
+    T.CHECK_BY_PHONE,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.IS_WRITE_OFF,
+    T.RENEW_AMT,
+    T.IS_ADV_CLEAR,
+    T.CLEAR_DATE,
+    T.CLEAR_PERIOD,
+    T.RETURN_AMT
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnPaymentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LN_PAYMENT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.math.BigDecimal" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />,
+    CNTRCT.CNTRCT_NO as cntrctNo
+    FROM LN_PAYMENT T
+    INNER JOIN LN_CNTRCT CNTRCT ON T.CNTRCT_ID = CNTRCT.ID
+    WHERE T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnPaymentExample" resultType="java.lang.Integer">
+    select count(*) from LN_PAYMENT T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

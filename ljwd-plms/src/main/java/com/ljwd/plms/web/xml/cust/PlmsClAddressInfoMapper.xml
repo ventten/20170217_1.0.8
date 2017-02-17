@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClAddressInfoMapper" >
+  
+    <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="RLTNSHP" property="rltnshp" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ADDR_TYPE" property="addrType" jdbcType="VARCHAR" />
+    <result column="ADDR" property="addr" jdbcType="VARCHAR" />
+    <result column="ADDR_PROVINCE_ID" property="addrProvinceId" jdbcType="BIGINT" />
+    <result column="ADDR_CITY_ID" property="addrCityId" jdbcType="BIGINT" />
+    <result column="ADDR_AREA_ID" property="addrAreaId" jdbcType="BIGINT" />
+    <result column="ADDR_DETAILS" property="addrDetails" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="addrType != null and addrType != ''">
+            and T.ADDR_TYPE = #{addrType}
+        </if>
+        <if test="addr != null and addr != ''">
+            and T.ADDR = #{addr}
+        </if>
+        <if test="name != null and name != ''">
+            and T.NAME = #{name}
+        </if>
+        <if test="rltnshp !=null">
+            and T.RLTNSHP = #{rltnshp}
+        </if>
+        <if test="applIdOrNull != null">
+            and (T.APPL_ID = #{applIdOrNull} or T.APPL_ID is null) and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{applIdOrNull})
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="clCustIdByApplId != null">
+            and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{clCustIdByApplId})
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test='isActive !=null and isActive !=""'>
+        	and T.IS_ACTIVE = #{isActive}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.addrType != null and example.addrType != ''">
+                and T.ADDR_TYPE = #{example.addrType}
+            </if>
+            <if test="example.addr != null and example.addr != ''">
+                and T.ADDR = #{example.addr}
+            </if>
+            <if test="example.name != null and example.name != ''">
+                and T.NAME = #{example.name}
+            </if>
+            <if test="example.clCustIdByApplId != null">
+                and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{example.clCustIdByApplId})
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+            <if test="example.applIdOrNull != null">
+                and (t.appl_id = #{example.applIdOrNull} or t.appl_id is null) and t.cl_cust_id = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{example.applIdOrNull})
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.RLTNSHP,
+    T.NAME,
+    T.ADDR_TYPE,
+    T.ADDR,
+    T.ADDR_PROVINCE_ID,
+    T.ADDR_CITY_ID,
+    T.ADDR_AREA_ID,
+    T.ADDR_DETAILS,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_ADDRESS_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_ADDRESS_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_ADDRESS_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfoExample" >
+    delete from PLMS_CL_ADDRESS_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_address_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_ADDRESS_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{rltnshp,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{addrType,jdbcType=VARCHAR},
+      #{addr,jdbcType=VARCHAR},
+      #{addrProvinceId,jdbcType=BIGINT},
+      #{addrCityId,jdbcType=BIGINT},
+      #{addrAreaId,jdbcType=BIGINT},
+      #{addrDetails,jdbcType=VARCHAR},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_address_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_ADDRESS_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP,
+      </if>
+      <if test="name != null" >
+          T.NAME,
+      </if>
+      <if test="addrType != null" >
+          T.ADDR_TYPE,
+      </if>
+      <if test="addr != null" >
+          T.ADDR,
+      </if>
+      <if test="addrProvinceId != null" >
+          T.ADDR_PROVINCE_ID,
+      </if>
+      <if test="addrCityId != null" >
+          T.ADDR_CITY_ID,
+      </if>
+      <if test="addrAreaId != null" >
+          T.ADDR_AREA_ID,
+      </if>
+      <if test="addrDetails != null" >
+          T.ADDR_DETAILS,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+        #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addrType != null" >
+        #{addrType,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvinceId != null" >
+          #{addrProvinceId,jdbcType=BIGINT},
+      </if>
+      <if test="addrCityId != null" >
+          #{addrCityId,jdbcType=BIGINT},
+      </if>
+      <if test="addrAreaId != null" >
+          #{addrAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="addrDetails != null" >
+          #{addrDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_ADDRESS_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <select id="selectPlmsClAddressInfoCount" resultType="java.lang.Integer" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo">
+    select count(*) from PLMS_CL_ADDRESS_INFO T where 1=1
+    <if test="name != null" >
+         and T.NAME = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="addr != null" >
+         and T.ADDR = #{addr,jdbcType=VARCHAR}
+      </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_ADDRESS_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rltnshp != null" >
+          T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+          T.NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addrType != null" >
+          T.ADDR_TYPE = #{record.addrType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null" >
+          T.ADDR = #{record.addr,jdbcType=VARCHAR},
+      </if>
+        <if test="record.addrProvinceId != null" >
+            T.ADDR_PROVINCE_ID = #{record.addrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrCityId != null" >
+            T.ADDR_CITY_ID = #{record.addrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrAreaId != null" >
+            T.ADDR_AREA_ID = #{record.addrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="record.addrDetails != null" >
+            T.ADDR_DETAILS = #{record.addrDetails,jdbcType=VARCHAR},
+        </if>
+      <if test="record.isActive != null" >
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_ADDRESS_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+      T.NAME = #{record.name,jdbcType=VARCHAR},
+      T.ADDR_TYPE = #{record.addrType,jdbcType=VARCHAR},
+      T.ADDR = #{record.addr,jdbcType=VARCHAR},
+      T.ADDR_PROVINCE_ID = #{record.addrProvinceId,jdbcType=BIGINT},
+      T.ADDR_CITY_ID = #{record.addrCityId,jdbcType=BIGINT},
+      T.ADDR_AREA_ID = #{record.addrAreaId,jdbcType=BIGINT},
+      T.ADDR_DETAILS = #{record.addrDetails,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" >
+    update PLMS_CL_ADDRESS_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+          T.NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addrType != null" >
+          T.ADDR_TYPE = #{addrType,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+          T.ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+        <if test="addrProvinceId != null" >
+            T.ADDR_PROVINCE_ID = #{addrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="addrCityId != null" >
+            T.ADDR_CITY_ID = #{addrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="addrAreaId != null" >
+            T.ADDR_AREA_ID = #{addrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="addrDetails != null" >
+            T.ADDR_DETAILS = #{addrDetails,jdbcType=VARCHAR},
+        </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" >
+    update PLMS_CL_ADDRESS_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+          T.NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="addrType != null" >
+          T.ADDR_TYPE = #{addrType,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+          T.ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+        <if test="addrProvinceId != null" >
+            T.ADDR_PROVINCE_ID = #{addrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="addrCityId != null" >
+            T.ADDR_CITY_ID = #{addrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="addrAreaId != null" >
+            T.ADDR_AREA_ID = #{addrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="addrDetails != null" >
+            T.ADDR_DETAILS = #{addrDetails,jdbcType=VARCHAR},
+        </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="rltnshpVal" property="rltnshpVal" jdbcType="VARCHAR"/>
+        <result column="addrTypeVal" property="addrTypeVal" jdbcType="VARCHAR"/>
+        <result column="docno" property="docno" jdbcType="VARCHAR"/>
+
+        <result column="spouseName" property="spouseName" jdbcType="VARCHAR"/>
+        <result column="spouseUnitAddr" property="spouseUnitAddr" jdbcType="VARCHAR"/>
+        <result column="spouseIdAddr" property="spouseIdAddr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        t3.val as rltnshpVal,
+        t4.val as addrTypeVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClAddressInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_ADDRESS_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        inner join L_RLTNSHP T3 on T.RLTNSHP = T3.CODE
+        inner join PLMS_L_ADDRESS_TYPE T4 on T.ADDR_TYPE = T4.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!-- 根据客户身份证号集合查询微贷系统中未添加到贷后系统的地址信息 -->
+    <select id="findMfbmsAddressByDocnoList" resultMap="BaseResultMap_Ext" parameterType="java.util.List">
+        <!--本人户籍地址-->
+        select  (ai.id) as appl_id,
+                '12' as rltnshp,
+                (c.cust_name) as name,
+                'REGISTER' as addr_type,
+                (c.household) as addr,
+                (c.id_address_province_id) as addr_province_id,
+                (c.id_address_city_id) as addr_city_id,
+                (c.id_address_area_id) as addr_area_id,
+                (c.id_address_details) as addr_details,
+                (c.id_card_no) as docno
+        from cl_cust c
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_address_info address
+            inner join plms_cl_cust_info cust on address.cl_cust_id = cust.id
+            where address.rltnshp = '12' and address.addr_type = 'REGISTER' and c.household = address.addr and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.household is not null
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+        <!--配偶单位地址-->
+        select  (ai.id) as appl_id,
+                '11' as rltnshp,
+                (c.spouse_name) as name,
+                'COMPANY' as addr_type,
+                (c.spouse_unit_addr) as addr,
+                (c.spouse_unit_addr_province_id) as addr_province_id,
+                (c.spouse_unit_addr_city_id) as addr_city_id,
+                (c.spouse_unit_addr_area_id) as addr_area_id,
+                (c.spouse_unit_addr_details) as addr_details,
+                (c.id_card_no) as docno
+        from cl_cust c
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_address_info address
+            inner join plms_cl_cust_info cust on address.cl_cust_id = cust.id
+            where address.rltnshp = '11' and address.addr_type = 'COMPANY' and c.spouse_unit_addr = address.addr and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.spouse_unit_addr is not null
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+        <!--配偶身份证地址-->
+        select  (ai.id) as appl_id,
+                '11' as rltnshp,
+                (c.spouse_name) as name,
+                'REGISTER' as addr_type,
+                (c.spouse_id_addr) as addr,
+                (c.spouse_id_addr_province_id) as addr_province_id,
+                (c.spouse_id_addr_city_id) as addr_city_id,
+                (c.spouse_id_addr_area_id) as addr_area_id,
+                (c.spouse_id_addr_details) as addr_details,
+                (c.id_card_no) as docno
+        from cl_cust c
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_address_info address
+            inner join plms_cl_cust_info cust on address.cl_cust_id = cust.id
+            where address.rltnshp = '11' and address.addr_type = 'REGISTER' and c.spouse_id_addr = address.addr and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.spouse_id_addr is not null
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+        <!--本人公司地址-->
+        select  (ai.id) as appl_id,
+                '12' as rltnshp,
+                (c.cust_name) as name,
+                'COMPANY' as addr_type,
+                (a.unit_addr) as addr,
+                (a.unit_addr_province_id) as addr_province_id,
+                (a.unit_addr_city_id) as addr_city_id,
+                (a.unit_addr_area_id) as addr_area_id,
+                (a.unit_addr_1) as addr_details,
+                (c.id_card_no) as docno
+        from cl_profession a
+        inner join cl_cust c on a.cust_id = c.id
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_address_info address
+            inner join plms_cl_cust_info cust on address.cl_cust_id = cust.id
+            where address.rltnshp = '12' and address.addr_type = 'COMPANY' and a.unit_addr = address.addr and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and a.unit_addr is not null
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+        <!--本人住宅地址-->
+        select  (ai.id) as appl_id,
+                '12' as rltnshp,
+                (c.cust_name) as name,
+                'HOUSE' as addr_type,
+                (a.addr) as addr,
+                (a.house_addr_province_id) as addr_province_id,
+                (a.house_addr_city_id) as addr_city_id,
+                (a.house_addr_area_id) as addr_area_id,
+                (a.addr_1) as addr_details,
+                (c.id_card_no) as docno
+        from cl_house_info a
+        inner join cl_cust c on a.cust_id = c.id
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+            select 1 from plms_cl_address_info address
+            inner join plms_cl_cust_info cust on address.cl_cust_id = cust.id
+            where address.rltnshp = '12' and address.addr_type = 'HOUSE' and a.addr = address.addr and cust.docno = c.id_card_no
+            )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and a.addr is not null
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_ADDRESS_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_address_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.rltnshp,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.addrType,jdbcType=VARCHAR},
+            #{item.addr,jdbcType=VARCHAR},
+            #{item.addrProvinceId,jdbcType=BIGINT},
+            #{item.addrCityId,jdbcType=BIGINT},
+            #{item.addrAreaId,jdbcType=BIGINT},
+            #{item.addrDetails,jdbcType=VARCHAR},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+    <!-- 查询行政区域 -->
+    <select id="findAddressByMore" resultType="com.ljwd.plms.web.model.cust.SysAdministrativeRegion" >
+        select  t.id id,
+                t.pid pid,
+                t.rcode rcode,
+                t.rname rname,
+                t.rlevel rlevel
+        from SYS_ADMINISTRATIVE_REGION t
+        where 1=1
+        <if test="pid != null">
+            and t.pid = #{pid,jdbcType=BIGINT}
+        </if>
+        <if test="id != null">
+            and t.id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="rlevel != null and rlevel != ''">
+            and t.rlevel = #{rlevel,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 查询行政区域 -->
+    <select id="findAddreNameById" resultType="com.ljwd.plms.web.model.cust.SysAdministrativeRegion" parameterType="Long">
+          select t.id id,
+                 t.pid pid,
+                 t.rcode rcode,
+                 t.rname rname,
+                 t.rlevel rlevel
+          from SYS_ADMINISTRATIVE_REGION t  
+          where t.id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <!-- 通过ID查找地址信息实体 -->
+    <select id="findAddressDataOneById" resultType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" parameterType="Long">
+        select t.id id,
+               t.cl_cust_id clCustId,
+               t.src_code srcCode,
+               t.appl_id applId,
+               t.rltnshp rltnshp,
+               t.name name,
+               t.addr_type addrType,
+               t.addr addr,
+               t.is_active isActive,
+               t.created_by createdBy,
+               t.create_time createTime,
+               t.updated_by updatedBy,
+               t.update_time updateTime,
+               t.rec_ver recVer,
+               t.tag_seq tagSeq,
+               t.addr_province_id addrProvinceId,
+               t.addr_city_id addrCityId,
+               t.addr_area_id addrAreaId,
+               t.addr_details addrDetails
+        from PLMS_CL_ADDRESS_INFO t
+        where t.id = #{id,jdbcType=BIGINT}
+    </select>
+
+	<!-- 查询我的外访界面此案件对应主贷人的最新的地址信息 -->
+	<select id="selectMyOutVisitAddr" resultType="com.ljwd.plms.web.model.cust.PlmsClAddressInfo" parameterType="map">
+	select info.* from 
+		(select ainfo.appl_id as applId,
+				ainfo.ADDR_TYPE	as addrType,
+				ainfo.ADDR as addr,
+				ainfo.UPDATE_TIME as updateTime,
+				ainfo.UPDATED_BY	as updatedBy
+			   from PLMS_CL_ADDRESS_INFO ainfo 
+				where ainfo.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{applId}) and ainfo.RLTNSHP =12 and ainfo.IS_ACTIVE ='Y')info
+		inner join 
+				(select ainfo.ADDR_TYPE,max(ainfo.update_time) maxupdatetime from PLMS_CL_ADDRESS_INFO ainfo 
+				where ainfo.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{applId}) and ainfo.RLTNSHP =12 and ainfo.IS_ACTIVE ='Y'
+				group by ainfo.ADDR_TYPE 
+				)temp on temp.ADDR_TYPE = info.addrType and info.updateTime = temp.maxupdatetime 
+	</select>
+
+
+</mapper>

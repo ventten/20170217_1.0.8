@@ -1,0 +1,717 @@
+body{
+	font-family: "microsoft yahei" !important;
+}
+.title_active{
+	background-color: #575757 !important;
+}
+.error{
+	color: red;
+}
+.redStar{
+	color: red;
+}
+td{
+	text-align: center !important;
+}
+th{
+	text-align: center !important;
+}
+/******新增修改样式*******/
+.title_active a{
+	color:#01a8ff !important;
+}
+.table>tbody>tr>.active{
+	background-color: #dff3fc !important;
+}
+table.dataTable thead tr{
+	background:#dff3fc !important;
+}
+/*******logo********/
+.logo{
+	display:inline-block;
+	width:160px;
+	height:42px;
+	padding:4px 12px 4px 12px;
+}
+/*****清除浮动******/
+.clearfex:after{
+	content:'';
+	display:block;
+	clear:both;
+}
+/******设置公用边距,公用样式********/
+.pd-top{margin-top:2px;}
+.right-space{
+	margin-right:20px;
+}
+.right-space-1{
+	margin-right:5px;
+}
+.right-space-2{
+	margin-right:10px;
+}
+.right-space-3{
+	margin-right:15px;
+}
+.left-space{
+	margin-left:20px;
+}
+.left-space-1{
+	margin-left:5px;
+}
+.left-space-2{
+	margin-left:10px;
+}
+.float-left{float:left;margin-bottom:10px;}
+.margin-bottom{margin-bottom:10px}
+.float-left{float:left;}
+.input-width{width:130px;}
+.btn-primary{vertical-align:bottom;border-width: 1px;}
+.btn-default{vertical-align:bottom;}
+.label-base{padding-top:3px !important;}
+.control-label{padding-top: 3px !important;}
+.col-sm-addre3{padding-top: 9px !important;}
+.label-width{width:70px;text-align:right;display:inline-block}
+.label-center{width:70px;text-align:center;display:inline-block}
+.label-center-1{width:22px !important;text-align:center !important;display:inline-block;margin-right:0px !important;}
+/********设置统一input，select，label宽度**********/
+.collection{width:184px;}
+.collection-short{width:149px;}
+.collection-number{width:77px !important;padding-left: 0 !important;}
+.collection-data{width:77px !important;}
+.label-widths{width:56px;text-align:right}
+.label-widthslarge{width:65px;text-align:right}
+.label-widthsbig{width:78px;text-align:right}
+.label-widthsbigger{width:86px;text-align:right}
+.label-widthshort{width:52px;text-align:right}
+.text-center{text-align:center !important;}
+.text-center2{text-align:center !important;margin-left:15px;}
+.text-right{text-align:right}
+/******表单元素重置，input、select、textarea、btn按钮********/
+/*****输入框,选择框*****/
+input[type="text"],select,.input-border{
+	height:28px;
+	border:1px solid #ccc;
+	padding-left: 12px;
+}
+select{
+	width:184px;
+}
+/*****多行文本框*****/
+textarea{
+	border:1px solid #ccc;
+	text-indent:12px;
+}
+/*******统一按钮样式*********/
+.btn{
+    padding: 4px 14px 4px 14px;
+    border-radius: 4px !important;
+}
+/******鼠标获取焦点时样式*******/
+.form-group .form-control:focus,
+input[type="text"]:focus,
+.input-border:focus,
+select:focus,
+textarea:focus{
+	border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+.form-group .form-control{
+	width: 184px;
+	height: 28px;
+	border:1px solid #ccc;
+	padding:0;
+	padding-left:12px;
+}
+/* 所有查询条件的样式 */
+.searchForm label{
+    width: 70px;
+    text-align: right;
+    margin-right: 5px;
+}
+/* 创建催记得form样式 */
+.form_collectionClass label{
+    width: 90px;
+    text-align: right;
+    margin-right: 5px;
+}
+/* 客户信息新增维护窗口 */
+.form-group div input,
+.form-group div select,
+.searchForm select,
+.searchForm input[type="text"],
+.form_collectionClass input[type="text"],
+.form_collectionClass select{
+    width: 184px;
+    height: 28px;
+    line-height: 28px;
+    padding-left: 12px;
+}
+/********表单元素搜索框图标*********/
+.search_box{
+	display: inline-table;
+	vertical-align: middle;
+}
+.search_ionic{
+	display:inline-block;
+	width:40px;
+	height:24px;
+	background:#eee;
+	border:1px solid #ccc;
+	padding: 3px 12px;
+	white-space: nowrap;
+    vertical-align: middle;
+    display: table-cell;
+    padding-right:0;
+    padding-left:0;
+}
+.search_input{
+	width:144px;
+}
+.search_ionic .glyphicon{
+	position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    color:#333;
+}
+.search_ionic:hover{
+	cursor:pointer;
+}
+
+/******修改datatable的行背景色********/
+#contactor-dataTable thead tr{
+	background: #dff3fc !important;
+}
+#contactor-dataTable tbody tr.even{
+	background: #dff3fc !important;
+}
+#contactor-dataTable tbody tr.odd{
+	background: #fff !important;
+}
+#contactor-dataTable tbody tr.odde{
+	background: #fff !important;
+}
+#contactor-dataTable tbody tr:hover{
+	background: #85CDFF !important;
+}
+/* #record-dataTable{border-top:1px solid #ddd;} */
+#record-dataTable thead tr{
+	background: #dff3fc !important;
+}
+#record-dataTable tbody tr{
+	background: #dff3fc !important;
+}
+#record-dataTable tbody tr.odde{
+	background: #fff !important;
+}
+#record-dataTable tbody tr:hover{
+	background: #85CDFF !important;
+}
+/*********设置通讯记录上下切换**********/
+a.tabToggle{
+	display:inline-block;
+	padding-right:18px !important;
+	font-size:16px;
+	color:#0185f5;
+	font-weight:bold;
+	margin-bottom:10px;
+}
+a.tabToggle:hover{
+	text-decoration:none;
+}
+a.tabToggle:focus{
+	text-decoration:none;
+}
+.tabToggledown{
+	background:url(../../assets/img/bottom.png) right center no-repeat;
+}
+.tabToggleup{
+	background:url(../../assets/img/top.png) right center no-repeat;
+}
+/*****催收记录表格排序切换******/
+#record-dataTable-one-thead-tr label{
+	display:inline-block;
+	height:17px;
+	padding-right:18px !important;
+	font-size:16px;
+	color:transparent;
+	font-weight:bold;
+	margin-bottom:0;
+}
+.shortdown{
+	background:url(../../assets/img/bottom.png) left 7px no-repeat;
+	background-size:40% 55%;
+}
+.shortup{
+	background:url(../../assets/img/top.png) left 7px no-repeat;
+	background-size:40% 55%;
+}
+/********创建催记,改页面底部样式**********/
+.setRecord{
+	font-size: 16px;
+    font-weight: bold !important;
+    padding-left:5px !important;
+	margin-left:10px;
+	border-left:4px solid #0185f5 !important;
+}
+.content-length{
+	width:131px !important;
+}
+.content-height{
+	width:565px;
+	max-width:1045px;
+	height: 60px !important;
+}
+.form-horizontal:after{
+	content:'';
+	display:block;
+	clear:both;
+}
+.record-box{
+	border:1px solid #ddd;
+	padding-top:5px;
+	margin-top:20px;
+	margin-bottom:30px;
+}
+.massage-box{
+	border:1px solid #ddd;
+	padding-top:5px;
+}
+.massage-box>a{
+	margin-left:10px;
+	margin-top:5px;
+}
+.form_collectionClass_box{
+	width:1150px;
+	margin-bottom:5px;
+}
+.form_collectionClass_box .pull-left{
+	width:25%;
+	padding:5px 0 5px 0;
+}
+.form_collectionClass_box:after{
+	content:'';
+	display:block;
+	clear:both;
+}
+/**********统一表格内字体，一行显示***********/
+#dataTable thead tr{
+	 background:#dff3fc;
+	 border-bottom:1px solid #111;
+}
+#dataTable tbody tr{
+     border-bottom:1px solid #111;
+ }
+#dataTable tbody tr td{
+    padding: 2px 10px;
+    white-space:nowrap;
+    font-size:13px !important;
+}
+/***案件保护表格****/
+#protect_dataTable tbody tr td{
+    padding: 2px 10px;
+}
+#transfer_dataTable tbody tr td{
+    padding: 2px 10px;
+}
+.tableHead{
+    white-space:nowrap;
+}
+/******修改datatable表格禁止换行*******/
+.dataTable thead tr th{
+	white-space:nowrap;
+}
+.dataTable tbody tr td{
+	white-space:nowrap;
+}
+/*****设置新窗口页面表格统一字体大小*******/
+table thead tr th{
+    font-size:13px !important;
+}
+table tbody tr td{
+    font-size:13px !important;
+}
+/********案件分配，手工调整，弹出模态框表格添加背景色**********/
+#outVisitPlanTable thead tr
+#batchCollectors thead tr,
+#collectors thead tr,
+#agentTable thead tr{
+	background:#dff3fc;
+}
+#outVisitPlanTable tbody tr:nth-child(odd),
+#batchCollectors tbody tr:nth-child(odd),
+#collectors tbody tr:nth-child(odd),
+#agentTable tbody tr:nth-child(odd){
+	background:#fff;
+}
+#outVisitPlanTable tbody tr:nth-child(even),
+#batchCollectors tbody tr:nth-child(even),
+#collectors tbody tr:nth-child(even),
+#agentTable tbody tr:nth-child(even){
+	background:#f2fafe;
+}
+#outVisitPlanTable tbody tr:hover,
+#batchCollectors tbody tr:hover,
+#collectors tbody tr:hover,
+#agentTable tbody tr:hover{
+	background:#85CDFF;
+}
+/*********左侧导航栏状态修改***********/
+.choose_active{
+	color:#01a8ff !important;
+	background-color:#575757 !important;
+}
+/******datatable显示行附加信息******/
+td.details-control {
+    background: url('../../app/img/details_open.png') no-repeat 20px center;
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    background: url('../../app/img/details_close.png') no-repeat 20px center;
+}
+/***还款查询表格显示与隐藏***/
+.detail{
+    background: url('../../app/img/details_open.png') no-repeat 20px center;
+    cursor: pointer;
+}
+.detail.detailShow{
+    background: url('../../app/img/details_close.png') no-repeat 20px center;
+}
+.rowTable{
+	padding-left:50px;
+	border:1px solid #333;
+}
+/*******委外机构表格操作部分，设置a的间距*********/
+.operate{
+	margin-left:8px;
+}
+.report{
+	margin-right:8px;
+}
+/********案件催记，外方记录、委外记录、信函记录下的状态**********/
+.outVisit_box:after{
+	content:'';
+	display:block;
+	clear:both;
+}
+.outVisit_box{
+	padding-top:10px;
+	padding-bottom:20px;
+}
+.outVisit_box .outVisit_list{
+	float:left;
+	width:290px;
+}
+.outVisit_box .outVisit_list span{
+	display: inline-block;
+	height:20px;
+	vertical-align:middle;
+}
+.outVisit_box .outVisit_list .visitVal{
+	margin-left:10px;
+	display: inline-block;
+	background:#F4F4F4;
+	width:150px;
+    height:20px;
+}
+#outVisit-dataTable_wrapper,
+#out-dataTable_wrapper,
+#dataTable_corres_info_wrapper,
+#loan_dataTable_wrapper{
+	width:1150px;
+}
+/******案件分配，手工调整、批量调整表格样式修改*******/
+#batchCollectors_wrapper .dataTables_scrollHeadInner{
+	width:100% !important;
+}
+#batchCollectors_wrapper .dataTables_scrollHeadInner table{
+	padding-right:17px !important;
+}
+#agentTable_wrapper .dataTables_scrollHeadInner{
+	width:100% !important;
+}
+#agentTable_wrapper .dataTables_scrollHeadInner table{
+	padding-right:17px !important;
+}
+#collectors_wrapper .dataTables_scrollHeadInner{
+	width:100% !important;
+}
+#collectors_wrapper .dataTables_scrollHeadInner table{
+	padding-right:17px !important;
+}
+/***催记部分，通讯信息表格修改****/
+ #contactor-dataTable-tbody tr td {
+    padding:4px 10px;
+}
+#contactor-dataTable-tbody tr.odd {
+    display:none;
+}
+/***催记部分，创建催记表格修改****/
+#record-dataTable-tbody tr td {
+	padding: 4px 10px;
+}
+#record-dataTable-tbody tr.odd {
+    display:none;
+}
+/****催记，通讯信息表格修改******/
+#contactor-dataTable_wrapper .dataTables_scrollHeadInner{
+ 	padding-right:17px !important;
+}
+ /****催记，催收记录表格修改******/
+#record-dataTable_wrapper .dataTables_scrollHeadInner{
+ 	padding-right:17px !important;
+}
+#record-dataTable tbody tr td {  
+    text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;    
+    text-align: left  
+}
+/******委外机构表格调整********/
+#outsrcCom-dataTable>tbody>tr>td{
+	text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;
+}
+/*****查找催收员表格修改*****/
+#collectorTBody tr:nth-child(even){
+	background:#fff;
+}
+#collectorTBody tr:hover{
+	background:#85CDFF;
+}
+/*****外访人员表格修改*****/
+#outVisitUserTBody tr:nth-child(odd){
+	background:#fff;
+}
+#outVisitUserTBody tr:hover{
+	background:#85CDFF;
+}
+/*****委外机构沟通日志表格*****/
+#outsrcComLog-dataTable>tbody>tr>td{
+	text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;
+}
+/*****委外机构通讯录表格*****/
+#outsrcComContact-dataTable>tbody>tr>td{
+	text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;
+}
+/******案件分配页面手工调整模态框修改********/
+.modal-contentBox{
+	position:relative;
+}
+.modal-contentBox .modal-header{
+	position:absolute;
+	top:0;
+	right:0;
+}
+.nav-tabs>li>a{
+	margin-right:0;
+}
+
+/********上传附件file样式修改************/
+.classFile a.input {
+ width:70px;
+ height:28px;
+ line-height:28px;
+ background:#357ebd;
+ text-align:center;
+ display:inline-table;/*具有行内元素的视觉，块级元素的属性 宽高*/
+ overflow:hidden;/*去掉的话，输入框也可以点击*/
+ position:relative;/*相对定位，为 #file 的绝对定位准备*/
+}
+.classFile a.input:hover {
+ background:#f80;
+}
+.classFile a{
+ diaplay:inline-block;
+ text-decoration:none;
+ color:#FFF;
+ padding: 0px 8px;
+ border-radius: 4px !important;
+}
+.classFile input[type="file"] {
+ opacity:0;/*设置此控件透明度为零，即完全透明*/
+ filter:alpha(opacity=0);/*设置此控件透明度为零，即完全透明针对IE*/
+ width:60px;
+ position:absolute;/*绝对定位，相对于 .input */
+ top:0;
+ right:0;
+}
+/*********统一模态框footer部分*********/
+.modal-footer {
+    padding: 19px 20px 20px 20px !important;
+    margin-top: 0 !important;
+    text-align: center !important;
+    border-top: 1px solid #e5e5e5 !important;
+}
+/******催收记录表格调整自适应*********/
+.table_scroll{
+	width:100%;
+	height:326px;
+	overflow-x:scroll;
+}
+#record-dataTable-one thead tr{
+	background: #dff3fc !important;
+}
+#record-dataTable-one thead tr th{
+	padding:8px 10px;
+	white-space:nowrap;
+}
+#record-dataTable-one-thead-tr{
+	border-bottom:1px solid #000;
+}
+#record-dataTable-tbody tr td div{
+	text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;    
+    text-align: center;
+    margin:0 auto;
+}
+/******通讯信息表格调整自适应*********/
+.contactor_table_scroll{
+	width:100%;
+	height:191px;
+	overflow-x:scroll;
+}
+#contactor-dataTable thead tr{
+	background: #dff3fc !important;
+	border-bottom:1px solid #000;
+}
+#contactor-dataTable thead tr th{
+	padding:8px 10px;
+	white-space:nowrap;
+}
+#contactor-dataTable thead tr th div{
+	margin:0 auto;
+}
+#contactor-dataTable-thead-tr{
+	border-bottom:1px solid #000;
+}
+#contactor-dataTable-tbody tr:nth-child(even){
+	background: #dff3fc;
+}
+#contactor-dataTable-tbody tr:hover{
+	background:#85CDFF;
+}
+#contactor-dataTable-tbody tr td div{
+	text-overflow: ellipsis; /* for IE */  
+    -moz-text-overflow: ellipsis; /* for Firefox,mozilla */  
+    overflow: hidden;  
+    white-space: nowrap;    
+    text-align: center;
+    margin:0 auto;
+}
+/******表格未检索到数据时的tr样式******/
+.dataTable_show td{
+	background:#fff !important;
+	border-bottom:1px solid #000;
+}
+.dataTable_show td:hover{
+	background:#85CDFF !important;
+}
+/****重置面板设置*****/
+.panel-heading{
+    padding:6px 15px;
+}
+.panel-body{
+	padding: 10px 15px;
+    width: 1180px;
+}
+.panel{
+	margin-bottom:10px;
+}
+/***表单元素下边距***/
+.line-bottom{
+	margin-bottom:15px;
+}
+/***表格禁止文字选择****/
+.unselectable{
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+}
+/**layer弹出框背景色**/
+.bgclass{
+	background-color:rgba(0,0,0,.5) !important;
+	color:#fff !important;
+}
+/****外访管理，外访分配/手工分配弹出框表格******/
+.outVisittableHeader td{
+	padding: 8px 10px;
+	background-color: #dff3fc;
+}
+.outVisittableHeader{
+	border-bottom:1px solid #333;
+}
+.outVisitUserHeader table,
+.checkedAssignCasesHeader table{
+	border-bottom:1px solid #333;
+}
+.outVisitUserHeader table tr th{
+	padding: 8px 10px;
+	background-color: #dff3fc;
+}
+.checkedAssignCasesHeader table tr th{
+	padding:10px 10px 9px 10px;
+	background-color: #dff3fc;
+}
+.outVisitUserBox,
+.checkedAssignCasesBox{
+	height:300px;
+	overflow-y:scroll;
+	border-bottom:1px solid #333;
+}
+.checkedAssignCasesBox table,
+.outVisitUserBox table{
+	border-bottom:1px solid #ccc;
+}
+.outVisitUserBox table tbody tr:nth-child(odd){
+	background-color: #fff;
+}
+.checkedAssignCasesBox table tbody tr:nth-child(odd){
+	background-color: #fff;
+}
+.outVisitUserBox table tbody tr:nth-child(even){
+	background-color: #dff3fc;
+}
+.checkedAssignCasesBox table tbody tr:nth-child(even){
+	background-color: #dff3fc;
+}
+/******查找催收员,外访人员表格*****/
+.searchList table tr th{
+	padding:8px 10px;
+}
+.searchList table tr{
+	background:#dff3fc;
+	border-bottom:1px solid #333;
+}
+.searchListTable{
+	max-height:300px;
+	display:block;
+	overflow-y:scroll;
+	border-bottom:1px solid #333;
+}
+.searchListTable.listTable{
+	height:200px;
+}
+.searchListTable table tr td{
+	padding:4px 10px !important;
+}

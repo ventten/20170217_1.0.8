@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <description>apache shiro配置</description>
+
+    <!-- 贷后管理系统 后台管理 权限拦截配置 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!--<property name="loginUrl" value="/rest/page/login"/>-->
+        <property name="successUrl" value="/rest/index"/>
+        <!--没有权限时默认跳转的页面,shiro在注解模式下,没有权限时均是通过抛出org.apache.shiro.authz.UnauthorizedException异常,需通过springMVC捕获处理-->
+        <property name="unauthorizedUrl" value="/rest/page/401"/>
+        <property name="filterChainDefinitions">
+            <value>
+                <!-- 静态资源允许访问(因为Shiro过滤器拦截范围变化,没有拦截静态资源,所以对静态资源的处理可以丢弃 by:tangjialin at:2016-10-12 15:04:54) -->
+                <!--/app/** = anon-->
+                <!--/assets/** = anon-->
+				<!--/docs/** = anon-->
+
+                <!-- 登录页 -->
+                /rest/page/login = anon
+
+                <!-- 登录时获取加密key -->
+                /rest/user/loginKey = anon
+
+                <!-- 登录 -->
+                /rest/user/login = anon
+
+               <!-- 退出 -->
+                /rest/user/logout = anon
+
+                <!-- 通话记录回调接口允许访问 -->
+                /rest/surveyCall/callBack = anon
+
+                <!-- 校验页面登录信息和后台session信息 -->
+                <!--/rest/page/checkUser = anon-->
+
+                <!-- 退出地址，交给logout过滤器处理 -->
+                <!--/rest/user/logout=logout-->
+
+                <!-- 其他资源需要认证 -->
+                / = authc
+                /rest/** = authc
+            </value>
+        </property>
+    </bean>
+
+    <!-- 缓存管理器 使用Ehcache实现 -->
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+    </bean>
+
+    <!-- 会话DAO -->
+    <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.MemorySessionDAO"/>
+
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <property name="sessionDAO" ref="sessionDAO"/>
+    </bean>
+
+    <!--用户身份验证,授权 Realm 组件-->
+    <bean id="securityRealm" class="com.ljwd.plms.web.security.SecurityRealm"/>
+
+    <!-- 安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+                <ref bean="securityRealm"/>
+            </list>
+        </property>
+        <!-- cacheManager,集合spring缓存工厂 -->
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+        <!--<property name="sessionManager" ref="sessionManager"/>-->
+    </bean>
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+    <!-- 贷后管理系统 移动终端 权限拦截配置 Begin by:tangjialin at:2016-10-12 15:04:54 -->
+    <bean id="mappShiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="mappSecurityManager"/>
+        <property name="loginUrl" value="/mapp/entry/401"/>
+        <!--<property name="successUrl" value="/mapp/entry/index"/>-->
+        <property name="unauthorizedUrl" value="/mapp/entry/401"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /mapp/entry/** = anon
+                /mapp/app/** = anon
+                /mapp/** = authc
+            </value>
+        </property>
+    </bean>
+    <!-- 贷后管理系统 移动终端 安全管理器 -->
+    <bean id="mappSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <list>
+                <bean class="com.ljwd.plms.mapp.security.SecurityRealm"/>
+            </list>
+        </property>
+        <!-- cacheManager,集合spring缓存工厂 -->
+        <property name="cacheManager" ref="shiroEhcacheManager"/>
+    </bean>
+    <!-- 贷后管理系统 移动终端 权限拦截配置 End -->
+</beans>

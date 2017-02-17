@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.SysUserMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.SysUser">
+    <id column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="PWD" jdbcType="VARCHAR" property="pwd" />
+    <result column="SALT" jdbcType="VARCHAR" property="salt" />
+    <result column="USER_TYPE" jdbcType="VARCHAR" property="userType" />
+    <result column="EMP_ID" jdbcType="DECIMAL" property="empId" />
+    <result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="IS_ACTIVE" jdbcType="CHAR" property="isActive" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isActive != null and isActive != ''">
+            and T.IS_ACTIVE = #{isActive}
+        </if>
+        <if test="userId != null and userId != ''">
+            and T.USER_ID = #{userId}
+        </if>
+        <if test="userName != null and userName != ''">
+            and T.USER_NAME = #{userName}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.isActive != null and example.isActive != ''">
+                and T.IS_ACTIVE = #{example.isActive}
+            </if>
+            <if test="example.userId != null and example.userId != ''">
+                and T.USER_ID = #{example.userId}
+            </if>
+            <if test="example.userName != null and example.userName != ''">
+                and T.USER_NAME = #{example.userName}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.USER_ID,
+    T.USER_NAME,
+    T.PWD,
+    T.SALT,
+    T.USER_TYPE,
+    T.EMP_ID,
+    T.LAST_LOGIN_TIME,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_USER T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List"/>,
+    org.id AS orgId
+    from SYS_USER T
+    left join sys_emp emp on T.emp_id = emp.id
+    left join sys_org org on emp.org_id = org.id
+    where T.USER_ID = #{userId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_USER T
+    where T.USER_ID = #{userId,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysUserExample">
+    delete from SYS_USER T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.SysUser">
+    insert into SYS_USER T ( <include refid="Base_Column_List" /> )
+    values (
+      #{userId,jdbcType=VARCHAR},
+      #{userName,jdbcType=VARCHAR},
+      #{pwd,jdbcType=VARCHAR},
+      #{salt,jdbcType=VARCHAR},
+      #{userType,jdbcType=VARCHAR},
+      #{empId,jdbcType=BIGINT},
+      #{lastLoginTime,jdbcType=TIMESTAMP},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP},
+      #{updatedBy,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP},
+      #{recVer,jdbcType=BIGINT},
+      #{tagSeq,jdbcType=BIGINT}
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.SysUser">
+    insert into SYS_USER T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+          T.USER_ID,
+      </if>
+      <if test="userName != null">
+          T.USER_NAME,
+      </if>
+      <if test="pwd != null">
+          T.PWD,
+      </if>
+      <if test="salt != null">
+          T.SALT,
+      </if>
+      <if test="userType != null">
+          T.USER_TYPE,
+      </if>
+      <if test="empId != null">
+          T.EMP_ID,
+      </if>
+      <if test="lastLoginTime != null">
+          T.LAST_LOGIN_TIME,
+      </if>
+      <if test="isActive != null">
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+        #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysUserExample" resultType="java.lang.Integer">
+    select count(*) from SYS_USER T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update SYS_USER T
+    <set>
+      <if test="record.userId != null">
+          T.USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userName != null">
+          T.USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pwd != null">
+          T.PWD = #{record.pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salt != null">
+          T.SALT = #{record.salt,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userType != null">
+          T.USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empId != null">
+          T.EMP_ID = #{record.empId,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastLoginTime != null">
+          T.LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.isActive != null">
+          T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null">
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map">
+    update SYS_USER T
+    set
+      T.USER_ID = #{record.userId,jdbcType=VARCHAR},
+      T.USER_NAME = #{record.userName,jdbcType=VARCHAR},
+      T.PWD = #{record.pwd,jdbcType=VARCHAR},
+      T.SALT = #{record.salt,jdbcType=VARCHAR},
+      T.USER_TYPE = #{record.userType,jdbcType=VARCHAR},
+      T.EMP_ID = #{record.empId,jdbcType=BIGINT},
+      T.LAST_LOGIN_TIME = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.SysUser">
+    update SYS_USER T
+    <set>
+      <if test="userName != null">
+          T.USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+          T.PWD = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="salt != null">
+          T.SALT = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null">
+          T.USER_TYPE = #{userType,jdbcType=VARCHAR},
+      </if>
+      <if test="empId != null">
+          T.EMP_ID = #{empId,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null">
+          T.LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isActive != null">
+          T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.USER_ID = #{userId,jdbcType=VARCHAR} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.SysUser">
+    update SYS_USER T
+    set
+      T.USER_NAME = #{userName,jdbcType=VARCHAR},
+      T.PWD = #{pwd,jdbcType=VARCHAR},
+      T.SALT = #{salt,jdbcType=VARCHAR},
+      T.USER_TYPE = #{userType,jdbcType=VARCHAR},
+      T.EMP_ID = #{empId,jdbcType=BIGINT},
+      T.LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.USER_ID = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+	<!-- 用户登录验证查询 -->
+	<select id="authentication" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List"/>
+		from SYS_USER T
+		where T.USER_ID = #{record.userName,jdbcType=VARCHAR}
+              AND T.PWD = #{record.pwd,jdbcType=VARCHAR}
+              AND T.IS_ACTIVE = 'Y'
+	</select>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.sys_management.SysUser" extends="BaseResultMap">
+        <result column="ROLE_NAMES" property="roleNames" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+            <if test="roleId != null">
+                AND T2.ROLE_ID = #{roleId}
+            </if>
+        </where>
+    </sql>
+
+	<!-- 分页条件查询 -->
+	<select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.sys_management.SysUserExample">
+        SELECT T.USER_ID,
+               MAX(T.USER_NAME) AS USER_NAME,
+               MAX(T.IS_ACTIVE) AS IS_ACTIVE,
+               MAX(T.UPDATED_BY) AS UPDATED_BY,
+               MAX(T.UPDATE_TIME) AS UPDATE_TIME,
+               WM_CONCAT(T3.ROLE_NAME) AS ROLE_NAMES
+        FROM SYS_USER T
+        LEFT JOIN PLMS_USER_ROLE T2 ON T.USER_ID = T2.USER_ID
+        LEFT JOIN PLMS_ROLE T3 ON T2.ROLE_ID = T3.ID
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause_Ext"/>
+		</if>
+        GROUP BY T.USER_ID
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+
+	<!-- 查询没有离职的有效用户 -->
+	<select id="selectByMap" resultMap="BaseResultMap" parameterType="map">
+		select
+		<include refid="Base_Column_List" />
+		from SYS_USER T
+		inner join sys_emp emp on emp.id = T.EMP_ID and emp.IS_QUIT = 'N'
+		where T.IS_ACTIVE = 'Y'
+	</select>
+    
+    <!-- 根据用户ID查询用户分机 -->
+    <select id="selectUserExtentionByUserId" parameterType="string" resultType="com.ljwd.plms.web.vo.sys_management.SysUserExtention">
+        select extention.id as id,
+               extention.userid as userId,
+               extention.extention as extention,
+               extention.prefix as prefix,
+               extention.hotline as hotLine,
+               extention.cloudpwd as cloudPwd,
+               extention.clidleftnumber as clidLeftNumber,
+               extention.sitedomain as siteDomain,
+               extention.areacode as areaCode
+        from SYS_USER_EXTENTION extention
+        where extention.userid = #{userId}
+    </select>
+
+    <!-- 查找催收人员机构信息 -->
+    <select id="selectUserEmpOrg" parameterType="string" resultType="com.ljwd.plms.web.vo.sys_management.UserEmpOrgDto">
+        select
+              sysuser.user_id       userId,
+              sysuser.user_name     userName,
+              emp.id                empId,
+              emp.emp_name          empName,
+              emp.org_id            orgId,
+              org.org_name          orgName
+        from sys_user sysuser
+        left join sys_emp emp on sysuser.emp_id = emp.id
+        left join sys_org org on emp.org_id = org.id
+        where sysuser.user_id in ( select distinct collectset.user_id from plms_emp_collect_set collectset where collectset.is_active = 'Y')
+        and sysuser.is_active = 'Y'
+        <if test="userId != null and userId != ''">
+            AND sysuser.user_id in (
+                    select usr.user_id
+                    from ( select id from SYS_ORG start with id = ( select o.id from sys_user s
+                                                                    left join sys_emp e on s.emp_id = e.id
+                                                                    left join sys_org o on e.org_id = o.id
+                                                                    where s.user_id = #{userId,jdbcType=VARCHAR}
+                                                                   ) connect by prior id = pid
+                          ) sub
+                    inner join SYS_EMP emp on sub.id=emp.org_id
+                    inner join SYS_USER usr on emp.id=usr.emp_id
+                )
+        </if>
+        <if test="orgId != null">
+            AND org.id = #{orgId,jdbcType=BIGINT}
+        </if>
+        order by emp.org_id,emp.emp_name
+    </select>
+
+
+	<select id="selectUserEmpOrgByStatus" parameterType="string" resultType="com.ljwd.plms.web.vo.sys_management.UserEmpOrgDto">
+	select sysuser.user_id as userId,
+			sysuser.user_name as userName,
+			sysemp.id as empId,
+			sysemp.emp_name as empName,
+			sysorg.id as orgId,
+			sysorg.org_name as orgName
+      from plms_emp_collect_set cset 
+		inner join sys_user sysuser on sysuser.user_id = cset.user_id and sysuser.is_active ='Y'
+		inner join sys_emp sysemp on sysemp.id = sysuser.emp_id
+		inner join sys_org sysorg on sysorg.id = sysemp.ORG_ID
+		where cset.is_active = 'Y'
+			<if test='orgId !=null and orgId !=""'>
+				and sysorg.id = #{orgId}
+			</if>
+			<if test='status !=null and status !=""'>
+				and cset.group_id=#{status}
+			</if>
+	</select>
+
+    <!-- 联金催收APP登录查询 -->
+	<select id="selectUser" parameterType="string" resultType="com.ljwd.plms.mapp.vo.egress.AppUserVo">
+        SELECT
+        T.USER_ID,
+        T.USER_NAME AS name,
+        T.PWD,
+        T.SALT,
+        vistUser.ID AS outVisitUserId,
+        vistUser.TEL,
+        sysEmp.EMP_NO
+        FROM SYS_USER T
+        INNER JOIN SYS_EMP sysEmp ON sysEmp.ID = T.EMP_ID
+        INNER JOIN PLMS_OVM_OUT_VISIT_USER vistUser ON T.USER_ID = vistUser.USER_ID
+        WHERE T.IS_ACTIVE = 'Y'AND vistUser.IS_ACTIVE = 'Y'
+        <if test="empNo != null">AND sysEmp.EMP_NO = #{empNo}</if>
+        <if test="mobile != null">AND vistUser.TEL = #{mobile}</if>
+	</select>
+</mapper>

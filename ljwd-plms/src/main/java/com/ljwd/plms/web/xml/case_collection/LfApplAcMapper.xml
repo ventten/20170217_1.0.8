@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfApplAcMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfApplAc">
+    <id column="PAYMENT_ID" jdbcType="BIGINT" property="paymentId" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="CNTRCT_ID" jdbcType="BIGINT" property="cntrctId" />
+    <result column="LOCKED" jdbcType="CHAR" property="locked" />
+    <result column="OUTSRC_CNT" jdbcType="INTEGER" property="outsrcCnt" />
+    <result column="REPAID_PRINCIPAL" jdbcType="DECIMAL" property="repaidPrincipal" />
+    <result column="LAST_RPMNT_DATE" jdbcType="TIMESTAMP" property="lastRpmntDate" />
+    <result column="LAST_RPMNT_AMT" jdbcType="DECIMAL" property="lastRpmntAmt" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="CALC_DATE" jdbcType="TIMESTAMP" property="calcDate" />
+    <result column="IS_OVERDUE" jdbcType="CHAR" property="isOverdue" />
+    <result column="TTL_RECIV_AMT" jdbcType="DECIMAL" property="ttlRecivAmt" />
+    <result column="OVERDUE_DAYS" jdbcType="INTEGER" property="overdueDays" />
+    <result column="MIN_RECIV_PERIOD" jdbcType="INTEGER" property="minRecivPeriod" />
+    <result column="CURRENT_RECIV_PERIOD" jdbcType="INTEGER" property="currentRecivPeriod" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="LOCK_PHASE" jdbcType="INTEGER" property="lockPhase" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="isOverdue != null and isOverdue != ''">
+            and T.IS_OVERDUE = #{isOverdue}
+        </if>
+        <if test="applIds != null">
+            and T.APPL_ID IN <foreach collection="applIds" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        </if>
+        <if test="paymentIds != null">
+            and T.PAYMENT_ID IN <foreach collection="paymentIds" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        </if>
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.PAYMENT_ID,
+    T.APPL_ID,
+    T.CNTRCT_ID,
+    T.LOCKED,
+    T.OUTSRC_CNT,
+    T.REPAID_PRINCIPAL,
+    T.LAST_RPMNT_DATE,
+    T.LAST_RPMNT_AMT,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.CALC_DATE,
+    T.IS_OVERDUE,
+    T.TTL_RECIV_AMT,
+    T.OVERDUE_DAYS,
+    T.MIN_RECIV_PERIOD,
+    T.CURRENT_RECIV_PERIOD,
+    T.REMARK,
+    T.LOCK_PHASE
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfApplAcExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    wf.status as wfStatus,
+    cntrct.cntrct_no as cntrctNo
+    from LF_APPL_AC T
+    inner join LN_APPL_INFO appl on T.APPL_ID = appl.ID
+    inner join ln_cntrct cntrct on cntrct.appl_id = appl.id
+    left join WF_WORKFLOW_INFO wf on appl.WF_ID = wf.ID
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LF_APPL_AC T
+    where T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfApplAcExample" resultType="java.lang.Integer">
+    select count(*) from LF_APPL_AC T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into LF_APPL_AC T ( <include refid="Base_Column_List"/> )
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+                #{item.paymentId,jdbcType=BIGINT},
+                #{item.applId,jdbcType=BIGINT},
+                #{item.cntrctId,jdbcType=BIGINT},
+                #{item.locked,jdbcType=VARCHAR},
+                #{item.outsrcCnt,jdbcType=INTEGER},
+                #{item.repaidPrincipal,jdbcType=DECIMAL},
+                #{item.lastRpmntDate,jdbcType=TIMESTAMP},
+                #{item.lastRpmntAmt,jdbcType=DECIMAL},
+                #{item.createdBy,jdbcType=VARCHAR},
+                #{item.createTime,jdbcType=TIMESTAMP},
+                #{item.updatedBy,jdbcType=VARCHAR},
+                #{item.updateTime,jdbcType=TIMESTAMP},
+                #{item.recVer,jdbcType=BIGINT},
+                #{item.tagSeq,jdbcType=BIGINT},
+                #{item.calcDate,jdbcType=TIMESTAMP},
+                #{item.isOverdue,jdbcType=VARCHAR},
+                #{item.ttlRecivAmt,jdbcType=DECIMAL},
+                #{item.overdueDays,jdbcType=INTEGER},
+                #{item.minRecivPeriod,jdbcType=BIGINT},
+                #{item.currentRecivPeriod,jdbcType=INTEGER},
+                #{item.remark,jdbcType=VARCHAR},
+                #{item.lockPhase,jdbcType=INTEGER}
+            from dual
+        </foreach>
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update LF_APPL_AC T
+            <set>
+                <if test="item.applId != null">
+                    T.APPL_ID = #{item.applId,jdbcType=BIGINT},
+                </if>
+                <if test="item.cntrctId != null">
+                    T.CNTRCT_ID = #{item.cntrctId,jdbcType=BIGINT},
+                </if>
+                <if test="item.locked != null">
+                    T.LOCKED = #{item.locked,jdbcType=VARCHAR},
+                </if>
+                <if test="item.outsrcCnt != null">
+                    T.OUTSRC_CNT = #{item.outsrcCnt,jdbcType=INTEGER},
+                </if>
+                <if test="item.repaidPrincipal != null">
+                    T.REPAID_PRINCIPAL = #{item.repaidPrincipal,jdbcType=DECIMAL},
+                </if>
+                <if test="item.lastRpmntDate != null">
+                    T.LAST_RPMNT_DATE = #{item.lastRpmntDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.lastRpmntAmt != null">
+                    T.LAST_RPMNT_AMT = #{item.lastRpmntAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.createdBy != null">
+                    T.CREATED_BY = #{item.createdBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createTime != null">
+                    T.CREATE_TIME = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatedBy != null">
+                    T.UPDATED_BY = #{item.updatedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    T.UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.recVer != null">
+                    T.REC_VER = #{item.recVer,jdbcType=BIGINT} + 1,
+                </if>
+                <if test="item.tagSeq != null">
+                    T.TAG_SEQ = #{item.tagSeq,jdbcType=BIGINT},
+                </if>
+                <if test="item.calcDate != null">
+                    T.CALC_DATE = #{item.calcDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.isOverdue != null">
+                    T.IS_OVERDUE = #{item.isOverdue,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ttlRecivAmt != null">
+                    T.TTL_RECIV_AMT = #{item.ttlRecivAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.overdueDays != null">
+                    T.OVERDUE_DAYS = #{item.overdueDays,jdbcType=INTEGER},
+                </if>
+                <if test="item.minRecivPeriod != null">
+                    T.MIN_RECIV_PERIOD = #{item.minRecivPeriod,jdbcType=BIGINT},
+                </if>
+                <if test="item.currentRecivPeriod != null">
+                    T.CURRENT_RECIV_PERIOD = #{item.currentRecivPeriod,jdbcType=INTEGER},
+                </if>
+                <if test="item.remark != null">
+                    T.REMARK = #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.lockPhase != null">
+                    T.LOCK_PHASE = #{item.lockPhase,jdbcType=INTEGER},
+                </if>
+            </set>
+            where T.PAYMENT_ID = #{item.paymentId,jdbcType=BIGINT}
+        </foreach>
+        ;end;
+    </update>
+
+</mapper>

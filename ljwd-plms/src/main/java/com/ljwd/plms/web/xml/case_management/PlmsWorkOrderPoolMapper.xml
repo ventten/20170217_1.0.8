@@ -1,0 +1,2086 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_management.PlmsWorkOrderPoolMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPool" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="PAYMENT_ID" property="paymentId" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="PRD_NO" property="prdNo" jdbcType="VARCHAR" />
+    <result column="CNTRCT_NO" property="cntrctNo" jdbcType="VARCHAR" />
+    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
+    <result column="DOCNO" property="docno" jdbcType="VARCHAR" />
+    <result column="LOAN_AMT" property="loanAmt" jdbcType="DECIMAL" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="BIZ_CATEGORY" property="bizCategory" jdbcType="VARCHAR" />
+    <result column="SITE_CODE" property="siteCode" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <sql id="Base_Column_List" >
+    ID, PAYMENT_ID, APPL_ID, PRD_NO, CNTRCT_NO, CUST_NAME, DOCNO, LOAN_AMT, STATUS,BIZ_CATEGORY,SITE_CODE, REMARK, 
+    IS_ACTIVE, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_WORK_ORDER_POOL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_WORK_ORDER_POOL
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByApplId" resultMap="BaseResultMap" parameterType="long">
+      select P.*,
+             CRS.circu_rule_code as circuRuleCode
+      from PLMS_WORK_ORDER_POOL P
+      left join PLMS_COLLECTION_RULE_SET CRS on P.status = CRS.STATUS
+      where P.APPL_ID = #{value}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_WORK_ORDER_POOL
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolExample" >
+    delete from PLMS_WORK_ORDER_POOL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPool" >
+    insert into PLMS_WORK_ORDER_POOL (ID, PAYMENT_ID, APPL_ID, 
+      PRD_NO, CNTRCT_NO, CUST_NAME, 
+      DOCNO, LOAN_AMT, STATUS, BIZ_CATEGORY,SITE_CODE
+      REMARK, IS_ACTIVE, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{paymentId,jdbcType=BIGINT}, #{applId,jdbcType=BIGINT}, 
+      #{prdNo,jdbcType=VARCHAR}, #{cntrctNo,jdbcType=VARCHAR}, #{custName,jdbcType=VARCHAR}, 
+      #{docno,jdbcType=VARCHAR}, #{loanAmt,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{bizCategory,jdbcType=VARCHAR}, #{siteCode,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR}, #{isActive,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPool" >
+    insert into PLMS_WORK_ORDER_POOL
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="paymentId != null" >
+        PAYMENT_ID,
+      </if>
+      <if test="applId != null" >
+        APPL_ID,
+      </if>
+      <if test="prdNo != null" >
+        PRD_NO,
+      </if>
+      <if test="cntrctNo != null" >
+        CNTRCT_NO,
+      </if>
+      <if test="custName != null" >
+        CUST_NAME,
+      </if>
+      <if test="docno != null" >
+        DOCNO,
+      </if>
+      <if test="loanAmt != null" >
+        LOAN_AMT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+       <if test="bizCategory != null" >
+        BIZ_CATEGORY,
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="prdNo != null" >
+        #{prdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cntrctNo != null" >
+        #{cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="docno != null" >
+        #{docno,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+        #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="bizCategory != null" >
+        #{bizCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_WORK_ORDER_POOL
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_WORK_ORDER_POOL
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentId != null" >
+        PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+        APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.prdNo != null" >
+        PRD_NO = #{record.prdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cntrctNo != null" >
+        CNTRCT_NO = #{record.cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.custName != null" >
+        CUST_NAME = #{record.custName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.docno != null" >
+        DOCNO = #{record.docno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanAmt != null" >
+        LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+       <if test="record.bizCategory != null" >
+        BIZ_CATEGORY = #{record.bizCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteCode != null" >
+        SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_WORK_ORDER_POOL
+    set ID = #{record.id,jdbcType=BIGINT},
+      PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      APPL_ID = #{record.applId,jdbcType=BIGINT},
+      PRD_NO = #{record.prdNo,jdbcType=VARCHAR},
+      CNTRCT_NO = #{record.cntrctNo,jdbcType=VARCHAR},
+      CUST_NAME = #{record.custName,jdbcType=VARCHAR},
+      DOCNO = #{record.docno,jdbcType=VARCHAR},
+      LOAN_AMT = #{record.loanAmt,jdbcType=DECIMAL},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      BIZ_CATEGORY = #{record.bizCategory,jdbcType=VARCHAR},
+      SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPool" >
+    update PLMS_WORK_ORDER_POOL
+    <set >
+      <if test="paymentId != null" >
+        PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="prdNo != null" >
+        PRD_NO = #{prdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="cntrctNo != null" >
+        CNTRCT_NO = #{cntrctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="custName != null" >
+        CUST_NAME = #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="docno != null" >
+        DOCNO = #{docno,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAmt != null" >
+        LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+       <if test="bizCategory != null" >
+        BIZ_CATEGORY = #{bizCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCode != null" >
+        SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPool" >
+    update PLMS_WORK_ORDER_POOL
+    set PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      APPL_ID = #{applId,jdbcType=BIGINT},
+      PRD_NO = #{prdNo,jdbcType=VARCHAR},
+      CNTRCT_NO = #{cntrctNo,jdbcType=VARCHAR},
+      CUST_NAME = #{custName,jdbcType=VARCHAR},
+      DOCNO = #{docno,jdbcType=VARCHAR},
+      LOAN_AMT = #{loanAmt,jdbcType=DECIMAL},
+      STATUS = #{status,jdbcType=VARCHAR},
+      BIZ_CATEGORY = #{bizCategory,jdbcType=VARCHAR},
+      SITE_CODE = #{siteCode,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+ <!-- 批量插入逾期新数据 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_WORK_ORDER_POOL P ( <include refid="Base_Column_List"/> )
+        SELECT SEQ_PLMS_WORK_ORDER_POOL.nextval , pool.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                       #{item.paymentId,jdbcType=BIGINT},
+                       #{item.applId,jdbcType=BIGINT},
+                       #{item.prdNo,jdbcType=VARCHAR},
+                       #{item.cntrctNo,jdbcType=VARCHAR},
+                       #{item.custName,jdbcType=VARCHAR},
+                       #{item.docno,jdbcType=VARCHAR},
+                       #{item.loanAmt,jdbcType=DECIMAL},
+                       #{item.status,jdbcType=VARCHAR},
+                       #{item.bizCategory,jdbcType=VARCHAR},
+                       #{item.siteCode,jdbcType=VARCHAR},
+                       #{item.remark,jdbcType=VARCHAR},
+                       #{item.isActive,jdbcType=VARCHAR},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       0,1
+                from dual
+            </foreach>
+        ) pool
+  </insert>
+
+  <!-- 查询微贷系统中新产生的逾期数据 -->
+  <select id="searchReceiveOverdue" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDto" parameterType="map"> 	
+  	SELECT 
+         appl.ID as applId,  
+         REVIEVEOVER.PAYMENT_ID paymentId,
+         CONTRACT.ID as cntrctId,
+         CONTRACT.CNTRCT_NO cntrctNo,
+	     CUSTOMER.CUST_NAME custName,
+	     CUSTOMER.ID_CARD_NO docno,		
+	     CONTRACT.LOAN_AMT loanAmt,
+	     procuct.PRD_NO  as prdNo,
+	     REVIEVEOVER.OVERDUEDAY   overDays,<!-- 逾期天数 -->
+	     REVIEVEOVER.PERIOD_NUM   overduePeriod,<!--最早的逾期期数  -->
+	     CONTRACT.LOAN_AMT - nvl(APPLACCOUNT.REPAID_PRINCIPAL,0) - NVL(returnRec.RETURN_AMT,0) AS remainingPrincipal,<!-- 剩余本金/保证金 -->
+         REVIEVEOVER.TOTALAMT - REVIEVEOVER.TOTAL_ACT_AMOUNT - REVIEVEOVER.TOTAL_WAIVE overdueAmount,<!--逾期金额  -->
+         appl.BIZ_CATEGORY as bizCategory,
+         appl.SITE_CODE as siteCode,
+         region.id as regionId
+    FROM (SELECT LEFTALL.PAYMENT_ID,		
+	               LEFTALL.PERIOD_NUM,		
+	               LEFTALL.OVERDUEDAY,		
+	               LEFTALL.APPL_ID,		
+	               LEFTALL.CNTRCT_ID,		
+	               LEFTALL.ID,
+	               LEFTALL.RETURN_AMT,		
+	               RIGHTALL.TOTALAMT,		
+	               RIGHTALL.TOTAL_ACT_AMOUNT,		
+	               RIGHTALL.TOTAL_WAIVE		
+	          FROM (SELECT RECIEVE.ID,		
+	                       RECIEVE.CNTRCT_ID,		
+	                       RECIEVE.APPL_ID,		
+	                       RECIEVE.RPMNT_DATE,		
+	                       RECIEVE.PAYMENT_ID,		
+	                       RECIEVE.PERIOD_NUM,
+	                       RECIEVE.RETURN_AMT,
+	                       CASE		
+	                         WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) &gt; RPMNT_DATE THEN		
+	                          TRUNC(SYSDATE) - RPMNT_DATE		
+	                         ELSE		
+	                          TRUNC(SYSDATE) - RPMNT_DATE		
+	                       END OVERDUEDAY		
+	                  FROM LF_RECIV RECIEVE		
+	                 WHERE RECIEVE.STATUS != 'PAID'		
+	                   AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)		
+	                   AND RECIEVE.PERIOD_NUM =		
+	                       (SELECT MIN(PERIOD_NUM)		
+	                          FROM LF_RECIV rec		
+	                         WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID		
+	                           AND rec.STATUS != 'PAID')) LEFTALL		
+	          LEFT JOIN (SELECT RECIEVE.PAYMENT_ID,		
+	                           SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,		
+	                           SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,		
+	                           SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE		
+	                      FROM LF_RECIV RECIEVE		
+	                      LEFT JOIN (select ora.PERIOD_NUM as maxPeriod,		
+	                                       ora.PAYMENT_ID as PAYMENT_ID		
+	                                  FROM (SELECT MAX(PERIOD_NUM) as PERIOD_NUM,		
+	                                               PAYMENT_ID as PAYMENT_ID		
+	                                          FROM LF_RECIV		
+	                                         WHERE IS_DELETED = 'N'		
+	                                         GROUP BY PAYMENT_ID) ora) advMaxPeriod		
+	                        ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID		
+	                     WHERE RECIEVE.STATUS != 'PAID'		
+	                       AND RECIEVE.PERIOD_NUM &lt;= advMaxPeriod.maxPeriod		
+	                       AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)		
+	                     GROUP BY RECIEVE.PAYMENT_ID		
+	                    		
+	                    ) RIGHTALL		
+	            ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID		
+	       WHERE NOT EXISTS (SELECT 1 FROM PLMS_WORK_ORDER_POOL wo WHERE WO.APPL_ID =  LEFTALL.APPL_ID)             		
+	            ) REVIEVEOVER		
+	 INNER JOIN LN_CNTRCT CONTRACT		
+	    ON REVIEVEOVER.CNTRCT_ID = CONTRACT.ID		
+	 INNER JOIN LN_APPL_INFO appl		
+	    ON appl.ID = CONTRACT.APPL_ID		
+	 INNER JOIN WF_WORKFLOW_INFO wf		
+	    ON wf.ID = appl.WF_ID		
+	   AND wf.STATUS != 'CLEAR'		
+	 inner JOIN CL_CUST CUSTOMER		
+	    ON REVIEVEOVER.APPL_ID = CUSTOMER.APPL_ID
+     INNER JOIN SYS_SITE site
+        ON site.site_code = CONTRACT.SITE_CODE
+     LEFT JOIN SYS_ADMINISTRATIVE_REGION region
+        ON region.id = site.area_id
+	 LEFT JOIN LF_APPL_AC APPLACCOUNT
+	    ON APPLACCOUNT.PAYMENT_ID = REVIEVEOVER.PAYMENT_ID		
+   	 LEFT JOIN  SYS_PRD  procuct  ON   appl.PRD_ID = procuct.ID
+   	 LEFT JOIN (
+                    SELECT DISTINCT retRec.* 
+                    FROM (
+                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                           FROM LF_RECIV rec 
+                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                           WHERE rec.RETURN_AMT &gt; 0 
+                         ) retRec
+                  )returnRec ON returnRec.APPL_ID = appl.ID 
+  
+  </select>
+  
+  
+  <!--查询贷后已有的数据的逾期新状态  -->
+    <select id="selectExitsReceiveOverdueCircu" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDto" parameterType="map">
+  		 SELECT 
+  		 	REVIEVEOVER.APPL_ID  applId,
+  		 	REVIEVEOVER.PAYMENT_ID   paymentId,
+  		 	CONTRACT.ID              cntrctId,
+  		 	CONTRACT.CNTRCT_NO       cntrctNo,
+            CUSTOMER.CUST_NAME       custName,
+            CUSTOMER.ID_CARD_NO      docno,
+            CONTRACT.LOAN_AMT        loanAmt,
+            procuct.PRD_NO           prdNo,
+            REVIEVEOVER.PERIOD_NUM   overduePeriod,
+            CONTRACT.LOAN_AMT - APPLACCOUNT.REPAID_PRINCIPAL - NVL(returnRec.RETURN_AMT,0) AS remainingPrincipal,
+            REVIEVEOVER.OVERDUEDAY   overDays,
+            REVIEVEOVER.TOTALAMT - REVIEVEOVER.TOTAL_ACT_AMOUNT - REVIEVEOVER.TOTAL_WAIVE overdueAmount,
+            REVIEVEOVER.REC_VER as recVer,
+            REVIEVEOVER.status as status,
+            region.id as regionId
+			FROM (
+              SELECT LEFTALL.PAYMENT_ID,
+                     LEFTALL.PERIOD_NUM,
+                     LEFTALL.OVERDUEDAY,
+                     LEFTALL.APPL_ID,
+                     LEFTALL.CNTRCT_ID,
+                     LEFTALL.ID,
+                     RIGHTALL.TOTALAMT, RIGHTALL.TOTAL_ACT_AMOUNT,RIGHTALL.TOTAL_WAIVE,
+                     pool.REC_VER,
+                     pool.status
+              FROM (
+                    SELECT RECIEVE.ID,
+                        RECIEVE.CNTRCT_ID,
+                        RECIEVE.APPL_ID,
+                        RECIEVE.RPMNT_DATE,
+                        RECIEVE.PAYMENT_ID,
+                        RECIEVE.PERIOD_NUM,
+                        CASE WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN TRUNC(SYSDATE) - RPMNT_DATE 
+                            ELSE TRUNC(SYSDATE) - RPMNT_DATE
+                            END OVERDUEDAY
+                        FROM LF_RECIV RECIEVE
+                        WHERE RECIEVE.STATUS &lt;&gt; 'PAID'
+                             AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)
+                             AND RECIEVE.PERIOD_NUM = (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID AND rec.STATUS != 'PAID' )
+                    ) LEFTALL
+					inner join (
+						select wp.APPL_ID,wp.REC_VER,wp.status from PLMS_WORK_ORDER_POOL wp where wp.status in (
+              					select collectruleset.status
+	      							from plms_collection_rule_set collectruleset
+	     							inner join plms_circu_rule_set circuruleset
+	        						on collectruleset.circu_rule_code = circuruleset.code
+	    							inner join plms_l_circu_rule circurule
+	        						on circuruleset.code = circurule.code
+	    							where (circuruleset.overduedays_from is not null and circuruleset.overduedays_to is not null)
+              				) or wp.status = '0'
+					)pool on pool.APPL_ID =  LEFTALL.APPL_ID
+                LEFT JOIN (
+                            SELECT 
+                                RECIEVE.PAYMENT_ID,
+                                SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,
+                                SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,
+                                SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE 
+                            FROM LF_RECIV RECIEVE 
+                            LEFT JOIN (
+                                        select 
+                                            ora.PERIOD_NUM as maxPeriod ,
+                                            ora.PAYMENT_ID as PAYMENT_ID 
+                                         FROM (
+                                                SELECT 
+                                                    MAX(PERIOD_NUM) as PERIOD_NUM ,
+                                                    PAYMENT_ID as PAYMENT_ID 
+                                                FROM LF_RECIV 
+                                                WHERE IS_DELETED = 'N' 
+                                                GROUP BY PAYMENT_ID)ora 
+                                       ) advMaxPeriod ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID 
+                            WHERE RECIEVE.STATUS !='PAID' 
+                                AND RECIEVE.PERIOD_NUM &lt;=advMaxPeriod.maxPeriod 
+                                AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1) GROUP BY RECIEVE.PAYMENT_ID
+                        ) RIGHTALL  ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID
+            )REVIEVEOVER
+        INNER JOIN LN_CNTRCT CONTRACT ON REVIEVEOVER.CNTRCT_ID = CONTRACT.ID 
+        INNER JOIN LN_APPL_INFO appl ON appl.ID = CONTRACT.APPL_ID
+        INNER JOIN SYS_SITE site ON site.site_code = CONTRACT.SITE_CODE
+        LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+        LEFT  JOIN  SYS_PRD  procuct  ON   appl.PRD_ID = procuct.ID  
+        INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID AND wf.STATUS != 'CLEAR' 
+        LEFT JOIN LF_APPL_AC APPLACCOUNT ON APPLACCOUNT.PAYMENT_ID = REVIEVEOVER.PAYMENT_ID 
+        LEFT JOIN CL_CUST CUSTOMER ON REVIEVEOVER.APPL_ID = CUSTOMER.APPL_ID 
+        LEFT JOIN (
+                    SELECT DISTINCT retRec.* 
+                    FROM (
+                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                           FROM LF_RECIV rec 
+                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                           WHERE rec.RETURN_AMT > 0 
+                         ) retRec
+                  )returnrec on returnrec.appl_id = appl.id 
+        WHERE 1 = 1 
+  
+  	</select>
+  
+  <!-- -查询贷后已有的数据的结清和当期已还的情况 -->
+  <select id="selectExitsReceiveOverdueClear" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDto" parameterType="map">
+  	SELECT  CONTRACT.CNTRCT_NO       cntrctNo,
+  		 	CONTRACT.ID              cntrctId,
+            CUSTOMER.CUST_NAME       custName,
+            CUSTOMER.ID_CARD_NO      docno,
+            CONTRACT.LOAN_AMT        loanAmt,
+            nvl(overReciv.overduePeriod,0)  as  overduePeriod,
+            ppool.PAYMENT_ID   paymentId,
+            CONTRACT.APPL_ID  applId,
+            CONTRACT.LOAN_AMT - APPLACCOUNT.REPAID_PRINCIPAL - NVL(returnRec.RETURN_AMT,0) AS remainingPrincipal,
+            nvl(overReciv.overDays,0) as overdays,
+            procuct.prd_no as prdNo,
+            ppool.rec_ver as  recVer,
+            ppool.status as status,
+            wf.status as clearStatus
+	from
+			(
+			select pool.APPL_ID  as applId ,
+					pool.PAYMENT_ID
+			from 
+                     	(
+						<!-- SELECT reciv.APPL_ID 
+						from lf_reciv reciv
+						where reciv.is_deleted = 'N'
+						AND trunc(reciv.ACTUAL_RPMNT_DATE) = trunc(SYSDATE -1)
+						group by reciv.APPL_ID
+						having  ((sysdate-1) - min(decode(reciv.status, 'PAID', (sysdate-1), reciv.rpmnt_date))) &lt;= 0 -->
+						<!-- select reciv_appl_id_01.appl_id from
+							(select reciv.APPL_ID 
+							from lf_reciv reciv
+							where reciv.is_deleted = 'N'  AND trunc(reciv.ACTUAL_RPMNT_DATE) = trunc(SYSDATE -1) 
+							group by reciv.APPL_ID  )reciv_appl_id_01
+	           				 inner join
+							(SELECT reciv.APPL_ID ,(sysdate-1) - min(decode(reciv.status, 'PAID', (sysdate-1), reciv.MAX_RPMNT_DATE))
+							from lf_reciv reciv
+							where reciv.is_deleted = 'N'
+							group by reciv.APPL_ID
+							having  ((sysdate-1) - min(decode(reciv.status, 'PAID', (sysdate-1), reciv.MAX_RPMNT_DATE))) &lt;= 0)reciv_appl_id_02
+	            			on reciv_appl_id_01.appl_id = reciv_appl_id_02.appl_id	 -->
+	            			SELECT reciv.PAYMENT_ID , 
+	            			trunc(sysdate) - MIN(DECODE(reciv.status, 'PAID',trunc(sysdate), trunc(reciv.MAX_RPMNT_DATE)))
+							FROM LF_RECIV reciv
+							  INNER JOIN LN_APPL_INFO appl_info ON reciv.APPL_ID = appl_info.id
+							  INNER JOIN LF_RPMNT RPMNT ON (reciv.APPL_ID = RPMNT.APPL_ID AND reciv.PAYMENT_ID = RPMNT.PAYMENT_ID)
+							WHERE reciv.IS_DELETED = 'N' 
+							GROUP BY reciv.payment_id
+							HAVING  (trunc(sysdate) - MIN(DECODE(reciv.status, 'PAID',trunc(sysdate), trunc(reciv.MAX_RPMNT_DATE)))) &lt;= 0
+						)cleartemp
+						inner join  plms_work_order_pool pool on cleartemp.PAYMENT_ID =pool.PAYMENT_ID   and pool.status !=0
+			)clear
+        inner join plms_work_order_pool ppool on ppool.appl_id = clear.applId
+        inner join ln_cntrct contract on clear.applid = contract.appl_id 
+        INNER JOIN LN_APPL_INFO appl ON appl.ID = CONTRACT.appl_Id
+        LEFT JOIN (SELECT RECIV.PAYMENT_ID AS PAYMENT_ID,
+                        MIN(RECIV.PERIOD_NUM) AS overduePeriod,
+                        MAX(RECIV.PERIOD_NUM) AS maxOverduePeriod,
+                        TRUNC(SYSDATE) - MIN(RPMNT_DATE) AS overDays
+                FROM LF_RECIV RECIV
+                WHERE trunc(RECIV.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1) AND RECIV.IS_DELETED = 'N' AND RECIV.STATUS != 'PAID'
+                group by RECIV.PAYMENT_ID
+      	) overReciv On ppool.PAYMENT_ID = overReciv.PAYMENT_ID
+       	inner join wf_workflow_info wf on wf.id = appl.wf_id  
+        left  join  sys_prd  procuct  on   appl.prd_id = procuct.id  
+        LEFT JOIN LF_APPL_AC APPLACCOUNT ON APPLACCOUNT.APPL_ID = clear.applId 
+        LEFT JOIN CL_CUST CUSTOMER ON clear.applId = CUSTOMER.APPL_ID 
+        LEFT JOIN (
+                    SELECT DISTINCT retRec.* 
+                    FROM (
+                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                           FROM LF_RECIV rec 
+                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                           WHERE rec.RETURN_AMT > 0 
+                         ) retrec
+                  )returnrec on returnrec.appl_id = appl.id 
+        
+        
+  </select>
+  
+
+    <!-- 批量修改工单池中的数据状态 -->
+    <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_WORK_ORDER_POOL 
+            <set>
+            REC_VER = #{item.recVer} + 1,
+            <if test="item.status!=null ">
+                STATUS = #{item.status},
+            </if>
+         <!--    <if test="item.bizCategory!=null and item.bizCategory!=''">
+                BIZ_CATEGORY = #{item.bizCategory},
+            </if>
+            <if test="item.siteCode!=null and item.siteCode!=''">
+                SITE_CODE = #{item.siteCode},
+            </if> -->
+            <if test="item.updateTime!=null ">
+                UPDATE_TIME = #{item.updateTime},
+            </if>
+            <if test="item.updatedBy!=null ">
+                UPDATED_BY = #{item.updatedBy},
+            </if>
+            </set>
+            where PAYMENT_ID = #{item.paymentId}
+            </foreach>
+        ;end;
+    </update>
+    
+    
+    
+  	<!--查询自动分配的区间的新增数据 -->
+  	<select id="selectNewCircuNotAssignList" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderAssignDto" parameterType="java.lang.String"  >
+  	SELECT 
+       pool.ID as id,      
+       pool.APPL_ID as applId,
+       pool.PAYMENT_ID as paymentId,
+       pool.STATUS as status,
+       pool.BIZ_CATEGORY as bizCategory,
+       contract.loan_amt - applaccount.repaid_principal - nvl(returnrec.return_amt,0) as remainingPrincipal,
+       reciv.OVERDUEDAY  as  overdueDays,
+       reciv.PERIOD_NUM	as overduePeriod,
+       appl.SITE_CODE as siteCode,
+       CONTRACT.SITE_CODE as signCode
+	From Plms_Work_Order_Pool Pool
+	Inner Join (
+			  SELECT LEFTALL.PAYMENT_ID,
+                     LEFTALL.OVERDUEDAY,
+                     LEFTALL.APPL_ID,
+                     leftall.PERIOD_NUM
+              FROM (
+                    SELECT 
+                        RECIEVE.PAYMENT_ID,
+                        RECIEVE.APPL_ID,
+                        PERIOD_NUM,
+                        CASE WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN TRUNC(SYSDATE) - RPMNT_DATE 
+                            ELSE TRUNC(SYSDATE) - RPMNT_DATE
+                            END OVERDUEDAY
+                        FROM LF_RECIV RECIEVE
+                        where recieve.status != 'PAID'
+                             AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)
+                             AND RECIEVE.PERIOD_NUM = (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID AND rec.STATUS != 'PAID' )
+                    ) LEFTALL
+		)reciv on reciv.appl_id = pool.appl_id
+	INNER JOIN LN_CNTRCT CONTRACT ON CONTRACT.CNTRCT_NO = Pool.CNTRCT_NO 
+    INNER JOIN LN_APPL_INFO appl ON appl.ID = CONTRACT.APPL_ID 
+    INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID AND wf.STATUS != 'CLEAR' 
+    LEFT JOIN LF_APPL_AC APPLACCOUNT ON APPLACCOUNT.PAYMENT_ID = reciv.PAYMENT_ID 
+	LEFT JOIN (
+                   SELECT DISTINCT retRec.* 
+                   FROM (
+                          SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                          FROM LF_RECIV rec 
+                          INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                          WHERE rec.RETURN_AMT > 0 
+                        ) retRec
+                 )returnrec on returnrec.appl_id = appl.id 
+  	where Pool.Status=#{status} and not Exists(select 1 from Plms_La_Collect_Alloc alloc where Alloc.Payment_Id= Pool.Payment_Id and Alloc.Alloc_End_Date is null and Alloc.Is_Active = 'Y')
+    	order by pool.BIZ_CATEGORY,remainingPrincipal desc,pool.id
+  	</select>
+  	
+  	
+  	<!-- 查询自动分配区间的库存数据  -->
+  	<select id="selectOldCircuAssignedList" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderAssignDto" parameterType="java.lang.String">
+  	SELECT 
+        pool.ID as id,      
+        pool.APPL_ID as applId,
+        Pool.Payment_Id As Paymentid,
+	    pool.STATUS as status,
+        pool.BIZ_CATEGORY as bizCategory,
+        contract.loan_amt - applaccount.repaid_principal - nvl(returnrec.return_amt,0) as remainingPrincipal,
+        reciv.OVERDUEDAY  as  overdueDays,
+        reciv.PERIOD_NUM	as overduePeriod,
+        appl.SITE_CODE as siteCode,
+        CONTRACT.SITE_CODE as signCode
+		From Plms_Work_Order_Pool Pool
+		Inner Join (
+			  SELECT LEFTALL.PAYMENT_ID,
+                     LEFTALL.OVERDUEDAY,
+                     LEFTALL.APPL_ID,
+                     leftall.PERIOD_NUM
+              FROM (
+                    SELECT 
+                        RECIEVE.PAYMENT_ID,
+                        RECIEVE.APPL_ID,
+                        PERIOD_NUM,
+                        CASE WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN TRUNC(SYSDATE) - RPMNT_DATE 
+                            ELSE TRUNC(SYSDATE) - RPMNT_DATE
+                            END OVERDUEDAY
+                        FROM LF_RECIV RECIEVE
+                        WHERE RECIEVE.STATUS != 'PAID'
+                             AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)
+                             AND RECIEVE.PERIOD_NUM = (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID AND rec.STATUS != 'PAID' )
+                    ) LEFTALL
+		)reciv on reciv.appl_id = pool.appl_id
+		INNER JOIN LN_CNTRCT CONTRACT ON CONTRACT.CNTRCT_NO = Pool.CNTRCT_NO 
+        INNER JOIN LN_APPL_INFO appl ON appl.ID = CONTRACT.APPL_ID 
+        INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID AND wf.STATUS != 'CLEAR' 
+        LEFT JOIN LF_APPL_AC APPLACCOUNT ON APPLACCOUNT.PAYMENT_ID = reciv.PAYMENT_ID 
+		LEFT JOIN (
+                    SELECT DISTINCT retRec.* 
+                    FROM (
+                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                           FROM LF_RECIV rec 
+                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                           WHERE rec.RETURN_AMT > 0 
+                         ) retRec
+                  )returnRec ON returnRec.APPL_ID = appl.ID 
+		Inner Join (
+			Select Al.Appl_Id,Al.Assign_Time, Al.Collector From Plms_La_Collect_Alloc Al
+			inner join 
+			(Select Al.Appl_Id,Max(Al.Assign_Time) Maxdate From Plms_La_Collect_Alloc Al 
+			Where  Trunc(Al.Alloc_Begin_Date) &lt;=Trunc(Sysdate) And Al.Alloc_End_Date Is Null  And Al.Is_Active = 'Y'
+			Group By Al.Appl_Id) al_1
+			on al_1.appl_id = al.appl_id and al_1.maxDate = al.ASSIGN_TIME
+		)Alloc On Alloc.Appl_Id = Pool.Appl_Id
+		Inner Join Plms_Emp_Collect_Set Cset On Cset.User_Id = Alloc.Collector
+		inner join Plms_Collection_Rule_Set rset on rset.status = #{status} and rset.id = Cset.Group_Id
+		<!-- 豁免和保留的库存不重新分 -->
+		Inner Join (
+		   Select  
+		  	Poollog.Appl_Id
+		  	From Plms_Work_Order_Pool_Log Poollog 
+		    Inner Join
+		    (Select Max(Log.Create_Time) Createtime ,Log.Appl_Id From Plms_Work_Order_Pool_Log Log Group By Log.Appl_Id) Temp
+		    On  Temp.Appl_Id = Poollog.Appl_Id And Temp.Createtime = Poollog.Create_Time  
+	      where Poollog.Defend_Status Is  Null 
+	  	)log on log.Appl_Id = Pool.Appl_Id
+		Where Pool.Status = #{status}
+    	order by pool.BIZ_CATEGORY,overdueDays,remainingPrincipal,pool.id
+  	</select>
+  	
+  	
+  	<!-- 查询所有产品类型 -->
+  	<select id="searchAllProducts" resultType="com.ljwd.plms.web.vo.case_management.SysProduct">
+  	select 
+  		ID as id,
+		PRD_NO as productNo,
+		PRD_NAME as productName,
+		PRD_DESC as productDescription
+	from SYS_PRD
+	where trunc(sysdate)>=trunc(eff_date) and trunc(sysdate)&lt;=trunc(EXP_DATE)
+  	</select>
+  	
+  	
+  	
+  	<!-- 案件管理数据分页 -->
+  	<select id="selectByExampleAndPage" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDto" parameterType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolParam">
+  	Select  Pool.Appl_Id As Applid,
+         	Pool.Payment_Id As Paymentid,
+         	Pool.Cntrct_No As Cntrctno,
+         	Pool.Cust_Name As Custname,
+         	Pool.Docno As Docno,
+         	Pool.Loan_Amt As Loanamt,
+         	Pool.Prd_No As Prdno,
+         	decode(pool.BIZ_CATEGORY,'NORMAL','等本等息','WHOLE','趸缴','MATURE_PAYMENT','平缴','INT_FIRST_PRIN_LAST','先息后本') as bizCategory,
+         	pool.site_code as siteCode,
+         	syssite.site_name as siteName,
+         	Sysprd.Prd_Name As proName,
+         	<if test='isAlloc != "2"'>
+         	alloc.collector as collector,
+         	sysUser.user_name  as collectorName,
+         	alloc.agent as agent,
+         	sysUse.user_name as agentName,
+         	</if>
+         	CASE 
+                WHEN wf.STATUS = 'CLEAR' THEN 0 
+                WHEN Temp.Overdueday &lt; 0 THEN 0 
+                ELSE Temp.Overdueday 
+            END Overdays,
+            CONTRACT.LOAN_AMT - nvl(APPLACCOUNT.REPAID_PRINCIPAL,0)-NVL(returnRec.RETURN_AMT,0) Remainingprincipal,		
+         	(Temp.TOTALAMT - Temp.TOTAL_ACT_AMOUNT - Temp.TOTAL_WAIVE)      Overdueamount,
+         	pool.status as status
+  	From Plms_Work_Order_Pool Pool 
+  	left join (
+  		SELECT 
+  		LEFTALL.PAYMENT_ID,
+      	LEFTALL.PERIOD_NUM,
+      	LEFTALL.OVERDUEDAY,
+      	LEFTALL.APPL_ID,
+      	LEFTALL.CNTRCT_ID,
+      	LEFTALL.ID,
+      	RIGHTALL.TOTALAMT,
+      	RIGHTALL.TOTAL_ACT_AMOUNT,
+      	RIGHTALL.TOTAL_WAIVE 
+            FROM ( SELECT RECIEVE.ID,RECIEVE.CNTRCT_ID,RECIEVE.APPL_ID,RECIEVE.RPMNT_DATE,RECIEVE.PAYMENT_ID,RECIEVE.PERIOD_NUM,
+                CASE
+                        WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN
+                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+                        ELSE
+                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+                        END OVERDUEDAY  
+               FROM LF_RECIV RECIEVE WHERE 
+                          RECIEVE.PERIOD_NUM =
+        NVL((SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID  AND rec.STATUS != 'PAID' ),(SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID )) 
+               AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;=trunc(SYSDATE - 1)          
+            ) LEFTALL 
+            LEFT JOIN ( SELECT RECIEVE.PAYMENT_ID,SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE 
+                    FROM LF_RECIV RECIEVE 
+                    LEFT JOIN (select ora.PERIOD_NUM as maxPeriod ,ora.PAYMENT_ID as PAYMENT_ID 
+                                                                            FROM  (SELECT MAX(PERIOD_NUM) as PERIOD_NUM ,PAYMENT_ID as PAYMENT_ID FROM LF_RECIV WHERE IS_DELETED = 'N' GROUP BY PAYMENT_ID)ora 
+                                                                    ) advMaxPeriod ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID 
+                    WHERE RECIEVE.PERIOD_NUM &lt;=advMaxPeriod.maxPeriod  
+                    AND  RECIEVE.STATUS != 'PAID' AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)                                  
+            GROUP BY RECIEVE.PAYMENT_ID 
+            ) RIGHTALL  ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID
+  	
+  	) Temp on Temp.appl_id = pool.appl_id
+   INNER JOIN LN_CNTRCT CONTRACT ON pool.APPL_ID = CONTRACT.APPL_ID		
+   INNER JOIN LN_APPL_INFO appl	ON appl.ID = CONTRACT.APPL_ID		
+   INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID		
+   left Join Sys_Prd Sysprd On Sysprd.Prd_No = Appl.Prd_No	
+   LEFT JOIN LF_APPL_AC APPLACCOUNT	On Applaccount.Payment_Id = Temp.Payment_Id
+   left join sys_site syssite on syssite.site_code =  pool.site_code
+   LEFT JOIN (
+		                    SELECT DISTINCT retRec.* 
+		                    FROM (
+		                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+		                           FROM LF_RECIV rec 
+		                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+		                           WHERE rec.RETURN_AMT &gt; 0 
+		                         ) retRec
+	)returnRec ON returnRec.APPL_ID = appl.ID  
+  <if test='isAlloc=="0" or isAlloc=="1"'>
+  <if test='isAlloc=="0"'>
+    left		
+  </if>
+  <if  test='isAlloc=="1"'>
+ 	inner
+  </if>
+ 	 Join (
+ 		       <if test='queue=="1"'>
+		 			Select        
+		 				Alloc.Collector,
+		 				Alloc.Payment_Id,
+		 				Alloc.Appl_Id,
+		 				alloc.assign_time,
+		 				agenttemp.agent ,
+               			agentTemp.Alloc_Begin_Date as agent_assign_time
+		 			from plms_la_collect_alloc alloc 
+		 			left join( 
+			            select agentt.Payment_Id,
+			            	   agentt.Alloc_Begin_Date,
+			            	   agentt.alloc_end_date,
+			            	   agentt.is_active,
+			            	   agentt.client,
+			            	   agentt.agent
+			             from 
+			             ( select agent.payment_id,min(agent.alloc_begin_date) as Alloc_Begin_Date  from 
+			              plms_la_collect_agent agent
+			              where   agent.alloc_end_date>=sysdate and agent.is_active = 'Y'
+			              group by agent.payment_id)t
+			              left join plms_la_collect_agent  agentT on agentT.Alloc_Begin_Date = T. alloc_begin_date and agentT.payment_id = T.payment_id  
+			          )AgentTemp On AgentTemp.Payment_Id = Alloc.Payment_Id 
+		 			And AgentTemp.Alloc_Begin_Date>=alloc.Alloc_Begin_Date
+				 	and agenttemp.alloc_end_date >=agenttemp.alloc_begin_date 
+				 	and AgentTemp.is_active = 'Y' and agenttemp.client = alloc.collector  
+					Where  Alloc.Alloc_Begin_Date &lt;= Sysdate And Alloc.Is_Active = 'Y' And Alloc.Alloc_End_Date Is Null 
+				</if>
+				<if test='queue=="2"'>
+ 					select agent.agent as agent,
+			            alloc.collector as collector,
+			            Agent.Payment_Id,
+			            alloc.appl_id,
+			            Alloc.Assign_Time from
+			      		 ( select agent.payment_id,
+			      		 		  agent.Client,
+			      		 		  agent.agent
+			      		  from plms_la_collect_agent agent inner join
+								(select payment_id,min(ALLOC_BEGIN_DATE) beginDate from plms_la_collect_agent where 
+								alloc_end_date >= sysdate and is_active = 'Y'
+								group by payment_id)agenttemp 
+							on agent.is_active='Y'and agent.payment_id = agenttemp.payment_id  and agent.alloc_begin_date = agenttemp.begindate
+						)agent
+			 			left join plms_la_collect_alloc alloc on agent.Client = Alloc.Collector and	alloc.payment_id = agent.payment_id		 
+ 				</if>	
+			  		<if test="allocDateStart !=null and allocDateStart !=''">
+  	 					and trunc(alloc.ASSIGN_TIME) > =trunc(#{allocDateStart})
+  					</if>
+  					<if test="allocDateEnd !=null and allocDateEnd !=''"> 
+  						 and trunc(alloc.ASSIGN_TIME) &lt; =trunc(#{allocDateEnd})
+  					</if>
+ 	) Alloc
+ 	 On 
+  	Alloc.Payment_Id = Pool.Payment_Id And alloc.Appl_Id = pool.Appl_Id
+  	  left join sys_user sysUser on sysUser.user_id = alloc.collector 
+  	  left join sys_user sysUse on sysUse.user_id = alloc.Agent 
+  </if>	    
+   <!--Inner Join (
+	   Select  
+	  	Poollog.Appl_Id
+	  	From Plms_Work_Order_Pool_Log Poollog 
+	    Inner Join
+	    (Select Max(Log.Id) ID ,Log.Appl_Id From Plms_Work_Order_Pool_Log Log Group By Log.Appl_Id) Temp
+	    On (Poollog.Defend_Status Is  Null or Poollog.Defend_Status = 3) And Temp.Appl_Id = Poollog.Appl_Id And Temp.ID = Poollog.ID  
+	  )log on log.Appl_Id = Pool.Appl_Id  -->
+	<!-- 提前移交队列 -->
+	  where  NOT EXISTS (SELECT 1 FROM plms_l_transfer_advance ad WHERE ad.APPL_ID = pool.APPL_ID and ad.status in('NOT_AUDITED','NOT_APPROVED')) 	 
+	  <!-- 排除保护队列中的数据 -->
+	  and NOT EXISTS
+	    ( select 1 
+	      from plms_work_order_pool_log log 
+	      where log.defend_status in ('1','2','4') and log.appl_id = pool.appl_id 
+	      and log.id = (select max(id) from plms_work_order_pool_log tempLog where tempLog.Appl_Id = log.appl_id)
+	    ) 
+   <if test="status!=null and status !=''">
+    And Pool.Status = #{status}
+   </if>
+   <if test="cntrctNo!=null and cntrctNo !=''">
+    And Pool.Cntrct_No = #{cntrctNo}
+   </if>
+   <if test="custName!=null and custName !=''">
+    And Pool.Cust_Name = #{custName}
+   </if>
+   <if test="docno!=null and docno !=''">
+    And Pool.DOCNO = #{docno}
+   </if>
+   <if test="prdNo!=null and prdNo !=''">
+    And Pool.PRD_NO = #{prdNo}
+   </if>
+   <if test='collectorName!=null and collectorName !=""'>
+   		<choose>
+   			<when test='queue=="2"'>
+   				and sysUse.user_name =#{collectorName}
+   			</when>
+   			<otherwise>
+   				and sysUser.user_name =#{collectorName}
+   			</otherwise>
+   		</choose>
+   </if>
+    <if test="overDaysFrom != null  ">
+    	   And  Temp.Overdueday >=#{overDaysFrom} 
+    </if>
+    <if test="overDaysTo !=null">
+    	   and Temp.Overdueday&lt;=#{overDaysTo}
+    </if>
+   <if test='isAlloc=="2"'>
+     and NOT EXISTS (SELECT 1 FROM Plms_La_Collect_Alloc ao WHERE ao.APPL_ID =  pool.APPL_ID 
+     and Trunc(Ao.Alloc_Begin_Date)&lt;=Trunc(Sysdate) And ao.Alloc_End_Date Is Null And Ao.Is_Active = 'Y' )             
+   </if>
+   <choose>
+   		<when test='queryPerm == "branch"'>
+   			<if test='siteCode !=null and siteCode !=""'>
+   				and (appl.site_code = #{siteCode} or CONTRACT.site_code = #{siteCode} and appl.SITE_CODE in (881,882))
+   			</if>
+   		</when>
+   		<otherwise>
+   			<if test='siteCode !=null and siteCode !=""'>
+   				and appl.site_code = #{siteCode} 
+   			</if>
+   		</otherwise>
+   </choose>
+   <choose>
+   		<when test='orderByClause !=null'>
+   			order by ${orderByClause}
+   		</when>
+   		<otherwise>
+   		  	order by  Remainingprincipal desc,Pool.id asc
+   		</otherwise>
+   </choose>
+  </select>
+  
+  
+  <!-- 案件详情 -->
+  <select id="searchCaseDetail" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDetailDto" parameterType="map">   
+ Select pool.Appl_Id As Applid,
+        pool.Payment_Id As Paymentid,
+        pool.Cntrct_No As Cntrctno,
+        Ptype.Type_Name As Paymenttype,
+        Appl.Prd_No As Prdno,
+        Sysprd.Prd_Name As Proname,
+        Appl.Site_Code As Sitecode,
+        Syssite.Site_Name As Sitename,
+        Customer.Cust_Name As Custname,
+        Customer.Id_Card_No As Docno,
+        decode(Appl.BIZ_CATEGORY,'NORMAL','等本等息','WHOLE','趸缴','MATURE_PAYMENT','平缴','INT_FIRST_PRIN_LAST','先息后本') as businessCategory,
+        Contract.Loan_Amt As Loanamt,
+        Leftreciv.Rpmnt_Date As Rpmntdate,
+        alloc.collector as collector,
+        Sysuser.User_Name As Collectorname,
+        alloc.ASSIGN_TIME as assignDate,
+        Agent.Agent As Agent,
+        Sysuse.User_Name as agentName,
+        agent.ALLOC_BEGIN_DATE as allocBeginDate,
+        agent.ALLOC_END_DATE as allocEndDate
+  from	Plms_Work_Order_Pool pool
+  		left join
+		(
+		Select Re.Payment_Id,
+			   re.APPL_ID,
+			   re.RPMNT_DATE
+		  
+		 from lf_reciv re  Where  Re.Payment_Id= #{paymentId} And  Re.Status != 'PAID'		
+			                   And trunc(Re.Max_Rpmnt_Date) &lt;= trunc(Sysdate - 1) And Re.Period_Num = 
+		                     (SELECT min(PERIOD_NUM)		
+			                          From Lf_Reciv Rec		
+			                         Where Rec.Payment_Id = Re.Payment_Id			And Rec.Is_Deleted='N'
+			                           And Rec.Status != 'PAID'     
+		                      )
+		  )Leftreciv On Leftreciv.Payment_Id =pool.Payment_Id
+		  inner join ln_cntrct CONTRACT on CONTRACT.appl_id = pool.appl_id
+		  INNER JOIN LN_APPL_INFO appl On Appl.Id = pool.Appl_Id		
+		  Inner Join Sys_Payment_Type Ptype On Ptype.Code = Appl.Payment_Type
+		  Inner Join Sys_Prd Sysprd On Sysprd.Prd_No = Appl.Prd_No
+		  inner join sys_site sysSite on sysSite.SITE_CODE = appl.SITE_CODE
+		  INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID				
+		  inner JOIN CL_CUST CUSTOMER		
+			    ON pool.APPL_ID = CUSTOMER.APPL_ID		
+		  Left Join Lf_Appl_Ac Applaccount		
+			    On Applaccount.Payment_Id = pool.Payment_Id	
+		  LEFT JOIN (
+		                    SELECT DISTINCT retRec.* 
+		                    FROM (
+		                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+		                           FROM LF_RECIV rec 
+		                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+		                           WHERE rec.RETURN_AMT &gt; 0 
+		                         ) retRec
+		                  )returnRec ON returnRec.APPL_ID = appl.ID
+		  Left Join Plms_La_Collect_Alloc Alloc On Alloc.Payment_Id = pool.Payment_Id And 
+		  Trunc(Alloc.Alloc_Begin_Date) &lt;=Trunc(Sysdate) And Alloc.Alloc_End_Date Is Null  And Alloc.Is_Active = 'Y'
+		  Left Join (
+		  select agent.* from plms_la_collect_agent agent inner join
+			(select payment_id,min(ALLOC_BEGIN_DATE) beginDate from plms_la_collect_agent where 
+			alloc_end_date>= sysdate and is_active = 'Y'
+			group by payment_id)agenttemp 
+			on agent.is_active='Y' and agent.payment_id = agentTemp.payment_id  and agent.alloc_begin_date = agentTemp.beginDate
+		  )agent on agent.payment_id = pool.Payment_Id and agent.CLIENT = Alloc.COLLECTOR
+		  Left Join Sys_User Sysuser On Alloc.Collector = Sysuser.User_Id
+		  Left Join Sys_User Sysuse On agent.agent = Sysuse.User_Id
+		  where pool.Payment_Id= #{paymentId}
+  </select>
+  
+  <!-- 前台手动分配选中的案件  -->
+  <select id="selectMaruAssignList" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderAssignDto" parameterType="map">
+  	Select 
+      pool.id as id,
+      Pool.Appl_Id As Applid,
+      Pool.Payment_Id As Paymentid,
+      Pool.Status As Status,
+      pool.BIZ_CATEGORY as bizCategory,
+      CASE 
+                WHEN wf.STATUS = 'CLEAR' THEN 0 
+                WHEN Temp.Overdueday &lt; 0 THEN 0 
+                ELSE Temp.Overdueday 
+      END overdueDays,
+      CONTRACT.LOAN_AMT - nvl(APPLACCOUNT.REPAID_PRINCIPAL,0)-NVL(returnRec.RETURN_AMT,0) remainingPrincipal,
+      pool.site_code as siteCode,
+      CONTRACT.site_code as signCode
+      From
+			(Select Pool.Id,Pool.Payment_Id,Pool.Appl_Id,Pool.Status,pool.BIZ_CATEGORY,pool.site_code  From Plms_Work_Order_Pool Pool 
+			Where pool.status = #{status} and Pool.Payment_Id In 
+			<foreach item="item" index="index" collection="payments" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+			)Pool
+			left join (
+		  		SELECT 
+		  		LEFTALL.PAYMENT_ID,
+		      	LEFTALL.PERIOD_NUM,
+		      	LEFTALL.OVERDUEDAY,
+		      	LEFTALL.APPL_ID,
+		      	LEFTALL.CNTRCT_ID,
+		      	LEFTALL.ID
+		            FROM ( SELECT RECIEVE.ID,RECIEVE.CNTRCT_ID,RECIEVE.APPL_ID,RECIEVE.RPMNT_DATE,RECIEVE.PAYMENT_ID,RECIEVE.PERIOD_NUM,
+		                CASE
+		                        WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN
+		                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+		                        ELSE
+		                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+		                        END OVERDUEDAY  
+		               FROM LF_RECIV RECIEVE WHERE 
+		                          RECIEVE.PERIOD_NUM =
+		        NVL((SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID  AND rec.STATUS != 'PAID' ),(SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID )) 
+		                AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)          
+		            ) LEFTALL 
+		            <!-- LEFT JOIN ( SELECT RECIEVE.PAYMENT_ID,SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE 
+		                    FROM LF_RECIV RECIEVE 
+		                    LEFT JOIN (select ora.PERIOD_NUM as maxPeriod ,ora.PAYMENT_ID as PAYMENT_ID 
+		                                                                            FROM  (SELECT MAX(PERIOD_NUM) as PERIOD_NUM ,PAYMENT_ID as PAYMENT_ID FROM LF_RECIV WHERE IS_DELETED = 'N' GROUP BY PAYMENT_ID)ora 
+		                                                                    ) advMaxPeriod ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID 
+		                    WHERE RECIEVE.PERIOD_NUM &lt;=advMaxPeriod.maxPeriod  
+		                    AND  RECIEVE.STATUS != 'PAID' AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)                                  
+		            GROUP BY RECIEVE.PAYMENT_ID 
+		            ) RIGHTALL  ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID -->
+		  	) Temp on Temp.appl_id = pool.appl_id
+   			INNER JOIN LN_CNTRCT CONTRACT ON pool.APPL_ID = CONTRACT.APPL_ID	
+   			INNER JOIN LN_APPL_INFO appl On Appl.Id = pool.Appl_Id		
+		  	INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID
+		  	Left Join Lf_Appl_Ac Applaccount On Applaccount.Payment_Id = pool.Payment_Id				
+   			LEFT JOIN (
+		                    SELECT DISTINCT retRec.* 
+		                    FROM (
+		                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+		                           FROM LF_RECIV rec 
+		                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+		                           WHERE rec.RETURN_AMT &gt; 0 
+		                         ) retRec
+			)returnRec ON returnRec.APPL_ID = appl.ID  	   			
+			order by bizCategory,Remainingprincipal desc,pool.id asc
+  </select>
+
+  <!--我的案件、全部案件分页查询-->
+  <select id="selectCaseCollectionAndPage" resultType="com.ljwd.plms.web.vo.case_collection.CaseCollectionDto"
+          parameterType="com.ljwd.plms.web.vo.case_collection.CaseCollectionExample">
+      SELECT  Pool.Appl_Id As applId,
+              Pool.Payment_Id As paymentId,
+              Pool.Cntrct_No As cntrctNo,
+              Pool.Cust_Name As custName,
+              Pool.Docno As docno,
+              Cust.mobile as mobile,
+              Pool.Loan_Amt As loanAmt,
+              Pool.Prd_No As prdNo,
+              Pool.Biz_Category as bizCategory,
+              Prd.Prd_Name as prdName,
+
+              overReciv.overduePeriod As overduePeriod,
+              overReciv.maxOverduePeriod As maxOverduePeriod,
+              overReciv.overDays As overDays,
+              CNTRCT.LOAN_AMT - NVL(applAccount.REPAID_PRINCIPAL,0) - NVL(returnRec.RETURN_AMT,0) as remainingPrincipal,
+              AllocAndAgent.ASSIGN_TIME as assignTime,
+              AllocAndAgent.COLLECTOR as collector,
+              AssignUser.User_Name as collectorName,
+              AllocAndAgent.AGENT as agent,
+              AgentUser.User_Name as agentName,
+              AllocAndAgent.Alloc_End_Date as agentEndDate,
+
+              Record.collect_mthd as collectMthd,
+              Record.status as status,
+              Record.result,
+              Record.control_status,
+              Record.create_time as lastFollowedDate,
+              NVL(Followed.followedCount,0) as followedCount
+      From Plms_Work_Order_Pool Pool
+      INNER JOIN LN_APPL_INFO APPL ON Pool.APPL_ID = APPL.ID
+      INNER JOIN LN_CNTRCT CNTRCT ON Pool.APPL_ID = CNTRCT.APPL_ID
+      INNER JOIN WF_WORKFLOW_INFO WF ON WF.ID = APPL.WF_ID
+      <if test="repaymentStatus != null and repaymentStatus == 'OVERDUE'">
+          AND WF.STATUS != 'CLEAR'
+      </if>
+      <if test="repaymentStatus != null and repaymentStatus == 'SETTLE'">
+          AND WF.STATUS = 'CLEAR'
+      </if>
+      INNER JOIN SYS_PRD Prd on Pool.Prd_No = Prd.Prd_No
+      INNER JOIN cl_cust Cust on Pool.APPL_ID = Cust.Appl_Id
+      LEFT JOIN LF_APPL_AC applAccount On Pool.APPL_ID = applAccount.APPL_ID
+      LEFT JOIN (SELECT RECIV.PAYMENT_ID AS PAYMENT_ID,
+                        MIN(RECIV.PERIOD_NUM) AS overduePeriod,
+                        MAX(RECIV.PERIOD_NUM) AS maxOverduePeriod,
+                        TRUNC(SYSDATE) - MIN(RPMNT_DATE) AS overDays
+                FROM LF_RECIV RECIV
+                WHERE TRUNC(SYSDATE) &gt; TRUNC(RECIV.MAX_RPMNT_DATE) AND RECIV.IS_DELETED = 'N' AND RECIV.STATUS != 'PAID'
+                group by RECIV.PAYMENT_ID
+      ) overReciv On Pool.PAYMENT_ID = overReciv.PAYMENT_ID
+      <choose>
+        <when test="collector != null and collector != ''">
+          <!--催收员不为空时内连接-->
+          INNER JOIN
+        </when>
+        <otherwise>
+          <!--催收员为空时左连接-->
+          LEFT JOIN
+        </otherwise>
+      </choose>
+      (  select  alloc.appl_id,
+                 alloc.payment_id,
+                 alloc.collector,
+                 alloc.assign_time,
+                 agent.agent,
+                 agent.alloc_end_date
+         from ( select tempAlloc.appl_id,
+                       tempAlloc.payment_id,
+                       tempAlloc.collector,
+                       tempAlloc.assign_time,
+                       tempAlloc.Alloc_Begin_Date,
+                       tempAlloc.Alloc_End_Date
+                from plms_la_collect_alloc tempAlloc
+                where tempAlloc.id = ( select max(temp.id) from plms_la_collect_alloc temp where temp.Is_Active = 'Y' and temp.Alloc_Begin_Date &lt;= SYSDATE and temp.Alloc_End_Date is null and temp.Appl_Id = tempAlloc.appl_id )
+         ) alloc
+         left join ( select  tempAgent.appl_id,
+                             tempAgent.payment_id,
+                             tempAgent.Agent,
+                             tempAgent.client,
+                             tempAgent.Alloc_Begin_Date,
+                             tempAgent.Alloc_End_Date
+                     from plms_la_collect_agent tempAgent
+                     where tempAgent.id = ( select min(temp.id)
+                     from plms_la_collect_agent temp
+                     where temp.Is_Active = 'Y' and temp.Alloc_Begin_Date &lt;= SYSDATE and temp.Alloc_End_Date &gt;= SYSDATE and temp.Alloc_End_Date &gt; temp.Alloc_Begin_Date and temp.Appl_Id = tempAgent.appl_id )
+         ) Agent on alloc.appl_id = agent.appl_id
+          and Agent.alloc_begin_date &gt;= alloc.alloc_begin_date
+          and Agent.client = alloc.collector
+         where 1 = 1
+        <if test="collector != null and collector != ''">
+          <choose>
+            <when test="queue != null and queue != '' and queue == 'MainQueue'">  <!--主队列-->
+              AND alloc.collector = #{collector} <!--催收员参数-->
+            </when>
+            <when test="queue != null and queue != '' and queue == 'ProxyQueue'"> <!--代理队列-->
+              AND agent.agent = #{collector}     <!--代理催收员参数-->
+            </when>
+            <otherwise>
+              AND (alloc.collector = #{collector} or agent.agent = #{collector})
+            </otherwise>
+          </choose>
+        </if>
+      ) AllocAndAgent ON AllocAndAgent.PAYMENT_ID = Pool.PAYMENT_ID
+      LEFT JOIN SYS_USER AssignUser ON AllocAndAgent.COLLECTOR = AssignUser.USER_ID
+      LEFT JOIN SYS_USER AgentUser ON AllocAndAgent.AGENT = AgentUser.USER_ID
+      LEFT JOIN (select collect.*
+                 from plms_la_collection_record collect
+                 where collect.id = (select max(r.id) from plms_la_collection_record r where r.appl_id = collect.appl_id)
+      ) Record ON Pool.Appl_Id = Record.Appl_Id
+      LEFT JOIN (
+          select rec.appl_id as appl_id,
+                 count(rec.id) as followedCount
+          from plms_la_collection_record rec
+          where trunc(rec.collect_time) = trunc(sysdate) and rec.collect_mthd in ('PHONE','NEWPHONE','SEARCH')
+          group by rec.appl_id
+      ) Followed ON Followed.appl_id = Pool.appl_id
+      LEFT JOIN (
+          SELECT DISTINCT retRec.* FROM (
+              SELECT  rec.PAYMENT_ID,
+                      rec.APPL_ID,
+                      rec.RETURN_AMT
+              FROM LF_RECIV rec INNER JOIN LN_APPL_INFO appl ON appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') AND appl.ID = rec.APPL_ID
+              WHERE rec.RETURN_AMT &gt; 0
+          ) retRec
+      )returnRec ON returnRec.APPL_ID = APPL.ID
+      where 1 = 1
+      <if test="isNormal != null and isNormal = false">
+        AND AND Pool.STATUS &lt;&gt; 0
+      </if>
+      <if test="overDaysMin != null">
+        AND overReciv.overDays &gt;= #{overDaysMin}
+      </if>
+      <if test="overDaysMax != null">
+        AND overReciv.overDays &lt;= #{overDaysMax}
+      </if>
+      <if test="collectorName != null and collectorName != ''">
+        AND AssignUser.USER_NAME = #{collectorName}
+      </if>
+      <if test="controlStatus != null and controlStatus != ''">
+        AND Record.control_status = #{controlStatus}
+      </if>
+      <if test="isFollowed != null and isFollowed == true">
+        AND NVL(Followed.followedCount,0) &gt; 0
+      </if>
+      <if test="isFollowed != null and isFollowed == false">
+        AND NVL(Followed.followedCount,0) = 0
+      </if>
+      <if test="orgId != null">
+        AND AllocAndAgent.collector in (
+          select usr.user_id
+          from ( select id from SYS_ORG start with id = #{orgId,jdbcType=BIGINT} connect by prior id = pid ) sub
+          inner join SYS_EMP emp on sub.id=emp.org_id
+          inner join SYS_USER usr on emp.id=usr.emp_id
+        )
+      </if>
+      <if test="queue != null and queue != ''">
+        <choose>
+          <when test="collector == null and queue == 'MainQueue'">        <!--主队列-->
+            AND AllocAndAgent.collector IS NOT NULL
+          </when>
+          <when test="collector == null and queue == 'ProxyQueue'">       <!--代理队列-->
+            AND AllocAndAgent.agent IS NOT NULL
+          </when>
+          <when test="queue == 'NewQueue'">        <!--新增客户队列-->
+            AND trunc(AllocAndAgent.ASSIGN_TIME) = trunc(sysdate)
+          </when>
+          <when test="queue == 'AdvanceQueue'">    <!--提前移交队列-->
+            AND Pool.STATUS = (select rule.status from plms_collection_rule_set rule where rule.circu_rule_code = 'TRANINAD' and rule.is_active = 'Y')
+          </when>
+          <when test="queue == 'CancelQueue'">     <!--核销队列-->
+            AND WF.STATUS = 'WRITE_OFF' AND WF.SUB_STATUS = 'WRITE_OFF'
+          </when>
+          <when test="queue == 'OverdueDayIn90'">  <!--逾期90天内队列-->
+            AND overReciv.overDays &lt;= 90
+          </when>
+          <when test="queue == 'OverdueDayOut90'"> <!--逾期90天以上队列-->
+            AND overReciv.overDays &gt; 90
+          </when>
+        </choose>
+        </if>
+        <if test="mobile != null and mobile != ''">
+          <!-- AND Cust.mobile = #{mobile} -->
+          and (Cust.Mobile = #{mobile} or Cust.Mobile2 = #{mobile} or Cust.Mobile3 = #{mobile})
+        </if>
+        <if test="custName != null and custName != ''">
+          AND Pool.CUST_NAME = #{custName}
+        </if>
+        <if test="docno != null and docno != ''">
+          AND Pool.DOCNO = #{docno}
+        </if>
+        <if test="cntrctNo != null and cntrctNo != ''">
+          AND Pool.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <choose>
+          <when test="orderByClause != null">
+            order by ${orderByClause}
+          </when>
+          <otherwise>
+            order by Pool.ID DESC
+          </otherwise>
+        </choose>
+  </select>
+
+  <!-- 保护案件分页查询 -->
+  <select id="selectProtectCaseAndPage" resultType="com.ljwd.plms.web.vo.case_management.PlmsProtectCaseResultDto" parameterType="com.ljwd.plms.web.vo.case_management.PlmsProtectCaseParam">
+  Select  
+  	  poollog.id as logId,
+	  Poollog.Appl_Id as applId,
+	  poollog.PAYMENT_ID as paymentId,
+      Poollog.Status as statusVal,
+      rset.NAME as statusName,
+      Pool.Cntrct_No as cntrctNo,
+      Pool.Cust_Name as custName,
+      Pool.Docno as docno,
+      Poollog.Defend_Status as defendStatus,
+      decode(Poollog.Defend_Status,'1','保留','2','豁免','4','离职') as protectCondition,
+      Alloc.Collector as collector,
+      Sysuser.User_Name as collectorName,
+      Poollog.WAIVED_STATUS as waivdeStatus,
+      to_char(Temp.Createtime,'yyyy-MM-dd' )as createTime,
+      to_char(poollog.PROTECT_END_DATE,'yyyy-MM-dd') as protectEndDate,
+      waive.status as realtimeStatus,
+      case
+      		when waive.status='SUBMITTED' then '是'
+      		else '否'
+      end as isWaive
+	  	From Plms_Work_Order_Pool_Log Poollog 
+	    Inner Join
+	    (Select Max(Log.Create_Time) Createtime ,Log.Appl_Id From Plms_Work_Order_Pool_Log Log 
+	    Group By Log.Appl_Id) Temp
+	    On  Temp.Createtime = Poollog.Create_Time And Poollog.Defend_Status in(1,2,4)  And Temp.Appl_Id = Poollog.Appl_Id     
+      left Join Plms_Work_Order_Pool Pool On Pool.Appl_Id = Poollog.Appl_Id
+      left join Plms_Collection_Rule_Set rset on Rset.Is_Active = 'Y' and Rset.Status = Poollog.status
+      Left Join Plms_La_Collect_Alloc Alloc On Poollog.Appl_Id = Alloc.Appl_Id And Alloc.Alloc_End_Date Is Null
+      Left Join Sys_User Sysuser On Alloc.Collector = Sysuser.User_Id <!-- And Sysuser.Is_Active = 'Y' -->
+      left join (
+      	select waive.appl_id,waive.STATUS from LF_WAIVE_REQ waive
+			inner join 
+			(SELECT appl_id,max(id) id FROM LF_WAIVE_REQ group by appl_id)tempwaive
+			on tempwaive.appl_id  = waive.appl_id and tempwaive.id = waive.id
+      )waive on waive.appl_id = Pool.Appl_Id
+      where 1=1
+     <if test='protectStatus !="all"'>
+      		  <choose>
+      		  	<when test='protectStatus == "1"'>
+      		  		   and (
+      		  		   ( Poollog.Defend_Status='1' and trunc(Poollog.PROTECT_END_DATE) &lt;= trunc(sysdate) )
+      		  		   or( Poollog.Defend_Status='4' )
+      		  		   or(Poollog.Defend_Status='2' and Poollog.WAIVED_STATUS ='2')
+      		  		   )
+      		  	</when>
+      		  	<when test='protectStatus == "2"'>
+      		  			and(
+      		  			   (Poollog.Defend_Status='1' and trunc(Poollog.PROTECT_END_DATE) >= trunc(sysdate) )
+      		  			or (Poollog.Defend_Status='2' and Poollog.WAIVED_STATUS ='1')
+      		  			)	
+      		  	</when>
+      		  </choose>
+      </if>
+       <if test='scopeStatus !="all" '>
+     	 and Poollog.status = #{scopeStatus}
+      </if>
+      <if test='protectCondition !="all"'>
+      	and Poollog.Defend_Status = #{protectCondition}
+      </if>
+      <if test="isWaive !=null">
+      	<choose>
+      		<when test='isWaive == "Y"'>
+      			and waive.status ='SUBMITTED'
+      		</when>
+      		<otherwise>
+      			and ( waive.STATUS is null or waive.STATUS !='SUBMITTED')
+      		</otherwise>
+      	</choose>
+      </if>
+  </select>
+
+
+<!-- 根据查询条件查询案件信息 -->
+<!-- 批量分配时查询此区间没有被分配的 -->
+<select id="selectByParam" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderAssignDto" parameterType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolParam">
+  	Select  
+  			pool.Id as id,
+  			Pool.Appl_Id As Applid,
+         	Pool.Payment_Id As Paymentid,
+         	pool.status as status,
+         	pool.BIZ_CATEGORY as bizCategory,
+         	Temp.Overdueday As overdueDays,
+         	Temp.Remainderamount As Remainingprincipal,
+         	Temp.periodNum as overduePeriod,
+         	Temp.siteCode as siteCode,
+         	Temp.signCode as signCode
+  	From Plms_Work_Order_Pool Pool   
+  inner Join (
+   Select 
+         	REVIEVEOVER.PAYMENT_ID,
+         	CONTRACT.CNTRCT_NO contractNo,		
+	       REVIEVEOVER.PERIOD_NUM periodNum,		
+	       CONTRACT.LOAN_AMT - APPLACCOUNT.REPAID_PRINCIPAL-NVL(returnRec.RETURN_AMT,0) remainderAmount,		
+	       REVIEVEOVER.OVERDUEDAY overdueDay,		
+	       REVIEVEOVER.TOTALAMT - REVIEVEOVER.TOTAL_ACT_AMOUNT -REVIEVEOVER.TOTAL_WAIVE overdueAmount,
+	       	appl.SITE_CODE as siteCode,
+       		CONTRACT.SITE_CODE as signCode		
+	  FROM (SELECT LEFTALL.PAYMENT_ID,		
+	               LEFTALL.PERIOD_NUM,		
+	               LEFTALL.OVERDUEDAY,		
+	               LEFTALL.APPL_ID,		
+	               LEFTALL.CNTRCT_ID,		
+	               LEFTALL.ID,		
+	               RIGHTALL.TOTALAMT,		
+	               RIGHTALL.TOTAL_ACT_AMOUNT,		
+	               RIGHTALL.TOTAL_WAIVE		
+	          FROM (SELECT RECIEVE.ID,		
+	                       RECIEVE.CNTRCT_ID,		
+	                       RECIEVE.APPL_ID,		
+	                       RECIEVE.RPMNT_DATE,		
+	                       RECIEVE.PAYMENT_ID,		
+	                       RECIEVE.PERIOD_NUM,		
+	                       CASE		
+	                         WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN		
+	                          TRUNC(SYSDATE) - RPMNT_DATE		
+	                         ELSE		
+	                          TRUNC(SYSDATE) - RPMNT_DATE		
+	                       END OVERDUEDAY		
+	                  FROM LF_RECIV RECIEVE		
+	                 WHERE RECIEVE.STATUS != 'PAID'		
+	                   AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)		
+	                   AND RECIEVE.PERIOD_NUM =		
+	                       (SELECT MIN(PERIOD_NUM)		
+	                          FROM LF_RECIV rec		
+	                         WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID		
+	                           AND rec.STATUS != 'PAID')) LEFTALL		
+	          inner JOIN (SELECT RECIEVE.PAYMENT_ID,		
+	                           SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,		
+	                           SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,		
+	                           SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE		
+	                      FROM LF_RECIV RECIEVE		
+	                      LEFT JOIN (select ora.PERIOD_NUM as maxPeriod,		
+	                                       ora.PAYMENT_ID as PAYMENT_ID		
+	                                  FROM (SELECT MAX(PERIOD_NUM) as PERIOD_NUM,		
+	                                               PAYMENT_ID as PAYMENT_ID		
+	                                          FROM LF_RECIV		
+	                                         WHERE IS_DELETED = 'N'		
+	                                         GROUP BY PAYMENT_ID) ora) advMaxPeriod		
+	                        ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID		
+	                     WHERE RECIEVE.STATUS != 'PAID'		
+	                       AND RECIEVE.PERIOD_NUM &lt;= advMaxPeriod.maxPeriod		
+	                       AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)		
+	                     Group By Recieve.Payment_Id			                    		
+	                    ) Rightall		
+	            On Rightall.Payment_Id = Leftall.Payment_Id		
+	            ) REVIEVEOVER		
+	 INNER JOIN LN_CNTRCT CONTRACT		
+	    ON REVIEVEOVER.CNTRCT_ID = CONTRACT.ID		
+	 INNER JOIN LN_APPL_INFO appl		
+	    ON appl.ID = CONTRACT.APPL_ID		
+	 INNER JOIN WF_WORKFLOW_INFO wf		
+	    ON wf.ID = appl.WF_ID		
+	   AND wf.STATUS != 'CLEAR'		
+	 LEFT JOIN LF_APPL_AC APPLACCOUNT		
+	    On Applaccount.Payment_Id = Revieveover.Payment_Id	
+	 LEFT JOIN (
+                    SELECT DISTINCT retRec.* 
+                    FROM (
+                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+                           FROM LF_RECIV rec 
+                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+                           WHERE rec.RETURN_AMT &gt; 0 
+                         ) retRec
+                  )returnRec ON returnRec.APPL_ID = appl.ID    	
+  )Temp On Pool.Payment_Id = Temp.Payment_Id 
+  <if test="status!=null and status !=''">
+    And Pool.Status = #{status}
+  </if>
+   <if test="cntrctNo!=null and cntrctNo !=''">
+    And Pool.Cntrct_No = #{cntrctNo}
+  </if>
+   <if test="custName!=null and custName !=''">
+    And Pool.Cust_Name = #{custName}
+  </if>
+   <if test="docno!=null and docno !=''">
+    And Pool.DOCNO = #{docno}
+  </if>
+   <if test="prdNo!=null and prdNo !=''">
+    And Pool.PRD_NO = #{prdNo}
+  </if>
+  <if test="overDaysFrom != null and overDaysFrom !='' ">
+    And  Temp.Overdueday >=#{overDaysFrom} 
+  </if>
+  <if test="overDaysTo !=null and overDaysTo !=''">
+    and Temp.Overdueday&lt;=#{overDaysTo}
+  </if>
+  <!-- 排除保护队列中的数据 -->
+	  Inner Join (
+	   Select  
+	  	Poollog.Appl_Id
+	  	From Plms_Work_Order_Pool_Log Poollog 
+	    Inner Join
+	    (Select Max(Log.Create_Time) Createtime ,Log.Appl_Id From Plms_Work_Order_Pool_Log Log Group By Log.Appl_Id) Temp
+	    On  (Poollog.Defend_Status Is  Null or Poollog.Defend_Status = 3)And Temp.Appl_Id = Poollog.Appl_Id And Temp.Createtime = Poollog.Create_Time  
+	  )log on log.Appl_Id = Pool.Appl_Id
+	  	<!-- 提前移交队列 -->
+	  where  NOT EXISTS (SELECT 1 FROM plms_l_transfer_advance ad WHERE ad.APPL_ID = pool.APPL_ID and ad.status in('NOT_AUDITED','NOT_APPROVED')) 
+  <if test='isAlloc=="2"'>
+     and NOT EXISTS (SELECT 1 FROM Plms_La_Collect_Alloc ao WHERE ao.APPL_ID =  pool.APPL_ID 
+     and Trunc(Ao.Alloc_Begin_Date)&lt;=Trunc(Sysdate) And ao.Alloc_End_Date Is Null And Ao.Is_Active = 'Y' )             
+  </if>  
+   order by bizCategory,Remainingprincipal desc,Pool.id asc
+  </select>
+	
+	
+	<!-- 查询指定appl_id最新的情况 -->
+	<select id="searchReceiveOverdueByApplIds" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolDto" parameterType="map">
+		<!--  Select 
+      pool.id as id,
+      Pool.Appl_Id As Applid,
+      Pool.Payment_Id As Paymentid,
+      Pool.Status As Status,
+      pool.BIZ_CATEGORY as bizCategory,
+      CASE 
+                WHEN wf.STATUS = 'CLEAR' THEN 0 
+                WHEN Temp.Overdueday &lt; 0 THEN 0 
+                ELSE Temp.Overdueday 
+      END overDays,
+      CONTRACT.LOAN_AMT - nvl(APPLACCOUNT.REPAID_PRINCIPAL,0)-NVL(returnRec.RETURN_AMT,0) remainingPrincipal,
+      pool.site_code as siteCode,
+      CONTRACT.site_code as signCode,
+      pool.REC_VER as recVer,
+      Temp.PERIOD_NUM as overduePeriod
+      From
+			(Select Pool.Id,Pool.Payment_Id,Pool.Appl_Id,Pool.Status,pool.BIZ_CATEGORY,pool.site_code,pool.REC_VER  From Plms_Work_Order_Pool Pool 
+			Where Pool.appl_id In 
+			<foreach item="item" index="index" collection="applIds" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+			)Pool
+			left join (
+		  		SELECT RECIEVE.ID,
+                        RECIEVE.CNTRCT_ID,
+                        RECIEVE.APPL_ID,
+                        RECIEVE.RPMNT_DATE,
+                        RECIEVE.PAYMENT_ID,
+                        RECIEVE.PERIOD_NUM,
+                        CASE WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+                            ELSE TRUNC(SYSDATE) - trunc(RPMNT_DATE)
+                            END OVERDUEDAY
+                        FROM LF_RECIV RECIEVE
+                        WHERE RECIEVE.STATUS &lt;&gt; 'PAID'
+                             AND RECIEVE.MAX_RPMNT_DATE &lt;= (SYSDATE - 1)
+                             AND RECIEVE.PERIOD_NUM = (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID AND rec.STATUS != 'PAID' )
+		  	) Temp on Temp.appl_id = pool.appl_id
+   			INNER JOIN LN_CNTRCT CONTRACT ON pool.APPL_ID = CONTRACT.APPL_ID	
+   			INNER JOIN LN_APPL_INFO appl On Appl.Id = pool.Appl_Id		
+		  	INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID
+		  	Left Join Lf_Appl_Ac Applaccount On Applaccount.Payment_Id = pool.Payment_Id				
+   			LEFT JOIN (
+		                    SELECT DISTINCT retRec.* 
+		                    FROM (
+		                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+		                           FROM LF_RECIV rec 
+		                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+		                           WHERE rec.RETURN_AMT &gt; 0 
+		                         ) retRec
+			)returnRec ON returnRec.APPL_ID = appl.ID  	   			
+			order by bizCategory,Remainingprincipal desc,pool.id asc -->
+		   select   
+  		    revieveOver.APPL_ID      applId,
+            revieveOver.PAYMENT_ID   paymentId,
+            contract.ID as cntrctId,
+            contract.CNTRCT_NO   cntrctNo,
+            customer.CUST_NAME   custName,
+            customer.ID_CARD_NO  docno,
+            contract.LOAN_AMT    loanAmt,
+           	procuct.PRD_NO  as prdNo,
+            CASE 
+                when wf.status = 'CLEAR' then 0 
+                WHEN revieveOver.OVERDUEDAY &lt; 0 THEN 0 
+                ELSE revieveOver.OVERDUEDAY 
+            END overDays,
+            revieveOver.PERIOD_NUM   overduePeriod,
+            contract.LOAN_AMT - applAccount.REPAID_PRINCIPAL - NVL(returnRec.RETURN_AMT,0) AS  remainingPrincipal,
+            revieveOver.TOTALAMT - revieveOver.TOTAL_ACT_AMOUNT - revieveOver.TOTAL_WAIVE   AS   overdueAmount,
+            pool.status as status,
+            pool.REC_VER as recVer,
+            region.id as regionId
+			FROM (
+            SELECT LEFTALL.PAYMENT_ID,
+            LEFTALL.PERIOD_NUM,
+            LEFTALL.OVERDUEDAY,
+            LEFTALL.APPL_ID,
+            LEFTALL.CNTRCT_ID,
+            LEFTALL.ID,
+            RIGHTALL.TOTALAMT,
+            RIGHTALL.TOTAL_ACT_AMOUNT,
+            RIGHTALL.TOTAL_WAIVE 
+				FROM ( SELECT RECIEVE.ID,
+							  RECIEVE.CNTRCT_ID,
+							  RECIEVE.APPL_ID,
+							  RECIEVE.RPMNT_DATE,
+							  RECIEVE.PAYMENT_ID,
+							  recieve.period_num,
+							CASE WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN
+                                TRUNC(SYSDATE) - RPMNT_DATE ELSE
+                                TRUNC(SYSDATE) - RPMNT_DATE
+							END OVERDUEDAY  
+					 from lf_reciv recieve
+					 <if test='applIds !=null and applIds !=""'>
+						  where recieve.appl_id in 
+						 <foreach item="item" index="index" collection="applIds" open="(" separator="," close=")">  
+							  #{item}  
+						</foreach>
+					 </if>
+					 <if test='applId !=null and applId !=""'>
+					 	where recieve.appl_id = #{applId}
+					 
+					</if>
+					 AND RECIEVE.PERIOD_NUM = NVL(
+					 (SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID  AND rec.STATUS != 'PAID' )
+                    ,(SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID )) 
+                      AND trunc(recieve.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)
+					) leftall 
+				left JOIN ( 
+					select 
+						reciv.PAYMENT_ID,		
+						SUM(reciv.TTL_RECIV_AMT) TOTALAMT,		
+						SUM(reciv.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,		
+						SUM(reciv.TTL_WAIVED_AMT) as TOTAL_WAIVE	
+						from lf_reciv reciv
+						inner join (
+							SELECT lf_reciv.PAYMENT_ID                      
+            				FROM LF_RECIV lf_reciv                      
+                    inner join ln_appl_info appl_info on lf_reciv.appl_id = appl_info.id                             
+			  		 <if test='applIds !=null and applIds !=""'>
+						  where lf_reciv.appl_id in 
+						 <foreach item="item" index="index" collection="applIds" open="(" separator="," close=")">  
+							  #{item}  
+						</foreach>
+					 </if>
+					 <if test='applId !=null and applId !=""'>
+					 	where lf_reciv.appl_id = #{applId}
+					 
+					</if>
+					 and lf_reciv.STATUS NOT IN ('PAID')    
+                    GROUP BY lf_reciv.payment_id	
+                    having ((sysdate-1) - min(lf_reciv.rpmnt_date)) > 0 
+                      )temp on temp.payment_id = reciv.payment_id
+            				group by reciv.payment_id
+				) RIGHTALL  ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID
+        )revieveOver
+        INNER JOIN LN_CNTRCT contract ON REVIEVEOVER.CNTRCT_ID = contract.ID 
+        INNER JOIN LN_APPL_INFO appl ON appl.ID = CONTRACT.APPL_ID 
+        INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID
+        LEFT JOIN CL_CUST customer ON REVIEVEOVER.APPL_ID = customer.APPL_ID  
+        LEFT JOIN LF_APPL_AC applAccount ON applAccount.PAYMENT_ID = REVIEVEOVER.PAYMENT_ID
+        LEFT JOIN SYS_SITE site ON site.site_code = contract.SITE_CODE
+        LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+        LEFT JOIN 
+        (
+            SELECT DISTINCT retRec.* FROM
+            (
+            SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT FROM  
+            LF_RECIV rec 
+            INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') 
+            WHERE 
+            rec.RETURN_AMT > 0 
+            ) retRec
+        )returnRec ON returnRec.APPL_ID = appl.ID 
+        LEFT  JOIN  SYS_PRD  procuct  ON   appl.PRD_ID = procuct.ID  
+        LEFT  JOIN  PLMS_WORK_ORDER_POOL pool on pool.PAYMENT_ID=revieveOver.PAYMENT_ID
+        ORDER BY REVIEVEOVER.ID ASC  
+	</select>
+	
+  <!-- 案件管理导出数据 -->
+  <select id="selectByExampleExport" resultType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolExportDto" parameterType="com.ljwd.plms.web.vo.case_management.PlmsWorkOrderPoolParam">
+  	select * from ( select rownum rowNo ,Temp.* from   	
+  	(
+         	Select  
+         	Pool.Cntrct_No As Cntrctno,
+         	Pool.Cust_Name As Custname,
+         	Pool.Docno As Docno,
+         	Pool.Loan_Amt As Loanamt,
+         	Pool.Prd_No As Prdno,
+         	decode(pool.BIZ_CATEGORY,'NORMAL','等本等息','WHOLE','趸缴','MATURE_PAYMENT','平缴','INT_FIRST_PRIN_LAST','先息后本') as bizCategory,
+         	CASE 
+                WHEN wf.STATUS = 'CLEAR' THEN 0 
+                WHEN Temp.Overdueday &lt; 0 THEN 0 
+                ELSE Temp.Overdueday 
+            END Overdays,
+            CONTRACT.LOAN_AMT - nvl(APPLACCOUNT.REPAID_PRINCIPAL,0)-NVL(returnRec.RETURN_AMT,0) Remainingprincipal,	
+            (Temp.TOTALAMT - Temp.TOTAL_ACT_AMOUNT - Temp.TOTAL_WAIVE)      Overdueamount,
+         	<if test='isAlloc != "2"'>
+         	sysUser.user_name  as collectorName,
+         	sysUse.user_name as agentName,
+         	</if>
+         	Sysprd.Prd_Name As proName
+  	From Plms_Work_Order_Pool Pool 
+  	left join (
+  		SELECT 
+  		LEFTALL.PAYMENT_ID,
+      	LEFTALL.PERIOD_NUM,
+      	LEFTALL.OVERDUEDAY,
+      	LEFTALL.APPL_ID,
+      	LEFTALL.CNTRCT_ID,
+      	LEFTALL.ID,
+      	RIGHTALL.TOTALAMT,
+      	RIGHTALL.TOTAL_ACT_AMOUNT,
+      	RIGHTALL.TOTAL_WAIVE 
+            FROM ( SELECT RECIEVE.ID,RECIEVE.CNTRCT_ID,RECIEVE.APPL_ID,RECIEVE.RPMNT_DATE,RECIEVE.PAYMENT_ID,RECIEVE.PERIOD_NUM,
+                CASE
+                        WHEN NVL(ACTUAL_RPMNT_DATE, RPMNT_DATE) > RPMNT_DATE THEN
+                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+                        ELSE
+                                TRUNC(SYSDATE) - trunc(RPMNT_DATE) 
+                        END OVERDUEDAY  
+               FROM LF_RECIV RECIEVE WHERE 
+                          RECIEVE.PERIOD_NUM =
+        NVL((SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID  AND rec.STATUS != 'PAID' ),(SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec WHERE rec.PAYMENT_ID = RECIEVE.PAYMENT_ID )) 
+                         AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)
+            ) LEFTALL 
+            LEFT JOIN ( SELECT RECIEVE.PAYMENT_ID,SUM(RECIEVE.TTL_RECIV_AMT) TOTALAMT,SUM(RECIEVE.TTL_ACTUAL_AMT) TOTAL_ACT_AMOUNT,SUM(RECIEVE.TTL_WAIVED_AMT) as TOTAL_WAIVE 
+                    FROM LF_RECIV RECIEVE 
+                    LEFT JOIN (select ora.PERIOD_NUM as maxPeriod ,ora.PAYMENT_ID as PAYMENT_ID 
+                                                                            FROM  (SELECT MAX(PERIOD_NUM) as PERIOD_NUM ,PAYMENT_ID as PAYMENT_ID FROM LF_RECIV WHERE IS_DELETED = 'N' GROUP BY PAYMENT_ID)ora 
+                                                                    ) advMaxPeriod ON advMaxPeriod.PAYMENT_ID = RECIEVE.PAYMENT_ID 
+                    WHERE RECIEVE.PERIOD_NUM &lt;=advMaxPeriod.maxPeriod  
+                    AND  RECIEVE.STATUS != 'PAID' AND trunc(RECIEVE.MAX_RPMNT_DATE) &lt;= trunc(SYSDATE - 1)                                  
+            GROUP BY RECIEVE.PAYMENT_ID 
+            ) RIGHTALL  ON RIGHTALL.PAYMENT_ID = LEFTALL.PAYMENT_ID
+  	
+  	) Temp on Temp.appl_id = pool.appl_id
+   INNER JOIN LN_CNTRCT CONTRACT ON pool.APPL_ID = CONTRACT.APPL_ID		
+   INNER JOIN LN_APPL_INFO appl	ON appl.ID = CONTRACT.APPL_ID		
+   INNER JOIN WF_WORKFLOW_INFO wf ON wf.ID = appl.WF_ID			
+   Inner Join Sys_Prd Sysprd On Sysprd.Prd_No = Appl.Prd_No
+   LEFT JOIN LF_APPL_AC APPLACCOUNT	On Applaccount.Payment_Id = Temp.Payment_Id
+   left join sys_site syssite on syssite.site_code =  pool.site_code
+   LEFT JOIN (
+		                    SELECT DISTINCT retRec.* 
+		                    FROM (
+		                           SELECT rec.PAYMENT_ID,rec.APPL_ID,rec.RETURN_AMT 
+		                           FROM LF_RECIV rec 
+		                           INNER JOIN LN_APPL_INFO appl ON appl.ID = rec.APPL_ID AND appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT')
+		                           WHERE rec.RETURN_AMT &gt; 0 
+		                         ) retRec
+	)returnRec ON returnRec.APPL_ID = appl.ID  
+  <if test='isAlloc=="0" or isAlloc=="1"'>
+  <if test='isAlloc=="0"'>
+    left		
+  </if>
+  <if  test='isAlloc=="1"'>
+ 	inner
+  </if>
+ 	 Join (
+ 		       <if test='queue=="1"'>
+		 			Select        
+		 				Alloc.Collector,
+		 				Alloc.Payment_Id,
+		 				Alloc.Appl_Id,
+		 				alloc.assign_time,
+		 				agenttemp.agent ,
+               			agentTemp.Alloc_Begin_Date as agent_assign_time
+		 			from plms_la_collect_alloc alloc 
+		 			left join( 
+			            select agentt.Payment_Id,
+			            	   agentt.Alloc_Begin_Date,
+			            	   agentt.alloc_end_date,
+			            	   agentt.is_active,
+			            	   agentt.client,
+			            	   agentt.agent
+			             from 
+			             ( select agent.payment_id,min(agent.alloc_begin_date) as Alloc_Begin_Date from 
+			              plms_la_collect_agent agent
+			              where   agent.alloc_end_date>=sysdate and agent.is_active = 'Y'
+			              group by agent.payment_id)t
+			              left join plms_la_collect_agent  agentT on agentT.Alloc_Begin_Date = T. Alloc_Begin_Date and agentT.payment_id = T.payment_id  
+			          )AgentTemp On AgentTemp.Payment_Id = Alloc.Payment_Id 
+		 			And AgentTemp.Alloc_Begin_Date>=alloc.Alloc_Begin_Date
+				 	and agenttemp.alloc_end_date >=agenttemp.alloc_begin_date 
+				 	and AgentTemp.is_active = 'Y' and agenttemp.client = alloc.collector  
+					Where  Alloc.Alloc_Begin_Date &lt;=Sysdate And Alloc.Is_Active = 'Y' And Alloc.Alloc_End_Date Is Null 
+				</if>
+				<if test='queue=="2"'>
+ 					select agent.agent as agent,
+			            alloc.collector as collector,
+			            Agent.Payment_Id,
+			            alloc.appl_id,
+			            Alloc.Assign_Time from
+			      		 ( select agent.payment_id,
+			      		 		  agent.Client,
+			      		 		  agent.agent
+			      		  from plms_la_collect_agent agent inner join
+								(select payment_id,min(ALLOC_BEGIN_DATE) beginDate from plms_la_collect_agent where 
+								alloc_end_date>=sysdate and is_active = 'Y'
+								group by payment_id)agenttemp 
+							on agent.is_active='Y'and agent.payment_id = agenttemp.payment_id  and agent.alloc_begin_date = agenttemp.begindate
+						)agent
+			 			left join plms_la_collect_alloc alloc on agent.Client = Alloc.Collector and	alloc.payment_id = agent.payment_id		 
+ 				</if>	
+			  		<if test="allocDateStart !=null and allocDateStart !=''">
+  	 					and trunc(alloc.ASSIGN_TIME) > =trunc(#{allocDateStart})
+  					</if>
+  					<if test="allocDateEnd !=null and allocDateEnd !=''"> 
+  						 and trunc(alloc.ASSIGN_TIME) &lt; =trunc(#{allocDateEnd})
+  					</if>
+ 	) Alloc
+ 	 On 
+  	Alloc.Payment_Id = Pool.Payment_Id And alloc.Appl_Id = pool.Appl_Id
+  	  left join sys_user sysUser on sysUser.user_id = alloc.collector 
+  	  left join sys_user sysUse on sysUse.user_id = alloc.Agent 
+  </if>	    
+   <!--Inner Join (
+	   Select  
+	  	Poollog.Appl_Id
+	  	From Plms_Work_Order_Pool_Log Poollog 
+	    Inner Join
+	    (Select Max(Log.Id) ID ,Log.Appl_Id From Plms_Work_Order_Pool_Log Log Group By Log.Appl_Id) Temp
+	    On (Poollog.Defend_Status Is  Null or Poollog.Defend_Status = 3) And Temp.Appl_Id = Poollog.Appl_Id And Temp.ID = Poollog.ID  
+	  )log on log.Appl_Id = Pool.Appl_Id  -->
+	<!-- 提前移交队列 -->
+	  where  NOT EXISTS (SELECT 1 FROM plms_l_transfer_advance ad WHERE ad.APPL_ID = pool.APPL_ID and ad.status in('NOT_AUDITED','NOT_APPROVED')) 	 
+	  <!-- 排除保护队列中的数据 -->
+	  and NOT EXISTS
+	    ( select 1 
+	      from plms_work_order_pool_log log 
+	      where log.defend_status in ('1','2','4') and log.appl_id = pool.appl_id 
+	      and log.id = (select max(id) from plms_work_order_pool_log tempLog where tempLog.Appl_Id = log.appl_id)
+	    ) 
+   <if test="status!=null and status !=''">
+    And Pool.Status = #{status}
+   </if>
+   <if test="cntrctNo!=null and cntrctNo !=''">
+    And Pool.Cntrct_No = #{cntrctNo}
+   </if>
+   <if test="custName!=null and custName !=''">
+    And Pool.Cust_Name = #{custName}
+   </if>
+   <if test="docno!=null and docno !=''">
+    And Pool.DOCNO = #{docno}
+   </if>
+   <if test="prdNo!=null and prdNo !=''">
+    And Pool.PRD_NO = #{prdNo}
+   </if>
+   <if test='collectorName!=null and collectorName !=""'>
+   		<choose>
+   			<when test='queue=="2"'>
+   				and sysUse.user_name =#{collectorName}
+   			</when>
+   			<otherwise>
+   				and sysUser.user_name =#{collectorName}
+   			</otherwise>
+   		</choose>
+   </if>
+    <if test="overDaysFrom != null  ">
+    	   And  Temp.Overdueday >=#{overDaysFrom} 
+    </if>
+    <if test="overDaysTo !=null">
+    	   and Temp.Overdueday&lt;=#{overDaysTo}
+    </if>
+   <if test='isAlloc=="2"'>
+     and NOT EXISTS (SELECT 1 FROM Plms_La_Collect_Alloc ao WHERE ao.APPL_ID =  pool.APPL_ID 
+     and Trunc(Ao.Alloc_Begin_Date)&lt;=Trunc(Sysdate) And ao.Alloc_End_Date Is Null And Ao.Is_Active = 'Y' )             
+   </if>
+   <choose>
+   		<when test='queryPerm == "branch"'>
+   			<if test='siteCode !=null and siteCode !=""'>
+   				and (appl.site_code = #{siteCode} or CONTRACT.site_code = #{siteCode} and appl.SITE_CODE in (881,882))
+   			</if>
+   		</when>
+   		<otherwise>
+   			<if test='siteCode !=null and siteCode !=""'>
+   				and appl.site_code = #{siteCode} 
+   			</if>
+   		</otherwise>
+   </choose>
+   <choose>
+   		<when test='orderByClause !=null'>
+   			order by ${orderByClause}
+   		</when>
+   		<otherwise>
+   		  	order by  Remainingprincipal desc,Pool.id asc
+   		</otherwise>
+   </choose>
+  	)Temp)
+  </select>
+  
+  <select id="selectTansferNotAssign" parameterType="map" resultMap="BaseResultMap">
+  		select pool.* from plms_work_order_pool pool where status = #{status}
+  			and pool.Payment_Id in 
+  			<foreach item="item" index="index" collection="paymentsId" open="(" separator="," close=")">  
+					 #{item}  
+			</foreach>
+  			and not exists (select 1 from plms_la_collect_alloc ao where ao.appl_id =  pool.appl_id 
+  			and Trunc(Ao.Alloc_Begin_Date)&lt;=Trunc(Sysdate) And ao.Alloc_End_Date Is Null And Ao.Is_Active = 'Y' )          
+  </select>
+  
+  <!-- 根据豁免状态和借款ID查询豁免信息 -->
+  <select id="searchFeeWaiveApproval" parameterType="map" resultType="com.ljwd.plms.web.vo.case_management.PlmsFeeWaiveApprovalResultDto">
+  		SELECT waiverequest.id as id,
+               waiverequest.payment_id as paymentId,
+               waiverequest.appl_id as applId,
+               contract.cntrct_no as contractNo,
+               waiverequest.status as status
+		FROM LF_WAIVE_REQ WAIVEREQUEST,LN_CNTRCT CONTRACT
+		WHERE WAIVEREQUEST.CNTRCT_ID = CONTRACT.ID
+        <if test="status != null and status != ''">
+           and WAIVEREQUEST.STATUS = #{status}
+        </if>
+        <if test="applId !=null">
+           and CONTRACT.APPL_ID = #{applId}
+        </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.cust.PlmsClUnitInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="CL_CUST_ID" property="clCustId" jdbcType="BIGINT" />
+    <result column="SRC_CODE" property="srcCode" jdbcType="VARCHAR" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="RLTNSHP" property="rltnshp" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR" property="unitAddr" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR_PROVINCE_ID" property="unitAddrProvinceId" jdbcType="BIGINT" />
+    <result column="UNIT_ADDR_CITY_ID" property="unitAddrCityId" jdbcType="BIGINT" />
+    <result column="UNIT_ADDR_AREA_ID" property="unitAddrAreaId" jdbcType="BIGINT" />
+    <result column="UNIT_ADDR_DETAILS" property="unitAddrDetails" jdbcType="VARCHAR" />
+    <result column="POSITION" property="position" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="srcCode != null and srcCode != ''">
+            and T.SRC_CODE = #{srcCode}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="unitAddr != null and unitAddr != ''">
+            and T.UNIT_ADDR = #{unitAddr}
+        </if>
+        <if test="unitName != null and unitName != ''">
+            and T.UNIT_NAME = #{unitName}
+        </if>
+        <if test="name != null and name != ''">
+            and T.NAME = #{name}
+        </if>
+        <if test="clCustId != null">
+            and T.CL_CUST_ID = #{clCustId}
+        </if>
+        <if test="clCustIdByApplId != null">
+            and T.CL_CUST_ID = (select appl.cl_cust_id from plms_ln_appl_info appl where appl.appl_id = #{clCustIdByApplId})
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test='isActive !=null and isActive !=""'>
+            and T.IS_ACTIVE = #{isActive}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where>
+            <if test="example.srcCode != null and example.srcCode != ''">
+                and T.SRC_CODE = #{example.srcCode}
+            </if>
+            <if test="example.noThisId != null">
+                and T.ID &lt;&gt; #{example.noThisId}
+            </if>
+            <if test="example.unitAddr != null and example.unitAddr != ''">
+                and T.UNIT_ADDR = #{example.unitAddr}
+            </if>
+            <if test="example.unitName != null and example.unitName != ''">
+                and T.UNIT_NAME = #{example.unitName}
+            </if>
+            <if test="example.name != null and example.name != ''">
+                and T.NAME = #{example.name}
+            </if>
+            <if test="example.clCustId != null">
+                and T.CL_CUST_ID = #{example.clCustId}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.CL_CUST_ID,
+    T.SRC_CODE,
+    T.APPL_ID,
+    T.RLTNSHP,
+    T.NAME,
+    T.UNIT_NAME,
+    T.UNIT_ADDR,
+    T.REMARK,
+    T.UNIT_ADDR_PROVINCE_ID,
+    T.UNIT_ADDR_CITY_ID,
+    T.UNIT_ADDR_AREA_ID,
+    T.UNIT_ADDR_DETAILS,
+    T.POSITION,
+    T.IS_ACTIVE,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_CL_UNIT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_CL_UNIT_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_CL_UNIT_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfoExample" >
+    delete from PLMS_CL_UNIT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_unit_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_UNIT_INFO T ( <include refid="Base_Column_List"/> )
+    values
+    (
+      #{id,jdbcType=BIGINT},
+      #{clCustId,jdbcType=BIGINT},
+      #{srcCode,jdbcType=VARCHAR},
+      #{applId,jdbcType=BIGINT},
+      #{rltnshp,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR},
+      #{unitName,jdbcType=VARCHAR},
+      #{unitAddr,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR},
+      #{unitAddrProvinceId,jdbcType=BIGINT},
+      #{unitAddrCityId,jdbcType=BIGINT},
+      #{unitAddrAreaId,jdbcType=BIGINT},
+      #{unitAddrDetails,jdbcType=VARCHAR},
+      #{position,jdbcType=VARCHAR},
+      #{isActive,jdbcType=CHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_cl_unit_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_CL_UNIT_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="clCustId != null" >
+          T.CL_CUST_ID,
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE,
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID,
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP,
+      </if>
+      <if test="name != null" >
+          T.NAME,
+      </if>
+      <if test="unitName != null" >
+          T.UNIT_NAME,
+      </if>
+      <if test="unitAddr != null" >
+          T.UNIT_ADDR,
+      </if>
+      <if test="remark != null" >
+          T.REMARK,
+      </if>
+      <if test="unitAddrProvinceId != null" >
+          T.UNIT_ADDR_PROVINCE_ID,
+      </if>
+      <if test="unitAddrCityId != null" >
+          T.UNIT_ADDR_CITY_ID,
+      </if>
+      <if test="unitAddrAreaId != null" >
+          T.UNIT_ADDR_AREA_ID,
+      </if>
+      <if test="unitAddrDetails != null" >
+          T.UNIT_ADDR_DETAILS,
+      </if>
+      <if test="position != null" >
+          T.POSITION,
+      </if>
+      <if test="isActive != null" >
+          T.IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="clCustId != null" >
+        #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+        #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+        #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddr != null" >
+        #{unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrProvinceId != null" >
+          #{unitAddrProvinceId,jdbcType=BIGINT},
+      </if>
+      <if test="unitAddrCityId != null" >
+          #{unitAddrCityId,jdbcType=BIGINT},
+      </if>
+      <if test="unitAddrAreaId != null" >
+          #{unitAddrAreaId,jdbcType=BIGINT},
+      </if>
+      <if test="unitAddrDetails != null" >
+          #{unitAddrDetails,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+          #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfoExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_CL_UNIT_INFO T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_CL_UNIT_INFO T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.clCustId != null" >
+          T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="record.srcCode != null" >
+          T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applId != null" >
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.rltnshp != null" >
+          T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+          T.NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitName != null" >
+          T.UNIT_NAME = #{record.unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unitAddr != null" >
+          T.UNIT_ADDR = #{record.unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+          T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+        <if test="record.unitAddrProvinceId != null" >
+            T.UNIT_ADDR_PROVINCE_ID = #{record.unitAddrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="record.unitAddrCityId != null" >
+            T.UNIT_ADDR_CITY_ID = #{record.unitAddrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="record.unitAddrAreaId != null" >
+            T.UNIT_ADDR_AREA_ID = #{record.unitAddrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="record.unitAddrDetails != null" >
+            T.UNIT_ADDR_DETAILS = #{record.unitAddrDetails,jdbcType=VARCHAR},
+        </if>
+        <if test="record.position != null" >
+            T.POSITION = #{record.position,jdbcType=VARCHAR},
+        </if>
+        <if test="record.isActive != null" >
+            T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+        </if>
+        <if test="record.createdBy != null" >
+            T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.createTime != null" >
+            T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.updatedBy != null" >
+            T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+        </if>
+        <if test="record.updateTime != null" >
+            T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="record.recVer != null" >
+            T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+        </if>
+        <if test="record.tagSeq != null" >
+            T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+        </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_CL_UNIT_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.CL_CUST_ID = #{record.clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{record.srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.RLTNSHP = #{record.rltnshp,jdbcType=VARCHAR},
+      T.NAME = #{record.name,jdbcType=VARCHAR},
+      T.UNIT_NAME = #{record.unitName,jdbcType=VARCHAR},
+      T.UNIT_ADDR = #{record.unitAddr,jdbcType=VARCHAR},
+      T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      T.ADDR_PROVINCE_ID = #{record.unitAddrProvinceId,jdbcType=BIGINT},
+      T.ADDR_CITY_ID = #{record.unitAddrCityId,jdbcType=BIGINT},
+      T.ADDR_AREA_ID = #{record.unitAddrAreaId,jdbcType=BIGINT},
+      T.ADDR_DETAILS = #{record.unitAddrDetails,jdbcType=VARCHAR},
+      T.POSITION = #{record.position,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" >
+    update PLMS_CL_UNIT_INFO T
+    <set >
+      <if test="clCustId != null" >
+          T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      </if>
+      <if test="srcCode != null" >
+          T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      </if>
+      <if test="applId != null" >
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="rltnshp != null" >
+          T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+          T.NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+          T.UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddr != null" >
+          T.UNIT_ADDR = #{unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+          T.REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+        <if test="unitAddrProvinceId != null" >
+            T.UNIT_ADDR_PROVINCE_ID = #{unitAddrProvinceId,jdbcType=BIGINT},
+        </if>
+        <if test="unitAddrCityId != null" >
+            T.UNIT_ADDR_CITY_ID = #{unitAddrCityId,jdbcType=BIGINT},
+        </if>
+        <if test="unitAddrAreaId != null" >
+            T.UNIT_ADDR_AREA_ID = #{unitAddrAreaId,jdbcType=BIGINT},
+        </if>
+        <if test="unitAddrDetails != null" >
+            T.UNIT_ADDR_DETAILS = #{unitAddrDetails,jdbcType=VARCHAR},
+        </if>
+        <if test="position != null" >
+            T.POSITION = #{position,jdbcType=VARCHAR},
+        </if>
+        <if test="isActive != null" >
+            T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+        </if>
+        <if test="createdBy != null" >
+            T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+        </if>
+        <if test="createTime != null" >
+            T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updatedBy != null" >
+            T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null" >
+            T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="recVer != null" >
+            T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+        </if>
+        <if test="tagSeq != null" >
+            T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+        </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" >
+    update PLMS_CL_UNIT_INFO T
+    set
+      T.CL_CUST_ID = #{clCustId,jdbcType=BIGINT},
+      T.SRC_CODE = #{srcCode,jdbcType=VARCHAR},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.RLTNSHP = #{rltnshp,jdbcType=VARCHAR},
+      T.NAME = #{name,jdbcType=VARCHAR},
+      T.UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      T.UNIT_ADDR = #{unitAddr,jdbcType=VARCHAR},
+      T.REMARK = #{remark,jdbcType=VARCHAR},
+      T.UNIT_ADDR_PROVINCE_ID = #{unitAddrProvinceId,jdbcType=BIGINT},
+      T.UNIT_ADDR_CITY_ID = #{unitAddrCityId,jdbcType=BIGINT},
+      T.UNIT_ADDR_AREA_ID = #{unitAddrAreaId,jdbcType=BIGINT},
+      T.UNIT_ADDR_DETAILS = #{unitAddrDetails,jdbcType=VARCHAR},
+      T.POSITION = #{position,jdbcType=VARCHAR},
+      T.IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" extends="BaseResultMap">
+        <result column="srcVal" property="srcVal" jdbcType="VARCHAR"/>
+        <result column="rltnshpVal" property="rltnshpVal" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        t2.val as srcVal,
+        t3.val as rltnshpVal,
+        updateUser.USER_NAME as updatedUserName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.cust.PlmsClUnitInfoExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext" />
+        from PLMS_CL_UNIT_INFO T
+        inner join PLMS_L_SOURCE_TYPE T2 on T.SRC_CODE = T2.CODE
+        inner join L_RLTNSHP T3 on T.RLTNSHP = T3.CODE
+        left join sys_user updateUser on T.UPDATED_BY = updateUser.USER_ID
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause_Ext" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_CL_UNIT_INFO T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_cl_unit_info.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select <!--#{item.id,jdbcType=BIGINT},-->
+            #{item.clCustId,jdbcType=BIGINT},
+            #{item.srcCode,jdbcType=VARCHAR},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.rltnshp,jdbcType=VARCHAR},
+            #{item.name,jdbcType=VARCHAR},
+            #{item.unitName,jdbcType=VARCHAR},
+            #{item.unitAddr,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.unitAddrProvinceId,jdbcType=BIGINT},
+            #{item.unitAddrCityId,jdbcType=BIGINT},
+            #{item.unitAddrAreaId,jdbcType=BIGINT},
+            #{item.unitAddrDetails,jdbcType=VARCHAR},
+            #{item.position,jdbcType=VARCHAR},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+
+    <!--根据客户身份证号集合查询微贷系统中未添加到贷后系统的单位信息-->
+    <select id="findMfbmsUnitByDocnoList" resultType="com.ljwd.plms.web.model.cust.PlmsClUnitInfo" parameterType="java.util.List">
+        <!--本人单位信息-->
+        select (ai.id) as appl_id,
+               (c.id_card_no) as docno,
+               'WIN' as srcCode,
+               '12' as rltnshp,
+               (c.cust_name) as name,
+               (pro.unit_name) as unitName,
+               (pro.unit_addr) as unitAddr,
+               (pro.unit_addr_province_id) as unitAddrProvinceId,
+               (pro.unit_addr_city_id) as unitAddrCityId,
+               (pro.unit_addr_area_id) as unitAddrAreaId,
+               (pro.unit_addr_1) as unitAddrDetails,
+               (pro.position) as position
+        from cl_profession pro
+        inner join cl_cust c on pro.cust_id = c.id
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+                select 1
+                from plms_cl_unit_info unit
+                inner join plms_cl_cust_info cust on unit.cl_cust_id = cust.id
+                where unit.rltnshp = '12' and unit.unit_name = pro.unit_name and unit.name = c.cust_name and c.id_card_no = cust.docno
+              )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+
+        union all
+        <!--配偶单位信息-->
+        select (ai.id) as appl_id,
+               (c.id_card_no) as docno,
+               'WIN' as srcCode,
+               '11' as rltnshp,
+               (c.spouse_name) as name,
+               (c.spouse_unit) as unitName,
+               (c.spouse_unit_addr) as unitAddr,
+               (c.spouse_unit_addr_province_id) as unitAddrProvinceId,
+               (c.spouse_unit_addr_city_id) as unitAddrCityId,
+               (c.spouse_unit_addr_area_id) as unitAddrAreaId,
+               (c.spouse_unit_addr_details) as unitAddrDetails,
+               (c.spouse_unit_position) as position
+        from cl_cust c
+        inner join ln_appl_info ai on c.appl_id = ai.id
+        where not exists (
+                select 1
+                from plms_cl_unit_info unit
+                inner join plms_cl_cust_info cust on unit.cl_cust_id = cust.id
+                where unit.rltnshp = '11' and unit.unit_name = c.spouse_unit and unit.name = c.spouse_name and c.id_card_no = cust.docno
+              )
+            and not exists (select 1 from PLMS_LN_APPL_INFO pl where pl.appl_id = ai.id)
+            and c.id_card_no in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+    </select>
+
+</mapper>

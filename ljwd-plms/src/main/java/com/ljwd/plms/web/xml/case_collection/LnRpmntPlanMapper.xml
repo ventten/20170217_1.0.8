@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LnRpmntPlanMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LnRpmntPlan">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="PAYMENT_ID" jdbcType="BIGINT" property="paymentId" />
+    <result column="PERIOD_NUM" jdbcType="INTEGER" property="periodNum" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="MAX_RPMNT_DATE" jdbcType="TIMESTAMP" property="maxRpmntDate" />
+    <result column="RPMNT_DATE" jdbcType="TIMESTAMP" property="rpmntDate" />
+    <result column="PRINCIPAL" jdbcType="DECIMAL" property="principal" />
+    <result column="INT" jdbcType="DECIMAL" property="interest" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="INT_DAY" jdbcType="INTEGER" property="intDay" />
+    <result column="TTL_AMT" jdbcType="DECIMAL" property="ttlAmt" />
+    <result column="IS_EXTENT" jdbcType="CHAR" property="isExtent" />
+    <result column="PENALTY" jdbcType="DECIMAL" property="penalty" />
+    <result column="PENALTY_RATE" jdbcType="DECIMAL" property="penaltyRate" />
+    <result column="REMAIN_PRINCIPAL" jdbcType="DECIMAL" property="remainPrincipal" />
+    <result column="CLEAR_AMT" jdbcType="DECIMAL" property="clearAmt" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="INT_ADJUST" jdbcType="DECIMAL" property="intAdjust" />
+    <result column="ACTUAL_PRINCIPAL" jdbcType="DECIMAL" property="actualPrincipal" />
+    <result column="RETURN_AMT" jdbcType="DECIMAL" property="returnAmt" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.APPL_ID,
+    T.PAYMENT_ID,
+    T.PERIOD_NUM,
+    T.START_DATE,
+    T.END_DATE,
+    T.MAX_RPMNT_DATE,
+    T.RPMNT_DATE,
+    T.PRINCIPAL,
+    T.INT,
+    T.STATUS,
+    T.INT_DAY,
+    T.TTL_AMT,
+    T.IS_EXTENT,
+    T.PENALTY,
+    T.PENALTY_RATE,
+    T.REMAIN_PRINCIPAL,
+    T.CLEAR_AMT,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.INT_ADJUST,
+    T.ACTUAL_PRINCIPAL,
+    T.RETURN_AMT
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnRpmntPlanExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LN_RPMNT_PLAN T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LN_RPMNT_PLAN T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <!--根据借款ID查询后每期期款-->
+  <select id="selectSecondAmtByApplId" parameterType="long" resultType="java.math.BigDecimal">
+    select T.TTL_AMT from LN_RPMNT_PLAN T where T.PERIOD_NUM = 2 and T.APPL_ID = #{value,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LnRpmntPlanExample" resultType="java.lang.Integer">
+    select count(*) from LN_RPMNT_PLAN T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

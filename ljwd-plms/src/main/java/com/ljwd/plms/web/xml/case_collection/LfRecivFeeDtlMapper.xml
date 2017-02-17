@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfRecivFeeDtlMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfRecivFeeDtl">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="RECIV_ID" jdbcType="BIGINT" property="recivId" />
+    <result column="LEDGER_CODE" jdbcType="VARCHAR" property="ledgerCode" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="BASE_VAL" jdbcType="DECIMAL" property="baseVal" />
+    <result column="RATE" jdbcType="DECIMAL" property="rate" />
+    <result column="AMT" jdbcType="DECIMAL" property="amt" />
+    <result column="CALC_TIME" jdbcType="TIMESTAMP" property="calcTime" />
+    <result column="REF_ID" jdbcType="BIGINT" property="refId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recivId != null">
+            and T.RECIV_ID = #{recivId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.RECIV_ID,
+    T.LEDGER_CODE,
+    T.START_DATE,
+    T.END_DATE,
+    T.BASE_VAL,
+    T.RATE, AMT,
+    T.CALC_TIME,
+    T.REF_ID,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivFeeDtlExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LF_RECIV_FEE_DTL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from LF_RECIV_FEE_DTL T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfRecivFeeDtlExample" resultType="java.lang.Integer">
+    select count(*) from LF_RECIV_FEE_DTL T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,31 @@
+.outSouTd1{
+	width: 120px;
+}
+.outSouTd2{
+	width: 300px;
+}
+.outSouLabel{
+	width: auto;
+	float: right;
+	padding-bottom: 7px;
+}
+.outSouTdDiv{
+	float: left;
+}
+.outSouTdDiv textarea{
+	width: 400px;
+}
+/* 输入框校验样式 */
+/* .form-group div div,.outSouTdDiv div{
+	position: absolute;
+	margin-top: 21px;
+	z-index: 9;
+
+} */
+
+.outSouTd1,.outSouTd2{
+	padding-bottom: 10px;
+}
+.outSouTdDi_textarea div{
+	margin-top: 55px;
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd
+    http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+    <!-- 消息管理者 start -->
+    <!-- 真正可以产生 Connection 的 ConnectionFactory,由对应的 JMS 服务厂商提供,这里是 ActiveMQ -->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${jms.activeMq.url}"/>
+        <property name="userName" value="${jms.activeMq.userName}"></property>
+        <property name="password" value="${jms.activeMq.password}"></property>
+    </bean>
+
+    <!-- ActiveMQ 为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory可以用来将Connection、Session和MessageProducer池化，这样可以大大的减少我们的资源消耗 -->
+    <bean id="pooledConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory">
+        <property name="connectionFactory" ref="targetConnectionFactory"/>
+        <property name="maxConnections" value="${jms.activeMq.maxConnections}"/>
+    </bean>
+
+    <!-- Spring 用于管理真正的 ConnectionFactory 的 ConnectionFactory -->
+    <bean id="connectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+        <!-- 目标 ConnectionFactory 对应真实的可以产生 JMS Connection 的 ConnectionFactory -->
+        <property name="targetConnectionFactory" ref="targetConnectionFactory"/>
+    </bean>
+    <!-- 消息管理者 end -->
+
+    <!-- 消息生产者 start -->
+    <!-- Spring提供的JMS工具类，它可以进行消息发送、接收等 -->
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <!-- 这个 connectionFactory 对应的是我们定义的 Spring 提供的那个 ConnectionFactory 对象 -->
+        <property name="connectionFactory" ref="connectionFactory"/>
+    </bean>
+    <!-- 消息生产者 end -->
+
+    <!-- 消息消费者 start-->
+    <!--这个是队列目的地，点对点的-->
+    <bean id="queueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <property name="physicalName" value="${jms.activeMq.queueDestination}"/>
+    </bean>
+
+    <!--这个是主题目的地，一对多的-->
+    <!--<bean id="topicDestination" class="org.apache.activemq.command.ActiveMQTopic">-->
+        <!--<constructor-arg value="topic"/>-->
+    <!--</bean>-->
+
+    <!-- 消息监听处理器 -->
+    <bean id="jmsMessageListener" class="com.ljwd.plms.web.listener.JmsMessageListener"/>
+    <!-- 消息监听容器 -->
+    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="destination" ref="queueDestination" />
+        <property name="messageListener" ref="jmsMessageListener" />
+    </bean>
+    <!-- 消息消费者 end -->
+
+</beans>

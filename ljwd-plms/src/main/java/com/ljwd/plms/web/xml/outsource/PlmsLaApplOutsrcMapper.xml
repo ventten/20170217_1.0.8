@@ -1,0 +1,1573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.outsource.PlmsLaApplOutsrcMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="PAYMENT_ID" jdbcType="BIGINT" property="paymentId" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="COM_ID" jdbcType="BIGINT" property="comId" />
+    <result column="CNTRCT_ID" jdbcType="BIGINT" property="cntrctId" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="ACUTAL_END_DATE" jdbcType="TIMESTAMP" property="acutalEndDate" />
+    <result column="FEE_RATE" jdbcType="DECIMAL" property="feeRate" />
+    <result column="OUTSRC_TYPE" jdbcType="VARCHAR" property="outsrcType" />
+    <result column="RECIV_AMT" jdbcType="DECIMAL" property="recivAmt" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="SUBMITTED_BY" jdbcType="VARCHAR" property="submittedBy" />
+    <result column="SUBMIT_TIME" jdbcType="TIMESTAMP" property="submitTime" />
+    <result column="APPROVED_BY" jdbcType="VARCHAR" property="approvedBy" />
+    <result column="APPROVE_TIME" jdbcType="TIMESTAMP" property="approveTime" />
+    <result column="LAST_EXTENTED_BY" jdbcType="VARCHAR" property="lastExtentedBy" />
+    <result column="LAST_EXTENT_TIME" jdbcType="TIMESTAMP" property="lastExtentTime" />
+    <result column="FEEDBACK" jdbcType="VARCHAR" property="feedback" />
+    <result column="REASON" jdbcType="VARCHAR" property="reason" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+    <result column="OVERDUE_DAYS" jdbcType="INTEGER" property="overdueDays" />
+    <result column="AUDIT_BY" jdbcType="VARCHAR" property="auditBy" />
+    <result column="AUDIT_TIME" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="ACUTAL_START_DATE" jdbcType="TIMESTAMP" property="acutalStartDate" />
+    <result column="LOT_NO" jdbcType="BIGINT" property="lotNo" />
+    <result column="ALLOT" jdbcType="VARCHAR" property="allot" />
+    <result column="IS_BACK" jdbcType="INTEGER" property="isBack" />
+    <result column="WORK_STATUS" jdbcType="VARCHAR" property="workStatus" />
+    <result column="CREATE_TYPE" jdbcType="VARCHAR" property="createType" />
+    <result column="OUTSRC_COUNT" jdbcType="INTEGER" property="outsrcCount" />
+    <result column="LAST_COM_ID" jdbcType="BIGINT" property="lastComId" />
+    <result column="END_MONTHS" jdbcType="INTEGER" property="endMonths" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <choose>
+            <when test="isCheck == true">
+                and ( T.APPL_ID IN <foreach collection="applIds" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+                    and ( T.STATUS IN <foreach collection="statusS" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+                      or T.STATUS = 'ENDED' AND TRUNC(T.ACUTAL_END_DATE) &gt;= TRUNC(#{startDate})
+                    )
+                )
+            </when>
+            <otherwise>
+                <if test="startDate != null">
+                    and TRUNC(T.START_DATE) = TRUNC(#{startDate})
+                </if>
+                <if test="statusS != null">
+                    and T.STATUS IN <foreach collection="statusS" item="item" open="(" close=")" separator=",">#{item,jdbcType=VARCHAR}</foreach>
+                </if>
+                <if test="applIds != null">
+                    and T.APPL_ID IN <foreach collection="applIds" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+                </if>
+            </otherwise>
+        </choose>
+        <if test="status != null and status != ''">
+            and T.STATUS = #{status}
+        </if>
+        <if test="comId != null">
+            and T.COM_ID = #{comId}
+        </if>
+        <if test="minId != null">
+            and T.ID &gt; #{minId}
+        </if>
+        <if test="cntrctId != null">
+            and T.CNTRCT_ID = #{cntrctId}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+        <if test="ids != null">
+            and T.ID IN <foreach collection="ids" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        </if>
+        <if test="lotNo != null">
+            and T.LOT_NO = #{lotNo}
+        </if>
+        <if test="noThisId != null">
+            and T.ID &lt;&gt; #{noThisId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext" >
+        <where >
+            <include refid="Where_Clause"/>
+            <if test="cntrctNo != null and cntrctNo != ''">
+                and cntrct.CNTRCT_NO = #{cntrctNo}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.comId != null">
+                and T.COM_ID = #{example.comId}
+            </if>
+            <if test="example.cntrctId != null">
+                and T.CNTRCT_ID = #{example.cntrctId}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.paymentId != null">
+                and T.PAYMENT_ID = #{example.paymentId}
+            </if>
+            <if test="example.ids != null">
+                and T.ID IN <foreach collection="example.ids" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+            </if>
+            <if test="example.lotNo != null">
+                and T.LOT_NO = #{example.lotNo}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.PAYMENT_ID,
+    T.APPL_ID,
+    T.COM_ID,
+    T.CNTRCT_ID,
+    T.START_DATE,
+    T.END_DATE,
+    T.ACUTAL_END_DATE,
+    T.FEE_RATE,
+    T.OUTSRC_TYPE,
+    T.RECIV_AMT,
+    T.STATUS,
+    T.SUBMITTED_BY,
+    T.SUBMIT_TIME,
+    T.APPROVED_BY,
+    T.APPROVE_TIME,
+    T.LAST_EXTENTED_BY,
+    T.LAST_EXTENT_TIME,
+    T.FEEDBACK,
+    T.REASON,
+    T.REMARK,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ,
+    T.OVERDUE_DAYS,
+    T.AUDIT_BY,
+    T.AUDIT_TIME,
+    T.ACUTAL_START_DATE,
+    T.LOT_NO,
+    T.ALLOT,
+    T.IS_BACK,
+    T.WORK_STATUS,
+    T.CREATE_TYPE,
+    T.OUTSRC_COUNT,
+    T.LAST_COM_ID,
+    T.END_MONTHS
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    cntrct.CNTRCT_NO as cntrctNo
+    from PLMS_LA_APPL_OUTSRC T
+    inner join LN_CNTRCT cntrct on T.CNTRCT_ID = cntrct.ID
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause_Ext" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_APPL_OUTSRC T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="long">
+    delete from PLMS_LA_APPL_OUTSRC T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample">
+    delete from PLMS_LA_APPL_OUTSRC T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_appl_outsrc.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC T (<include refid="Base_Column_List" />)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{paymentId,jdbcType=BIGINT},
+      #{applId,jdbcType=BIGINT},
+      #{comId,jdbcType=BIGINT},
+      #{cntrctId,jdbcType=BIGINT},
+      #{startDate,jdbcType=TIMESTAMP},
+      #{endDate,jdbcType=TIMESTAMP},
+      #{acutalEndDate,jdbcType=TIMESTAMP},
+      #{feeRate,jdbcType=DECIMAL},
+      #{outsrcType,jdbcType=VARCHAR},
+      #{recivAmt,jdbcType=DECIMAL},
+      #{status,jdbcType=VARCHAR},
+      #{submittedBy,jdbcType=VARCHAR},
+      #{submitTime,jdbcType=TIMESTAMP},
+      #{approvedBy,jdbcType=VARCHAR},
+      #{approveTime,jdbcType=TIMESTAMP},
+      #{lastExtentedBy,jdbcType=VARCHAR},
+      #{lastExtentTime,jdbcType=TIMESTAMP},
+      #{feedback,jdbcType=VARCHAR},
+      #{reason,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1,
+      #{overdueDays,jdbcType=INTEGER},
+      #{auditBy,jdbcType=VARCHAR},
+      #{auditTime,jdbcType=TIMESTAMP},
+      #{acutalStartDate,jdbcType=TIMESTAMP},
+      #{lotNo,jdbcType=VARCHAR},
+      #{allot,jdbcType=VARCHAR},
+      #{isBack,jdbcType=INTEGER},
+      #{workStatus,jdbcType=VARCHAR},
+      #{createType,jdbcType=VARCHAR},
+      #{outsrcCount,jdbcType=INTEGER},
+      #{lastComId,jdbcType=BIGINT},
+      #{endMonths,jdbcType=INTEGER}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_la_appl_outsrc.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LA_APPL_OUTSRC T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+          T.ID,
+      </if>
+      <if test="paymentId != null">
+          T.PAYMENT_ID,
+      </if>
+      <if test="applId != null">
+          T.APPL_ID,
+      </if>
+      <if test="comId != null">
+          T.COM_ID,
+      </if>
+      <if test="cntrctId != null">
+          T.CNTRCT_ID,
+      </if>
+      <if test="startDate != null">
+          T.START_DATE,
+      </if>
+      <if test="endDate != null">
+          T.END_DATE,
+      </if>
+      <if test="acutalEndDate != null">
+          T.ACUTAL_END_DATE,
+      </if>
+      <if test="feeRate != null">
+          T.FEE_RATE,
+      </if>
+      <if test="outsrcType != null">
+          T.OUTSRC_TYPE,
+      </if>
+      <if test="recivAmt != null">
+          T.RECIV_AMT,
+      </if>
+      <if test="status != null">
+          T.STATUS,
+      </if>
+      <if test="submittedBy != null">
+          T.SUBMITTED_BY,
+      </if>
+      <if test="submitTime != null">
+          T.SUBMIT_TIME,
+      </if>
+      <if test="approvedBy != null">
+          T.APPROVED_BY,
+      </if>
+      <if test="approveTime != null">
+          T.APPROVE_TIME,
+      </if>
+      <if test="lastExtentedBy != null">
+          T.LAST_EXTENTED_BY,
+      </if>
+      <if test="lastExtentTime != null">
+          T.LAST_EXTENT_TIME,
+      </if>
+      <if test="feedback != null">
+          T.FEEDBACK,
+      </if>
+      <if test="reason != null">
+          T.REASON,
+      </if>
+      <if test="remark != null">
+          T.REMARK,
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ,
+      </if>
+      <if test="overdueDays != null">
+          T.OVERDUE_DAYS,
+      </if>
+      <if test="auditBy != null">
+          T.AUDIT_BY,
+      </if>
+      <if test="auditTime != null">
+          T.AUDIT_TIME,
+      </if>
+      <if test="acutalStartDate != null">
+          T.ACUTAL_START_DATE,
+      </if>
+      <if test="lotNo != null">
+          T.LOT_NO,
+      </if>
+      <if test="allot != null">
+          T.ALLOT,
+      </if>
+      <if test="isBack != null">
+          T.IS_BACK,
+      </if>
+      <if test="workStatus != null">
+          T.WORK_STATUS,
+      </if>
+      <if test="createType != null">
+          T.CREATE_TYPE,
+      </if>
+      <if test="outsrcCount != null">
+          T.OUTSRC_COUNT,
+      </if>
+      <if test="lastComId != null">
+          T.LAST_COM_ID,
+      </if>
+      <if test="endMonths != null">
+          T.END_MONTHS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null">
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null">
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="comId != null">
+        #{comId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null">
+        #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="startDate != null">
+        #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acutalEndDate != null">
+        #{acutalEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feeRate != null">
+        #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="outsrcType != null">
+        #{outsrcType,jdbcType=VARCHAR},
+      </if>
+      <if test="recivAmt != null">
+        #{recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="submittedBy != null">
+        #{submittedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+        #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvedBy != null">
+        #{approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+        #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExtentedBy != null">
+        #{lastExtentedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastExtentTime != null">
+        #{lastExtentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedback != null">
+        #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null">
+        #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="auditBy != null">
+        #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acutalStartDate != null">
+        #{acutalStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotNo != null">
+        #{lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="allot != null">
+        #{allot,jdbcType=VARCHAR},
+      </if>
+      <if test="isBack != null">
+        #{isBack,jdbcType=INTEGER},
+      </if>
+      <if test="workStatus != null">
+        #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null">
+        #{createType,jdbcType=VARCHAR},
+      </if>
+      <if test="outsrcCount != null">
+          #{outsrcCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastComId != null">
+          #{lastComId,jdbcType=BIGINT},
+      </if>
+      <if test="endMonths != null">
+          #{endMonths,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrcExample" resultType="java.lang.Integer">
+    select count(T.ID) from PLMS_LA_APPL_OUTSRC T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update PLMS_LA_APPL_OUTSRC T
+    <set>
+      <if test="record.id != null">
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentId != null">
+          T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null">
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.comId != null">
+          T.COM_ID = #{record.comId,jdbcType=BIGINT},
+      </if>
+      <if test="record.cntrctId != null">
+          T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="record.startDate != null">
+          T.START_DATE = #{record.startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endDate != null">
+          T.END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.acutalEndDate != null">
+          T.ACUTAL_END_DATE = #{record.acutalEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.feeRate != null">
+          T.FEE_RATE = #{record.feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="record.outsrcType != null">
+          T.OUTSRC_TYPE = #{record.outsrcType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recivAmt != null">
+          T.RECIV_AMT = #{record.recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="record.status != null">
+          T.STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submittedBy != null">
+          T.SUBMITTED_BY = #{record.submittedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.submitTime != null">
+          T.SUBMIT_TIME = #{record.submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.approvedBy != null">
+          T.APPROVED_BY = #{record.approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.approveTime != null">
+          T.APPROVE_TIME = #{record.approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastExtentedBy != null">
+          T.LAST_EXTENTED_BY = #{record.lastExtentedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastExtentTime != null">
+          T.LAST_EXTENT_TIME = #{record.lastExtentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.feedback != null">
+          T.FEEDBACK = #{record.feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reason != null">
+          T.REASON = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null">
+          T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.overdueDays != null">
+          T.OVERDUE_DAYS = #{record.overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="record.auditBy != null">
+          T.AUDIT_BY = #{record.auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.auditTime != null">
+          T.AUDIT_TIME = #{record.auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.acutalStartDate != null">
+          T.ACUTAL_START_DATE = #{record.acutalStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lotNo != null">
+          T.LOT_NO = #{record.lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.allot != null">
+          T.ALLOT = #{record.allot,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isBack != null">
+          T.IS_BACK = #{record.isBack,jdbcType=INTEGER},
+      </if>
+      <if test="record.workStatus != null">
+          T.WORK_STATUS = #{record.workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createType != null">
+          T.CREATE_TYPE = #{record.createType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.outsrcCount != null">
+          T.OUTSRC_COUNT = #{record.outsrcCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.lastComId != null">
+          T.LAST_COM_ID = #{record.lastComId,jdbcType=BIGINT},
+      </if>
+      <if test="record.endMonths != null">
+          T.END_MONTHS = #{record.endMonths,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map">
+    update PLMS_LA_APPL_OUTSRC T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.COM_ID = #{record.comId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{record.cntrctId,jdbcType=BIGINT},
+      T.START_DATE = #{record.startDate,jdbcType=TIMESTAMP},
+      T.END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      T.ACUTAL_END_DATE = #{record.acutalEndDate,jdbcType=TIMESTAMP},
+      T.FEE_RATE = #{record.feeRate,jdbcType=DECIMAL},
+      T.OUTSRC_TYPE = #{record.outsrcType,jdbcType=VARCHAR},
+      T.RECIV_AMT = #{record.recivAmt,jdbcType=DECIMAL},
+      T.STATUS = #{record.status,jdbcType=VARCHAR},
+      T.SUBMITTED_BY = #{record.submittedBy,jdbcType=VARCHAR},
+      T.SUBMIT_TIME = #{record.submitTime,jdbcType=TIMESTAMP},
+      T.APPROVED_BY = #{record.approvedBy,jdbcType=VARCHAR},
+      T.APPROVE_TIME = #{record.approveTime,jdbcType=TIMESTAMP},
+      T.LAST_EXTENTED_BY = #{record.lastExtentedBy,jdbcType=VARCHAR},
+      T.LAST_EXTENT_TIME = #{record.lastExtentTime,jdbcType=TIMESTAMP},
+      T.FEEDBACK = #{record.feedback,jdbcType=VARCHAR},
+      T.REASON = #{record.reason,jdbcType=VARCHAR},
+      T.REMARK = #{record.remark,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      T.OVERDUE_DAYS = #{record.overdueDays,jdbcType=INTEGER},
+      T.AUDIT_BY = #{record.auditBy,jdbcType=VARCHAR},
+      T.AUDIT_TIME = #{record.auditTime,jdbcType=TIMESTAMP},
+      T.ACUTAL_START_DATE = #{record.acutalStartDate,jdbcType=TIMESTAMP},
+      T.LOT_NO = #{record.lotNo,jdbcType=VARCHAR},
+      T.ALLOT = #{record.allot,jdbcType=VARCHAR},
+      T.IS_BACK = #{record.isBack,jdbcType=INTEGER},
+      T.WORK_STATUS = #{record.workStatus,jdbcType=VARCHAR},
+      T.CREATE_TYPE = #{record.createType,jdbcType=VARCHAR},
+      T.OUTSRC_COUNT = #{record.outsrcCount,jdbcType=INTEGER},
+      T.LAST_COM_ID = #{record.lastComId,jdbcType=BIGINT},
+      T.END_MONTHS = #{record.endMonths,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+    update PLMS_LA_APPL_OUTSRC T
+    <set>
+      <if test="paymentId != null">
+          T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null">
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="comId != null">
+          T.COM_ID = #{comId,jdbcType=BIGINT},
+      </if>
+      <if test="cntrctId != null">
+          T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      </if>
+      <if test="startDate != null">
+          T.START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+          T.END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acutalEndDate != null">
+          T.ACUTAL_END_DATE = #{acutalEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feeRate != null">
+          T.FEE_RATE = #{feeRate,jdbcType=DECIMAL},
+      </if>
+      <if test="outsrcType != null">
+          T.OUTSRC_TYPE = #{outsrcType,jdbcType=VARCHAR},
+      </if>
+      <if test="recivAmt != null">
+          T.RECIV_AMT = #{recivAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+          T.STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="submittedBy != null">
+          T.SUBMITTED_BY = #{submittedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="submitTime != null">
+          T.SUBMIT_TIME = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approvedBy != null">
+          T.APPROVED_BY = #{approvedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+          T.APPROVE_TIME = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastExtentedBy != null">
+          T.LAST_EXTENTED_BY = #{lastExtentedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastExtentTime != null">
+          T.LAST_EXTENT_TIME = #{lastExtentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="feedback != null">
+          T.FEEDBACK = #{feedback,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+          T.REASON = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+          T.REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null">
+          T.OVERDUE_DAYS = #{overdueDays,jdbcType=INTEGER},
+      </if>
+      <if test="auditBy != null">
+          T.AUDIT_BY = #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditTime != null">
+          T.AUDIT_TIME = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="acutalStartDate != null">
+          T.ACUTAL_START_DATE = #{acutalStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lotNo != null">
+          T.LOT_NO = #{lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="allot != null">
+          T.ALLOT = #{allot,jdbcType=VARCHAR},
+      </if>
+      <if test="isBack != null">
+          T.IS_BACK = #{isBack,jdbcType=INTEGER},
+      </if>
+      <if test="workStatus != null">
+          T.WORK_STATUS = #{workStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="createType != null">
+          T.CREATE_TYPE = #{createType,jdbcType=VARCHAR},
+      </if>
+      <if test="outsrcCount != null">
+          T.OUTSRC_COUNT = #{outsrcCount,jdbcType=INTEGER},
+      </if>
+      <if test="lastComId != null">
+          T.LAST_COM_ID = #{lastComId,jdbcType=BIGINT},
+      </if>
+      <if test="endMonths != null">
+          T.END_MONTHS = #{endMonths,jdbcType=INTEGER},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outsource.PlmsLaApplOutsrc">
+    update PLMS_LA_APPL_OUTSRC T
+    set
+      T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.COM_ID = #{comId,jdbcType=BIGINT},
+      T.CNTRCT_ID = #{cntrctId,jdbcType=BIGINT},
+      T.START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      T.END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      T.ACUTAL_END_DATE = #{acutalEndDate,jdbcType=TIMESTAMP},
+      T.FEE_RATE = #{feeRate,jdbcType=DECIMAL},
+      T.OUTSRC_TYPE = #{outsrcType,jdbcType=VARCHAR},
+      T.RECIV_AMT = #{recivAmt,jdbcType=DECIMAL},
+      T.STATUS = #{status,jdbcType=VARCHAR},
+      T.SUBMITTED_BY = #{submittedBy,jdbcType=VARCHAR},
+      T.SUBMIT_TIME = #{submitTime,jdbcType=TIMESTAMP},
+      T.APPROVED_BY = #{approvedBy,jdbcType=VARCHAR},
+      T.APPROVE_TIME = #{approveTime,jdbcType=TIMESTAMP},
+      T.LAST_EXTENTED_BY = #{lastExtentedBy,jdbcType=VARCHAR},
+      T.LAST_EXTENT_TIME = #{lastExtentTime,jdbcType=TIMESTAMP},
+      T.FEEDBACK = #{feedback,jdbcType=VARCHAR},
+      T.REASON = #{reason,jdbcType=VARCHAR},
+      T.REMARK = #{remark,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      T.T.OVERDUE_DAYS = #{overdueDays,jdbcType=INTEGER},
+      T.AUDIT_BY = #{auditBy,jdbcType=VARCHAR},
+      T.AUDIT_TIME = #{auditTime,jdbcType=TIMESTAMP},
+      T.ACUTAL_START_DATE = #{acutalStartDate,jdbcType=TIMESTAMP},
+      T.LOT_NO = #{lotNo,jdbcType=VARCHAR},
+      T.ALLOT = #{allot,jdbcType=VARCHAR},
+      T.IS_BACK = #{isBack,jdbcType=INTEGER},
+      T.WORK_STATUS = #{workStatus,jdbcType=VARCHAR},
+      T.CREATE_TYPE = #{createType,jdbcType=VARCHAR},
+      T.OUTSRC_COUNT = #{outsrcCount,jdbcType=INTEGER},
+      T.LAST_COM_ID = #{lastComId,jdbcType=BIGINT},
+      T.END_MONTHS = #{endMonths,jdbcType=INTEGER}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_LA_APPL_OUTSRC T ( <include refid="Base_Column_List"/> )
+        SELECT seq_plms_la_appl_outsrc.nextval , OUTSRC.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select
+            #{item.paymentId,jdbcType=BIGINT},
+            #{item.applId,jdbcType=BIGINT},
+            #{item.comId,jdbcType=BIGINT},
+            #{item.cntrctId,jdbcType=BIGINT},
+            #{item.startDate,jdbcType=TIMESTAMP},
+            #{item.endDate,jdbcType=TIMESTAMP},
+            #{item.acutalEndDate,jdbcType=TIMESTAMP},
+            #{item.feeRate,jdbcType=DECIMAL},
+            #{item.outsrcType,jdbcType=VARCHAR},
+            #{item.recivAmt,jdbcType=DECIMAL},
+            #{item.status,jdbcType=VARCHAR},
+            #{item.submittedBy,jdbcType=VARCHAR},
+            #{item.submitTime,jdbcType=TIMESTAMP},
+            #{item.approvedBy,jdbcType=VARCHAR},
+            #{item.approveTime,jdbcType=TIMESTAMP},
+            #{item.lastExtentedBy,jdbcType=VARCHAR},
+            #{item.lastExtentTime,jdbcType=TIMESTAMP},
+            #{item.feedback,jdbcType=VARCHAR},
+            #{item.reason,jdbcType=VARCHAR},
+            #{item.remark,jdbcType=VARCHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT},
+            #{item.overdueDays,jdbcType=INTEGER},
+            #{item.auditBy,jdbcType=VARCHAR},
+            #{item.auditTime,jdbcType=TIMESTAMP},
+            #{item.acutalStartDate,jdbcType=TIMESTAMP},
+            #{item.lotNo,jdbcType=VARCHAR},
+            #{item.allot,jdbcType=VARCHAR},
+            #{item.isBack,jdbcType=INTEGER},
+            #{item.workStatus,jdbcType=VARCHAR},
+            #{item.createType,jdbcType=VARCHAR},
+            #{item.outsrcCount,jdbcType=INTEGER},
+            #{item.lastComId,jdbcType=BIGINT},
+            #{item.endMonths,jdbcType=INTEGER}
+            from dual
+        </foreach>
+        ) OUTSRC
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        begin
+        <foreach collection="list" item="item" index="index" separator=";" >
+            update PLMS_LA_APPL_OUTSRC T
+            <set>
+                <if test="item.paymentId != null">
+                    T.PAYMENT_ID = #{item.paymentId,jdbcType=BIGINT},
+                </if>
+                <if test="item.applId != null">
+                    T.APPL_ID = #{item.applId,jdbcType=BIGINT},
+                </if>
+                <if test="item.comId != null">
+                    T.COM_ID = #{item.comId,jdbcType=BIGINT},
+                </if>
+                <if test="item.cntrctId != null">
+                    T.CNTRCT_ID = #{item.cntrctId,jdbcType=BIGINT},
+                </if>
+                <if test="item.startDate != null">
+                    T.START_DATE = #{item.startDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.endDate != null">
+                    T.END_DATE = #{item.endDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.acutalEndDate != null">
+                    T.ACUTAL_END_DATE = #{item.acutalEndDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.isSetAcutalEndDateNull != null and item.isSetAcutalEndDateNull == true">
+                    T.ACUTAL_END_DATE = null,
+                </if>
+                <if test="item.feeRate != null">
+                    T.FEE_RATE = #{item.feeRate,jdbcType=DECIMAL},
+                </if>
+                <if test="item.outsrcType != null">
+                    T.OUTSRC_TYPE = #{item.outsrcType,jdbcType=VARCHAR},
+                </if>
+                <if test="item.recivAmt != null">
+                    T.RECIV_AMT = #{item.recivAmt,jdbcType=DECIMAL},
+                </if>
+                <if test="item.status != null">
+                    T.STATUS = #{item.status,jdbcType=VARCHAR},
+                </if>
+                <if test="item.submittedBy != null">
+                    T.SUBMITTED_BY = #{item.submittedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.submitTime != null">
+                    T.SUBMIT_TIME = #{item.submitTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.approvedBy != null">
+                    T.APPROVED_BY = #{item.approvedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.approveTime != null">
+                    T.APPROVE_TIME = #{item.approveTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.lastExtentedBy != null">
+                    T.LAST_EXTENTED_BY = #{item.lastExtentedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.lastExtentTime != null">
+                    T.LAST_EXTENT_TIME = #{item.lastExtentTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.feedback != null">
+                    T.FEEDBACK = #{item.feedback,jdbcType=VARCHAR},
+                </if>
+                <if test="item.reason != null">
+                    T.REASON = #{item.reason,jdbcType=VARCHAR},
+                </if>
+                <if test="item.remark != null">
+                    T.REMARK = #{item.remark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createdBy != null">
+                    T.CREATED_BY = #{item.createdBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createTime != null">
+                    T.CREATE_TIME = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updatedBy != null">
+                    T.UPDATED_BY = #{item.updatedBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    T.UPDATE_TIME = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.recVer != null">
+                    T.REC_VER = #{item.recVer,jdbcType=BIGINT} + 1,
+                </if>
+                <if test="item.tagSeq != null">
+                    T.TAG_SEQ = #{item.tagSeq,jdbcType=BIGINT},
+                </if>
+                <if test="item.overdueDays != null">
+                    T.OVERDUE_DAYS = #{item.overdueDays,jdbcType=INTEGER},
+                </if>
+                <if test="item.auditBy != null">
+                    T.AUDIT_BY = #{item.auditBy,jdbcType=VARCHAR},
+                </if>
+                <if test="item.auditTime != null">
+                    T.AUDIT_TIME = #{item.auditTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.acutalStartDate != null">
+                    T.ACUTAL_START_DATE = #{item.acutalStartDate,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.lotNo != null">
+                    T.LOT_NO = #{item.lotNo,jdbcType=VARCHAR},
+                </if>
+                <if test="item.allot != null">
+                    T.ALLOT = #{item.allot,jdbcType=VARCHAR},
+                </if>
+                <if test="item.isBack != null">
+                    T.IS_BACK = #{item.isBack,jdbcType=INTEGER},
+                </if>
+                <if test="item.workStatus != null">
+                    T.WORK_STATUS = #{item.workStatus,jdbcType=VARCHAR},
+                </if>
+                <if test="item.createType != null">
+                    T.CREATE_TYPE = #{item.createType,jdbcType=VARCHAR},
+                </if>
+                <if test="item.outsrcCount != null">
+                    T.OUTSRC_COUNT = #{item.outsrcCount,jdbcType=INTEGER},
+                </if>
+                <if test="item.lastComId != null">
+                    T.LAST_COM_ID = #{item.lastComId,jdbcType=BIGINT},
+                </if>
+                <if test="item.endMonths != null">
+                    T.END_MONTHS = #{item.endMonths,jdbcType=INTEGER},
+                </if>
+            </set>
+            where T.ID = #{item.id,jdbcType=BIGINT}
+        </foreach>
+        ;end;
+    </update>
+
+    <!--查找委外最大限制次数-->
+    <select id="selectOutsourceMaxNum" resultType="int">
+        select param.param_val from sys_param param where param.param_code = 'OutsourceMaxNum' and param.is_show = 'Y'
+    </select>
+
+    <!--发起委外申请时根据借款IDS查找案件信息-->
+    <select id="selectAddOutsrcApplByApplIds" resultType="com.ljwd.plms.web.vo.outsource.AddOutsrcApplDto" parameterType="java.util.List">
+        select  appl.id as applId,
+                payment.id as paymentId,
+                cntrct.id as cntrctId,
+                cntrct.cntrct_no as cntrctNo,
+                minRec.period_num as overduePeriod,
+                pool.status as poolStatus,
+                maxAlloc.collector as allot,
+                wfinfo.status as wfStatus
+        from ln_appl_info appl
+        inner join ln_payment payment on payment.appl_id = appl.id
+        inner join ln_cntrct cntrct on cntrct.appl_id = appl.id
+        inner join wf_workflow_info wfinfo ON wfinfo.ID = appl.WF_ID
+        inner join plms_work_order_pool pool on pool.appl_id = appl.id
+        left join (
+            select reciv.payment_id,
+                   reciv.period_num as period_num
+            from lf_reciv reciv
+            where reciv.period_num = (select min(rec.period_num) from lf_reciv rec
+                                      where rec.is_deleted = 'N' and rec.status != 'PAID' and trunc(sysdate) &gt; trunc(rec.max_rpmnt_date) and rec.payment_id = reciv.payment_id
+                                     )
+        ) minRec on payment.id = minRec.payment_id
+        left join (
+            select alloc.payment_id,
+                   alloc.collector as collector
+            from plms_la_collect_alloc alloc
+            where alloc.id = ( select max(temp.id) from plms_la_collect_alloc temp where temp.Is_Active = 'Y' and temp.Alloc_Begin_Date &lt;= SYSDATE and temp.Alloc_End_Date is null and temp.Appl_Id = alloc.appl_id )
+        ) maxAlloc on payment.id = maxAlloc.payment_id
+        where 1 = 1 and appl.ID IN <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+    </select>
+
+    <!--查询操作时需要的委外申请信息-->
+    <select id="selectOutsrcByExample" resultType="com.ljwd.plms.web.vo.outsource.OutsrcDto" parameterType="com.ljwd.plms.web.vo.outsource.OutsrcExample">
+        SELECT
+            outSrc.ID as id,
+            outSrc.PAYMENT_ID as paymentId,
+            outSrc.APPL_ID as applId,
+            outSrc.COM_ID as comId,
+            outSrc.CNTRCT_ID as cntrctId,
+            outSrc.START_DATE as startDate,
+            outSrc.END_DATE as endDate,
+            outSrc.ACUTAL_END_DATE as acutalEndDate,
+            outSrc.FEE_RATE as feeRate,
+            outSrc.OUTSRC_TYPE as outsrcType,
+            outSrc.RECIV_AMT as recivAmt,
+            outSrc.STATUS as status,
+            outSrc.SUBMITTED_BY as submittedBy,
+            outSrc.SUBMIT_TIME as submitTime,
+            outSrc.APPROVED_BY as approvedBy,
+            outSrc.APPROVE_TIME as approveTime,
+            outSrc.LAST_EXTENTED_BY as lastExtentedBy,
+            outSrc.LAST_EXTENT_TIME as lastExtentTime,
+            outSrc.ACUTAL_START_DATE as acutalStartDate,
+            outSrc.REC_VER as recVer,
+            outSrc.OVERDUE_DAYS as overdueDays,
+            outSrc.LOT_NO as lotNo,
+            outSrc.ALLOT as allot,
+            outSrc.IS_BACK as isBack,
+            outSrc.WORK_STATUS as workStatus,
+            outSrc.OUTSRC_COUNT as outsrcCount,
+            outSrc.LAST_COM_ID as lastComId,
+            outSrc.END_MONTHS as endMonths,
+
+            outCom.WD_CORP_ID as corpId,
+            outCom.IS_ACTIVE as comIsActive,
+
+            pool.STATUS as poolStatus,
+            pool.REC_VER as poolRecVer,
+            crs.CIRCU_RULE_CODE as circuRuleCode,
+            <if test="isMaxEnded == true">
+                maxEnded.maxEndedId as maxEndedId,
+            </if>
+            cust.ID_CARD_NO as idCardNo,
+            cntrct.CNTRCT_NO as cntrctNo,
+            cntrct.LOAN_AMT - NVL(ac.REPAID_PRINCIPAL,0) - NVL(returnRec.RETURN_AMT,0) as residueAmount,
+            maxDueDate.overduePeriod as overduePeriod,
+            maxDueDate.maxDueDaysNum as overDaysNum,
+            wfinfo.STATUS as winfoStatus,
+            region.id as regionId
+        FROM PLMS_LA_APPL_OUTSRC outSrc
+        INNER JOIN LN_APPL_INFO applyInfo ON applyInfo.ID = outSrc.APPL_ID
+        INNER JOIN LN_CNTRCT cntrct ON cntrct.ID = outSrc.CNTRCT_ID
+        INNER JOIN LN_PAYMENT payment ON payment.ID = outSrc.PAYMENT_ID
+        INNER JOIN WF_WORKFLOW_INFO wfinfo ON wfinfo.ID = applyInfo.WF_ID
+        INNER JOIN CL_CUST cust ON cust.APPL_ID = applyInfo.ID
+        INNER JOIN SYS_SITE site ON site.site_code = cntrct.SITE_CODE
+        LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+        LEFT JOIN LF_APPL_AC ac on ac.payment_id = payment.ID
+        LEFT JOIN PLMS_WORK_ORDER_POOL pool on applyInfo.ID = pool.APPL_ID
+        LEFT JOIN plms_collection_rule_set crs on crs.STATUS = pool.STATUS
+        LEFT JOIN PLMS_OUTSRC_COM outCom ON outCom.ID = outSrc.COM_ID
+        LEFT JOIN ( SELECT RECIEVE.PAYMENT_ID as payment_id,
+                           trunc(sysdate) - trunc(RECIEVE.RPMNT_DATE) as maxDueDaysNum,
+                           RECIEVE.PERIOD_NUM as overduePeriod
+                    FROM LF_RECIV RECIEVE
+                    WHERE RECIEVE.PERIOD_NUM = ( SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec
+                                                 WHERE rec.IS_DELETED = 'N' AND rec.STATUS != 'PAID' AND TRUNC(SYSDATE) &gt; TRUNC(rec.MAX_RPMNT_DATE) AND rec.PAYMENT_ID = RECIEVE.PAYMENT_ID
+                                               )
+        ) maxDueDate ON maxDueDate.payment_id = payment.ID
+        LEFT JOIN (
+            SELECT DISTINCT retRec.* FROM (
+                SELECT  rec.PAYMENT_ID,
+                        rec.APPL_ID,
+                        rec.RETURN_AMT
+                FROM LF_RECIV rec
+                INNER JOIN LN_APPL_INFO appl ON appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') AND appl.ID = rec.APPL_ID
+                WHERE rec.RETURN_AMT &gt; 0
+            ) retRec
+        ) returnRec ON returnRec.APPL_ID = applyInfo.ID
+        <if test="isMaxEnded == true">
+            left join (
+                select out.APPL_ID,
+                       out.id as maxEndedId
+                from PLMS_LA_APPL_OUTSRC out
+                where out.id = (select max(temp.id) from PLMS_LA_APPL_OUTSRC temp where temp.status = 'ENDED' and temp.APPL_ID = out.APPL_ID)
+            ) maxEnded on outSrc.APPL_ID = maxEnded.APPL_ID
+        </if>
+        WHERE 1=1
+        <if test="hasOverDaysNum == true">
+            and maxDueDate.maxDueDaysNum &gt; 0
+        </if>
+        <if test="isEnd == true">
+            and ( TRUNC(sysdate) &gt; TRUNC(outSrc.END_DATE) or wfinfo.STATUS = 'CLEAR' ) and outSrc.STATUS = 'APPROVED'
+        </if>
+        <if test="winfoStatus != null and winfoStatus != ''">
+            and wfinfo.STATUS = #{winfoStatus}
+        </if>
+        <if test="idMax != null">
+            and outSrc.ID &lt; #{idMax}
+        </if>
+        <if test="outsrcType != null and outsrcType != ''">
+            and outSrc.OUTSRC_TYPE= #{outsrcType}
+        </if>
+        <if test="status != null and status != ''">
+            and outSrc.STATUS = #{status}
+        </if>
+        <if test="regionId != null">
+            and site.area_id = #{regionId}
+        </if>
+        <if test="comId != null">
+            and outSrc.COM_ID = #{comId}
+        </if>
+        <if test="cntrctNo != null and cntrctNo != ''">
+            and cntrct.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <if test="applId != null">
+            and outSrc.APPL_ID = #{applId}
+        </if>
+        <if test="lotNo != null">
+            and outSrc.LOT_NO = #{lotNo}
+        </if>
+        <if test="isMaxId == true">
+            and pool.STATUS = (select crs.status from plms_collection_rule_set crs where crs.is_active = 'Y' and crs.CIRCU_RULE_CODE = 'OUTSOURC')
+            and outSrc.ID = ( select max(out.id) from plms_la_appl_outsrc out where out.status not in ('AUDIT_REJECT','REJECTED') and out.appl_id = outSrc.appl_id )
+        </if>
+        <if test="ids != null">
+            and outSrc.ID IN <foreach collection="ids" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by outSrc.ID desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--分页条件查询-->
+    <select id="selectByExampleAndPage" resultType="com.ljwd.plms.web.vo.outsource.OutsrcPageDto" parameterType="com.ljwd.plms.web.vo.outsource.OutsrcPageExample">
+        SELECT
+            outSrc.ID as id,
+            outSrc.PAYMENT_ID as paymentId,
+            outSrc.APPL_ID as applId,
+            outSrc.COM_ID as comId,
+            outSrc.CNTRCT_ID as cntrctId,
+            outSrc.START_DATE as startDate,
+            outSrc.END_DATE as endDate,
+            outSrc.ACUTAL_END_DATE as acutalEndDate,
+            outSrc.FEE_RATE as feeRate,
+            outSrc.OUTSRC_TYPE as outsrcType,
+            outSrc.RECIV_AMT as recivAmt,
+            outSrc.STATUS as status,
+            outSrc.SUBMITTED_BY as submittedBy,
+            outSrc.SUBMIT_TIME as submitTime,
+            outSrc.APPROVED_BY as approvedBy,
+            outSrc.APPROVE_TIME as approveTime,
+            outSrc.LAST_EXTENTED_BY as lastExtentedBy,
+            outSrc.LAST_EXTENT_TIME as lastExtentTime,
+            outSrc.FEEDBACK as feedback,
+            outSrc.REASON as reason,
+            outSrc.REMARK as remark,
+            outSrc.AUDIT_BY as auditBy,
+            outSrc.AUDIT_TIME as auditTime,
+            outSrc.ACUTAL_START_DATE as acutalStartDate,
+            outSrc.CREATE_TIME as createTime,
+            outSrc.REC_VER as recVer,
+            outSrc.LOT_NO as lotNo,
+            outSrc.OVERDUE_DAYS as overdueDays,
+            outSrc.OUTSRC_COUNT as outsrcCount,
+            outSrc.LAST_COM_ID as lastComId,
+
+            submit_user.USER_NAME as submittedName,
+            create_user.user_name as createName,
+
+            outCom.OUTSRC_COM_NAME as outsrcComName,
+            lastCom.OUTSRC_COM_NAME as lastComName,
+
+            cust.CUST_NAME as custName,
+            cust.ID_CARD_NO as idCardNo,
+            cust.GENDER as gender,
+            cust.MARRIAGE as marriage,
+            cust.MAIL_ADDR as email,
+            cust.SPOUSE_NAME as spouseName,
+            cust.SPOUSE_ID_CARD_NO as spouseIdCardNo,
+
+            <if test="isExportDetail == true">
+                maxUnit.unit_name as unitName,
+                maxUnit.position as position,
+            </if>
+
+            cntrct.CNTRCT_NO as cntrctNo,
+            cntrct.LOAN_PERIOD as loanPeriod,
+            cntrct.LOAN_AMT as loanAmt,
+            cntrct.LOAN_AMT - NVL(ac.REPAID_PRINCIPAL,0) - NVL(returnRec.RETURN_AMT,0) as residueAmount,
+            ac.LAST_RPMNT_AMT as lastRpmntAmt,
+            ac.LAST_RPMNT_DATE as lastRpmntDate,
+            applyInfo.LOAN_TYPE as loanType,
+            applyInfo.PAYMENT_TYPE as paymentType,
+            applyInfo.PRD_ID as prdId,
+            applyInfo.BIZ_CATEGORY as bizCategory,
+            prd.PRD_NAME as prdName,
+            payment.PAY_DATE as loanDate,
+            maxDueDate.overduePeriod as overduePeriod,
+            NVL(maxDueDate.maxDueDaysNum,0) as overDaysNum,
+            paidReciv.paidPeriod as paidPeriod,
+            wfinfo.STATUS as winfoStatus,
+            site.site_name as siteName,
+            region.id as regionId,
+            region.rname as regionName
+        FROM PLMS_LA_APPL_OUTSRC outSrc
+        INNER JOIN LN_APPL_INFO applyInfo ON applyInfo.ID = outSrc.APPL_ID
+        INNER JOIN LN_CNTRCT cntrct ON cntrct.ID = outSrc.CNTRCT_ID
+        INNER JOIN LN_PAYMENT payment ON payment.ID = outSrc.PAYMENT_ID
+        INNER JOIN WF_WORKFLOW_INFO wfinfo ON wfinfo.ID = applyInfo.WF_ID
+        INNER JOIN CL_CUST cust ON cust.APPL_ID = applyInfo.ID
+        INNER JOIN SYS_PRD prd on applyInfo.prd_id = prd.id
+        INNER JOIN SYS_SITE site ON site.site_code = cntrct.SITE_CODE
+        LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+        LEFT JOIN LF_APPL_AC ac on ac.payment_id = payment.ID
+        LEFT JOIN PLMS_OUTSRC_COM outCom ON outCom.ID = outSrc.COM_ID
+        LEFT JOIN PLMS_OUTSRC_COM lastCom ON lastCom.ID = outSrc.LAST_COM_ID
+        LEFT JOIN SYS_USER submit_user ON outsrc.SUBMITTED_BY = submit_user.user_id
+        LEFT JOIN SYS_USER create_user ON outsrc.created_by = create_user.user_id
+        <if test="orgId != null">
+            left join SYS_EMP create_emp on create_user.emp_id = create_emp.id
+        </if>
+        <if test="isMaxId == true">
+            LEFT JOIN PLMS_WORK_ORDER_POOL pool on applyInfo.ID = pool.APPL_ID
+        </if>
+        <if test="isExportDetail == true">
+            LEFT JOIN ( SELECT  plmsCust.docno,
+                                unit.unit_name,
+                                unit.position
+                        FROM PLMS_CL_UNIT_INFO unit
+                        INNER JOIN PLMS_CL_CUST_INFO plmsCust on unit.cl_cust_id = plmsCust.Id
+                        WHERE unit.id = (SELECT MAX(u.id) FROM PLMS_CL_UNIT_INFO u WHERE u.is_active = 'Y' AND u.rltnshp = '12' AND u.cl_cust_id = unit.cl_cust_id)
+            ) maxUnit on maxUnit.docno = cust.id_card_no
+        </if>
+        LEFT JOIN ( SELECT RECIEVE.PAYMENT_ID as payment_id,
+                           trunc(sysdate) - trunc(RECIEVE.RPMNT_DATE) as maxDueDaysNum,
+                           RECIEVE.PERIOD_NUM as overduePeriod
+                    FROM LF_RECIV RECIEVE
+                    WHERE RECIEVE.PERIOD_NUM = ( SELECT MIN(PERIOD_NUM) FROM LF_RECIV rec
+                                                 WHERE rec.IS_DELETED = 'N' AND rec.STATUS != 'PAID' AND TRUNC(SYSDATE) &gt; TRUNC(rec.MAX_RPMNT_DATE) AND rec.PAYMENT_ID = RECIEVE.PAYMENT_ID
+                                                )
+        ) maxDueDate ON maxDueDate.payment_id = payment.ID
+        LEFT JOIN ( select reciv.payment_id,
+                           MAX(reciv.PERIOD_NUM) as paidPeriod
+                    from LF_RECIV reciv
+                    where reciv.STATUS = 'PAID'
+                    group by reciv.payment_id
+        ) paidReciv ON paidReciv.payment_id = payment.ID
+        LEFT JOIN (
+            SELECT DISTINCT retRec.* FROM (
+                SELECT  rec.PAYMENT_ID,
+                        rec.APPL_ID,
+                        rec.RETURN_AMT
+                FROM LF_RECIV rec
+                INNER JOIN LN_APPL_INFO appl ON appl.BIZ_CATEGORY IN ('WHOLE','MATURE_PAYMENT') AND appl.ID = rec.APPL_ID
+                WHERE rec.RETURN_AMT &gt; 0
+            ) retRec
+        ) returnRec ON returnRec.APPL_ID = applyInfo.ID
+        WHERE 1=1
+        <if test="startDateMin != null">
+            and trunc(outSrc.START_DATE) &gt;= trunc(#{startDateMin})
+        </if>
+        <if test="startDateMax != null">
+            and trunc(outSrc.START_DATE) &lt;= trunc(#{startDateMax})
+        </if>
+        <if test="endDateMin != null">
+            and trunc(outSrc.END_DATE) &gt;= trunc(#{endDateMin})
+        </if>
+        <if test="endDateMax != null">
+            and trunc(outSrc.END_DATE) &lt;= trunc(#{endDateMax})
+        </if>
+        <if test="hasOverDaysNum == true">
+            and NVL(maxDueDate.maxDueDaysNum,0) &gt; 0
+        </if>
+        <if test="overDaysNum != null">
+            and NVL(maxDueDate.maxDueDaysNum,0) = #{overDaysNum}
+        </if>
+        <if test="winfoStatus != null and winfoStatus != ''">
+            and wfinfo.STATUS = #{winfoStatus}
+        </if>
+        <if test="orgId != null">
+            and create_emp.org_id in ( select id from SYS_ORG start with id = #{orgId} connect by prior id = pid )
+        </if>
+        <if test="outsrcType != null and outsrcType != ''">
+            and outSrc.OUTSRC_TYPE= #{outsrcType}
+        </if>
+        <if test="status != null and status != ''">
+            and outSrc.STATUS = #{status}
+        </if>
+        <if test="regionId != null">
+            and site.area_id = #{regionId}
+        </if>
+        <if test="comId != null">
+            and outSrc.COM_ID = #{comId}
+        </if>
+        <if test="custName != null and custName != ''">
+            and cust.CUST_NAME = #{custName}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            and cust.ID_CARD_NO = #{idCardNo}
+        </if>
+        <if test="cntrctNo != null and cntrctNo != ''">
+            and cntrct.CNTRCT_NO = #{cntrctNo}
+        </if>
+        <if test="isMaxId == true">
+            and pool.STATUS = (select crs.status from plms_collection_rule_set crs where crs.is_active = 'Y' and crs.CIRCU_RULE_CODE = 'OUTSOURC')
+            and outSrc.ID = ( select max(out.id) from plms_la_appl_outsrc out where out.status not in ('AUDIT_REJECT','REJECTED') and out.appl_id = outSrc.appl_id )
+        </if>
+        <if test="ids != null">
+            and outSrc.ID IN <foreach collection="ids" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+        </if>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by outSrc.ID desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--根据借款ID查询最新的委外记录-->
+    <select id="selectOutsrcRecordByApplId" resultType="com.ljwd.plms.web.vo.outsource.OutsrcRecordDto" parameterType="long">
+        select outsrc.status as status,
+               outsrc.start_date as startDate,
+               outsrc.end_date as endDate,
+               outsrc.acutal_end_date as acutalEndDate
+        from plms_la_appl_outsrc outsrc
+        where outsrc.id = (select max(out.id) from plms_la_appl_outsrc out where out.appl_id = #{value,jdbcType=BIGINT} group by out.appl_id)
+    </select>
+
+    <!--查询委外导出联系人通讯信息-->
+    <select id="selectOutsrcContactorExcel" resultType="com.ljwd.plms.web.vo.outsource.OutsrcContactorExcelDto" parameterType="com.ljwd.plms.web.vo.outsource.OutsrcPageExample">
+        SELECT  Temp.CNTRCT_NO as cntrctNo,
+                Temp.CUST_NAME as custName,
+                contactor.NAME as name,
+                rltnshp.VAL as rltnshpVal,
+                telType.VAL as telTypeVal,
+                ((case when contactor.AREA is null then '' else contactor.AREA || '-' end) || contactor.TEL || (case when contactor.EXT is null then '' else '-' || contactor.EXT end)) as tel,
+                (CASE WHEN contactor.IS_ACTIVE = 'Y' then '有效' else '无效' end) as isActiveText
+        FROM PLMS_CL_CONTACTOR_INFO contactor
+        INNER JOIN PLMS_CL_CUST_INFO plmsCust on contactor.CL_CUST_ID = plmsCust.ID
+        INNER JOIN(
+            SELECT  applyInfo.ID as APPL_ID,
+                    max(cust.CUST_NAME) as CUST_NAME,
+                    max(cust.ID_CARD_NO) as ID_CARD_NO,
+                    max(cntrct.CNTRCT_NO) as CNTRCT_NO
+            FROM PLMS_LA_APPL_OUTSRC outSrc
+            INNER JOIN LN_APPL_INFO applyInfo ON applyInfo.ID = outSrc.APPL_ID
+            INNER JOIN LN_CNTRCT cntrct ON cntrct.ID = outSrc.CNTRCT_ID
+            INNER JOIN WF_WORKFLOW_INFO wfinfo ON wfinfo.ID = applyInfo.WF_ID
+            INNER JOIN CL_CUST cust ON cust.APPL_ID = applyInfo.ID
+            INNER JOIN SYS_SITE site ON site.site_code = cntrct.SITE_CODE
+            LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+            LEFT JOIN PLMS_OUTSRC_COM outCom ON outCom.ID = outSrc.COM_ID
+            LEFT JOIN SYS_USER create_user ON outsrc.created_by = create_user.user_id
+            <if test="orgId != null">
+                LEFT JOIN SYS_EMP create_emp on create_user.emp_id = create_emp.id
+            </if>
+            <if test="isMaxId == true">
+                LEFT JOIN PLMS_WORK_ORDER_POOL pool on applyInfo.ID = pool.APPL_ID
+            </if>
+            WHERE 1=1
+            <if test="startDateMin != null">
+                and trunc(outSrc.START_DATE) &gt;= trunc(#{startDateMin})
+            </if>
+            <if test="startDateMax != null">
+                and trunc(outSrc.START_DATE) &lt;= trunc(#{startDateMax})
+            </if>
+            <if test="endDateMin != null">
+                and trunc(outSrc.END_DATE) &gt;= trunc(#{endDateMin})
+            </if>
+            <if test="endDateMax != null">
+                and trunc(outSrc.END_DATE) &lt;= trunc(#{endDateMax})
+            </if>
+            <if test="isMaxId == true">
+                and pool.STATUS = (select crs.status from plms_collection_rule_set crs where crs.is_active = 'Y' and crs.CIRCU_RULE_CODE = 'OUTSOURC')
+                and outSrc.ID = ( select max(out.id) from plms_la_appl_outsrc out where out.status not in ('AUDIT_REJECT','REJECTED') and out.appl_id = outSrc.appl_id )
+            </if>
+            <if test="winfoStatus != null and winfoStatus != ''">
+                and wfinfo.STATUS = #{winfoStatus}
+            </if>
+            <if test="orgId != null">
+                and create_emp.org_id in ( select id from SYS_ORG start with id = #{orgId} connect by prior id = pid )
+            </if>
+            <if test="outsrcType != null and outsrcType != ''">
+                and outSrc.OUTSRC_TYPE= #{outsrcType}
+            </if>
+            <if test="status != null and status != ''">
+                and outSrc.STATUS = #{status}
+            </if>
+            <if test="regionId != null">
+                and site.area_id = #{regionId}
+            </if>
+            <if test="comId != null">
+                and outSrc.COM_ID = #{comId}
+            </if>
+            <if test="custName != null and custName != ''">
+                and cust.CUST_NAME = #{custName}
+            </if>
+            <if test="idCardNo != null and idCardNo != ''">
+                and cust.ID_CARD_NO = #{idCardNo}
+            </if>
+            <if test="cntrctNo != null and cntrctNo != ''">
+                and cntrct.CNTRCT_NO = #{cntrctNo}
+            </if>
+            GROUP BY applyInfo.ID
+        ) Temp on Temp.ID_CARD_NO = plmsCust.DOCNO
+        LEFT JOIN L_RLTNSHP rltnshp on rltnshp.CODE = contactor.RLTNSHP
+        LEFT JOIN PLMS_L_TEL_TYPE telType on telType.CODE = contactor.TEL_TYPE
+    </select>
+
+    <!--查询委外导出联系人地址信息-->
+    <select id="selectOutsrcAddressExcel" resultType="com.ljwd.plms.web.vo.outsource.OutsrcAddressExcelDto" parameterType="com.ljwd.plms.web.vo.outsource.OutsrcPageExample">
+        SELECT  Temp.CNTRCT_NO as cntrctNo,
+                Temp.CUST_NAME as custName,
+                address.NAME as name,
+                rltnshp.VAL as rltnshpVal,
+                addressType.VAL as addrTypeVal,
+                address.ADDR as addr,
+                (CASE WHEN address.IS_ACTIVE = 'Y' then '有效' else '无效' end) as isActiveText
+        FROM PLMS_CL_ADDRESS_INFO address
+        INNER JOIN PLMS_CL_CUST_INFO plmsCust on address.CL_CUST_ID = plmsCust.ID
+        INNER JOIN(
+            SELECT  applyInfo.ID as APPL_ID,
+                    max(cust.CUST_NAME) as CUST_NAME,
+                    max(cust.ID_CARD_NO) as ID_CARD_NO,
+                    max(cntrct.CNTRCT_NO) as CNTRCT_NO
+            FROM PLMS_LA_APPL_OUTSRC outSrc
+            INNER JOIN LN_APPL_INFO applyInfo ON applyInfo.ID = outSrc.APPL_ID
+            INNER JOIN LN_CNTRCT cntrct ON cntrct.ID = outSrc.CNTRCT_ID
+            INNER JOIN WF_WORKFLOW_INFO wfinfo ON wfinfo.ID = applyInfo.WF_ID
+            INNER JOIN CL_CUST cust ON cust.APPL_ID = applyInfo.ID
+            INNER JOIN SYS_SITE site ON site.site_code = cntrct.SITE_CODE
+            LEFT JOIN SYS_ADMINISTRATIVE_REGION region on region.id = site.area_id
+            LEFT JOIN PLMS_OUTSRC_COM outCom ON outCom.ID = outSrc.COM_ID
+            LEFT JOIN SYS_USER create_user ON outsrc.created_by = create_user.user_id
+            <if test="orgId != null">
+                LEFT JOIN SYS_EMP create_emp on create_user.emp_id = create_emp.id
+            </if>
+            <if test="isMaxId == true">
+                LEFT JOIN PLMS_WORK_ORDER_POOL pool on applyInfo.ID = pool.APPL_ID
+            </if>
+            WHERE 1=1
+            <if test="startDateMin != null">
+                and trunc(outSrc.START_DATE) &gt;= trunc(#{startDateMin})
+            </if>
+            <if test="startDateMax != null">
+                and trunc(outSrc.START_DATE) &lt;= trunc(#{startDateMax})
+            </if>
+            <if test="endDateMin != null">
+                and trunc(outSrc.END_DATE) &gt;= trunc(#{endDateMin})
+            </if>
+            <if test="endDateMax != null">
+                and trunc(outSrc.END_DATE) &lt;= trunc(#{endDateMax})
+            </if>
+            <if test="isMaxId == true">
+                and pool.STATUS = (select crs.status from plms_collection_rule_set crs where crs.is_active = 'Y' and crs.CIRCU_RULE_CODE = 'OUTSOURC')
+                and outSrc.ID = ( select max(out.id) from plms_la_appl_outsrc out where out.status not in ('AUDIT_REJECT','REJECTED') and out.appl_id = outSrc.appl_id )
+            </if>
+            <if test="winfoStatus != null and winfoStatus != ''">
+                and wfinfo.STATUS = #{winfoStatus}
+            </if>
+            <if test="orgId != null">
+                and create_emp.org_id in ( select id from SYS_ORG start with id = #{orgId} connect by prior id = pid )
+            </if>
+            <if test="outsrcType != null and outsrcType != ''">
+                and outSrc.OUTSRC_TYPE= #{outsrcType}
+            </if>
+            <if test="status != null and status != ''">
+                and outSrc.STATUS = #{status}
+            </if>
+            <if test="regionId != null">
+                and site.area_id = #{regionId}
+            </if>
+            <if test="comId != null">
+                and outSrc.COM_ID = #{comId}
+            </if>
+            <if test="custName != null and custName != ''">
+                and cust.CUST_NAME = #{custName}
+            </if>
+            <if test="idCardNo != null and idCardNo != ''">
+                and cust.ID_CARD_NO = #{idCardNo}
+            </if>
+            <if test="cntrctNo != null and cntrctNo != ''">
+                and cntrct.CNTRCT_NO = #{cntrctNo}
+            </if>
+            GROUP BY applyInfo.ID
+        ) Temp on Temp.ID_CARD_NO = plmsCust.DOCNO
+        LEFT JOIN L_RLTNSHP rltnshp on rltnshp.CODE = address.RLTNSHP
+        LEFT JOIN PLMS_L_ADDRESS_TYPE addressType on addressType.CODE = address.ADDR_TYPE
+    </select>
+
+</mapper>

@@ -1,0 +1,99 @@
+/*弹框样式1*/
+.cd-popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    transition: opacity 0.3s 0s, visibility 0s 0.3s;
+    z-index:10100;
+}
+.cd-popup.is-visible {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+    z-index:10100;
+}
+.is-visible  {-webkit-transform:scale(1); -moz-transform:scale(1); -ms-transform:scale(1); -o-transform:scale(1); transform:scale(1);}
+
+.children {
+	position: absolute;
+	width: 200px;
+	height: 100px;
+	left: 50%;
+	top: 50%;
+	margin-left: -100px;
+	margin-top: -50px;
+	line-height: 100px;
+	text-align: center;
+}
+/* 页面加载等待 */
+.overlay {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	_padding: 0 20px 0 0;
+	background: #f6f4f5;
+	display: none;
+}
+
+.showbox {
+	position: fixed;
+	top: 0;
+	left: 50%;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	margin-left: -80px;
+}
+
+#AjaxLoading {
+	border: 1px solid #8CBEDA;
+	color: #37a;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+#AjaxLoading div.loadingWord {
+	width: 182px;
+	height: 55px;
+	line-height: 50px;
+	border: 2px solid #D6E7F2;
+	background: #fff;
+}
+
+#AjaxLoading img {
+	margin: 10px 15px;
+	float: left;
+	display: inline;
+}
+/* 所有弹窗的样式 */
+/* 弹窗数据只有一列时 */
+.oneCol_dialog{
+	width: 600px;
+}
+/* --------- */
+/* 使弹窗标签段落显示 */
+.formTable{
+	display: inline-table;
+}
+/* 去掉浏览器form的默认底部间距样式   before*/
+form{
+	margin-bottom: 0px;
+}
+/* after */
+/* 输入框填入天数的input样式  before*/
+.form-group .dayInput{
+	width: 82px;
+}
+/* end */

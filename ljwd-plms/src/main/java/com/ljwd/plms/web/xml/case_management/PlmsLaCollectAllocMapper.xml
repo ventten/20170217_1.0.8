@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_management.PlmsLaCollectAllocMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_management.PlmsLaCollectAlloc" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="PAYMENT_ID" property="paymentId" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="OVERDUE_DAYS" property="overdueDays" jdbcType="BIGINT" />
+    <result column="REMAINING_PRINCIPAL" property="remainingPrincipal" jdbcType="DECIMAL" />
+    <result column="COLLECTOR" property="collector" jdbcType="VARCHAR" />
+    <result column="ASSIGN_TIME" property="assignTime" jdbcType="TIMESTAMP" />
+    <result column="ALLOC_BEGIN_DATE" property="allocBeginDate" jdbcType="TIMESTAMP" />
+    <result column="ALLOC_END_DATE" property="allocEndDate" jdbcType="TIMESTAMP" />
+    <result column="ALLOC_TYPE" property="allocType" jdbcType="VARCHAR" />
+    <result column="ADJUSTED_BY" property="adjustedBy" jdbcType="VARCHAR" />
+    <result column="ADJUST_TIME" property="adjustTime" jdbcType="TIMESTAMP" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, PAYMENT_ID, APPL_ID, OVERDUE_DAYS, REMAINING_PRINCIPAL, COLLECTOR, ASSIGN_TIME, 
+    ALLOC_BEGIN_DATE, ALLOC_END_DATE, ALLOC_TYPE, ADJUSTED_BY, ADJUST_TIME, REMARK, IS_ACTIVE, 
+    CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, REC_VER, TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAllocExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECT_ALLOC
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LA_COLLECT_ALLOC
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_LA_COLLECT_ALLOC
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAllocExample" >
+    delete from PLMS_LA_COLLECT_ALLOC
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAlloc" >
+    insert into PLMS_LA_COLLECT_ALLOC (ID, PAYMENT_ID, APPL_ID, 
+      OVERDUE_DAYS, REMAINING_PRINCIPAL, COLLECTOR, 
+      ASSIGN_TIME, ALLOC_BEGIN_DATE, ALLOC_END_DATE, 
+      ALLOC_TYPE, ADJUSTED_BY, ADJUST_TIME, 
+      REMARK, IS_ACTIVE, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{paymentId,jdbcType=BIGINT}, #{applId,jdbcType=BIGINT}, 
+      #{overdueDays,jdbcType=BIGINT}, #{remainingPrincipal,jdbcType=DECIMAL}, #{collector,jdbcType=VARCHAR}, 
+      #{assignTime,jdbcType=TIMESTAMP}, #{allocBeginDate,jdbcType=TIMESTAMP}, #{allocEndDate,jdbcType=TIMESTAMP}, 
+      #{allocType,jdbcType=VARCHAR}, #{adjustedBy,jdbcType=VARCHAR}, #{adjustTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{isActive,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAlloc" >
+    insert into PLMS_LA_COLLECT_ALLOC
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="paymentId != null" >
+        PAYMENT_ID,
+      </if>
+      <if test="applId != null" >
+        APPL_ID,
+      </if>
+      <if test="overdueDays != null" >
+        OVERDUE_DAYS,
+      </if>
+      <if test="remainingPrincipal != null" >
+        REMAINING_PRINCIPAL,
+      </if>
+      <if test="collector != null" >
+        COLLECTOR,
+      </if>
+      <if test="assignTime != null" >
+        ASSIGN_TIME,
+      </if>
+      <if test="allocBeginDate != null" >
+        ALLOC_BEGIN_DATE,
+      </if>
+      <if test="allocEndDate != null" >
+        ALLOC_END_DATE,
+      </if>
+      <if test="allocType != null" >
+        ALLOC_TYPE,
+      </if>
+      <if test="adjustedBy != null" >
+        ADJUSTED_BY,
+      </if>
+      <if test="adjustTime != null" >
+        ADJUST_TIME,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null" >
+        #{overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="remainingPrincipal != null" >
+        #{remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="collector != null" >
+        #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null" >
+        #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocBeginDate != null" >
+        #{allocBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocEndDate != null" >
+        #{allocEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocType != null" >
+        #{allocType,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustedBy != null" >
+        #{adjustedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTime != null" >
+        #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAllocExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_LA_COLLECT_ALLOC
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_LA_COLLECT_ALLOC
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentId != null" >
+        PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+        APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.overdueDays != null" >
+        OVERDUE_DAYS = #{record.overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="record.remainingPrincipal != null" >
+        REMAINING_PRINCIPAL = #{record.remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.collector != null" >
+        COLLECTOR = #{record.collector,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignTime != null" >
+        ASSIGN_TIME = #{record.assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allocBeginDate != null" >
+        ALLOC_BEGIN_DATE = #{record.allocBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allocEndDate != null" >
+        ALLOC_END_DATE = #{record.allocEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.allocType != null" >
+        ALLOC_TYPE = #{record.allocType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adjustedBy != null" >
+        ADJUSTED_BY = #{record.adjustedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.adjustTime != null" >
+        ADJUST_TIME = #{record.adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_LA_COLLECT_ALLOC
+    set ID = #{record.id,jdbcType=BIGINT},
+      PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      APPL_ID = #{record.applId,jdbcType=BIGINT},
+      OVERDUE_DAYS = #{record.overdueDays,jdbcType=BIGINT},
+      REMAINING_PRINCIPAL = #{record.remainingPrincipal,jdbcType=DECIMAL},
+      COLLECTOR = #{record.collector,jdbcType=VARCHAR},
+      ASSIGN_TIME = #{record.assignTime,jdbcType=TIMESTAMP},
+      ALLOC_BEGIN_DATE = #{record.allocBeginDate,jdbcType=TIMESTAMP},
+      ALLOC_END_DATE = #{record.allocEndDate,jdbcType=TIMESTAMP},
+      ALLOC_TYPE = #{record.allocType,jdbcType=VARCHAR},
+      ADJUSTED_BY = #{record.adjustedBy,jdbcType=VARCHAR},
+      ADJUST_TIME = #{record.adjustTime,jdbcType=TIMESTAMP},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAlloc" >
+    update PLMS_LA_COLLECT_ALLOC
+    <set >
+      <if test="paymentId != null" >
+        PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null" >
+        OVERDUE_DAYS = #{overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="remainingPrincipal != null" >
+        REMAINING_PRINCIPAL = #{remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="collector != null" >
+        COLLECTOR = #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null" >
+        ASSIGN_TIME = #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocBeginDate != null" >
+        ALLOC_BEGIN_DATE = #{allocBeginDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocEndDate != null" >
+        ALLOC_END_DATE = #{allocEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allocType != null" >
+        ALLOC_TYPE = #{allocType,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustedBy != null" >
+        ADJUSTED_BY = #{adjustedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="adjustTime != null" >
+        ADJUST_TIME = #{adjustTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_management.PlmsLaCollectAlloc" >
+    update PLMS_LA_COLLECT_ALLOC
+    set PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      APPL_ID = #{applId,jdbcType=BIGINT},
+      OVERDUE_DAYS = #{overdueDays,jdbcType=BIGINT},
+      REMAINING_PRINCIPAL = #{remainingPrincipal,jdbcType=DECIMAL},
+      COLLECTOR = #{collector,jdbcType=VARCHAR},
+      ASSIGN_TIME = #{assignTime,jdbcType=TIMESTAMP},
+      ALLOC_BEGIN_DATE = #{allocBeginDate,jdbcType=TIMESTAMP},
+      ALLOC_END_DATE = #{allocEndDate,jdbcType=TIMESTAMP},
+      ALLOC_TYPE = #{allocType,jdbcType=VARCHAR},
+      ADJUSTED_BY = #{adjustedBy,jdbcType=VARCHAR},
+      ADJUST_TIME = #{adjustTime,jdbcType=TIMESTAMP},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  
+  <!-- 批量插入催收新纪录 -->
+  <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_LA_COLLECT_ALLOC ( <include refid="Base_Column_List"/> )
+        SELECT SEQ_PLMS_LA_COLLECT_ALLOC.nextval , Alloc.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                       #{item.paymentId,jdbcType=BIGINT},
+                       #{item.applId,jdbcType=BIGINT},
+                       #{item.overdueDays,jdbcType=BIGINT},
+                       #{item.remainingPrincipal,jdbcType=DECIMAL},
+                       #{item.collector,jdbcType=VARCHAR},
+                       #{item.assignTime,jdbcType=TIMESTAMP},
+                       #{item.allocBeginDate,jdbcType=TIMESTAMP},
+                       #{item.allocEndDate,jdbcType=TIMESTAMP},
+                       #{item.allocType,jdbcType=VARCHAR},
+                       #{item.adjustedBy,jdbcType=VARCHAR},
+                       #{item.adjustTime,jdbcType=TIMESTAMP},
+                       #{item.remark,jdbcType=VARCHAR},
+                       #{item.isActive,jdbcType=VARCHAR},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                       #{item.recVer,jdbcType=BIGINT},
+                       #{item.tagSeq,jdbcType=BIGINT}
+                from dual
+            </foreach>
+        ) Alloc
+  </insert>
+  
+  
+    <!-- 批量修改催收记录表的数据状态 -->
+    <update id="updateBatch" parameterType="java.util.List">
+    begin  
+        <foreach collection="list" item="item" index="index" separator=";" > 
+            update PLMS_LA_COLLECT_ALLOC 
+            <set>
+            REC_VER = #{item.recVer} + 1,
+            <if test="item.allocEndDate!=null">
+                ALLOC_END_DATE = #{item.allocEndDate},
+            </if>
+            <if test="item.isActive!=null ">
+                IS_ACTIVE = #{item.isActive},
+            </if>
+            <if test="item.allocType!=null ">
+                ALLOC_TYPE = #{item.allocType},
+            </if>
+            <if test="item.updateTime!=null ">
+                UPDATE_TIME = #{item.updateTime},
+            </if>
+            <if test="item.updatedBy!=null ">
+                UPDATED_BY = #{item.updatedBy},
+            </if>
+            <if test="item.adjustedBy!=null ">
+                ADJUSTED_BY = #{item.adjustedBy},
+            </if>
+            <if test="item.adjustTime!=null ">
+                ADJUST_TIME = #{item.adjustTime},
+            </if>
+            </set>
+            where ID = #{item.id}
+            </foreach>
+        ;end;
+    </update>
+    
+    <!--  根据条件查询最新的分配记录 -->
+    <select id="selectMaxDateByMap" parameterType="map" resultMap="BaseResultMap">
+	    select al.* 
+	    from plms_la_collect_alloc  al 
+	    where al.payment_id =#{paymentId} and  al.COLLECTOR = #{collector} and
+	    al.update_time > = (
+	      select max(update_time) from plms_la_collect_alloc alloc where alloc.is_active = 'Y' 
+	      and alloc.COLLECTOR = #{collector}
+	      and alloc.payment_id = #{paymentId} group by alloc.payment_id
+	    )
+    </select>
+
+</mapper>

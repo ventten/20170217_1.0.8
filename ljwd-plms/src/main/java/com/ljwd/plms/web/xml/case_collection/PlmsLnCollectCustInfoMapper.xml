@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.PlmsLnCollectCustInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="APPL_ID" jdbcType="BIGINT" property="applId" />
+    <result column="PERIOD_NUM" jdbcType="INTEGER" property="periodNum" />
+    <result column="COLLECTOR" jdbcType="VARCHAR" property="collector" />
+    <result column="CUST_INFO" jdbcType="VARCHAR" property="custInfo" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="BIGINT" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="BIGINT" property="tagSeq" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="recVer != null">
+            and T.REC_VER = #{recVer}
+        </if>
+        <if test="periodNum != null">
+            and T.PERIOD_NUM = #{periodNum}
+        </if>
+        <if test="collector != null and collector != ''">
+            and T.COLLECTOR = #{collector}
+        </if>
+        <if test="applId != null">
+            and T.APPL_ID = #{applId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.recVer != null">
+                and T.REC_VER = #{example.recVer}
+            </if>
+            <if test="example.periodNum != null">
+                and T.PERIOD_NUM = #{example.periodNum}
+            </if>
+            <if test="example.collector != null and example.collector != ''">
+                and T.COLLECTOR = #{example.collector}
+            </if>
+            <if test="example.applId != null">
+                and T.APPL_ID = #{example.applId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List">
+    T.ID,
+    T.APPL_ID,
+    T.PERIOD_NUM,
+    T.COLLECTOR,
+    T.CUST_INFO,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_LN_COLLECT_CUST_INFO T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_LN_COLLECT_CUST_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="long">
+    delete from PLMS_LN_COLLECT_CUST_INFO T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfoExample">
+    delete from PLMS_LN_COLLECT_CUST_INFO T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfo">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_collect_cust_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_COLLECT_CUST_INFO T (<include refid="Base_Column_List" />)
+    values (
+        #{id,jdbcType=BIGINT},
+        #{applId,jdbcType=BIGINT},
+        #{periodNum,jdbcType=INTEGER},
+        #{collector,jdbcType=VARCHAR},
+        #{custInfo,jdbcType=VARCHAR},
+        #{createdBy,jdbcType=VARCHAR},
+        sysdate,
+        #{updatedBy,jdbcType=VARCHAR},
+        sysdate,
+        0,
+        0
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfo">
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_ln_collect_cust_info.nextval FROM dual
+      </selectKey>
+    insert into PLMS_LN_COLLECT_CUST_INFO T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+          T.ID,
+      </if>
+      <if test="applId != null">
+          T.APPL_ID,
+      </if>
+      <if test="periodNum != null">
+          T.PERIOD_NUM,
+      </if>
+      <if test="collector != null">
+          T.COLLECTOR,
+      </if>
+      <if test="custInfo != null">
+          T.CUST_INFO,
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null">
+        #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="periodNum != null">
+          #{periodNum,jdbcType=INTEGER},
+      </if>
+      <if test="collector != null">
+          #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="custInfo != null">
+        #{custInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfoExample" resultType="java.lang.Integer">
+    select count(*) from PLMS_LN_COLLECT_CUST_INFO T
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update PLMS_LN_COLLECT_CUST_INFO T
+    <set>
+      <if test="record.id != null">
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null">
+          T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+      <if test="record.periodNum != null">
+          T.PERIOD_NUM = #{record.periodNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.collector != null">
+          T.COLLECTOR = #{record.collector,jdbcType=VARCHAR},
+      </if>
+      <if test="record.custInfo != null">
+          T.CUST_INFO = #{record.custInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null">
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null">
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map">
+    update PLMS_LN_COLLECT_CUST_INFO T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.APPL_ID = #{record.applId,jdbcType=BIGINT},
+      T.PERIOD_NUM = #{record.periodNum,jdbcType=INTEGER},
+      T.COLLECTOR = #{record.collector,jdbcType=BIGINT},
+      T.CUST_INFO = #{record.custInfo,jdbcType=VARCHAR},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfo">
+    update PLMS_LN_COLLECT_CUST_INFO T
+    <set>
+      <if test="applId != null">
+          T.APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="periodNum != null">
+          T.PERIOD_NUM = #{periodNum,jdbcType=INTEGER},
+      </if>
+      <if test="collector != null">
+          T.COLLECTOR = #{collector,jdbcType=VARCHAR},
+      </if>
+      <if test="custInfo != null">
+          T.CUST_INFO = #{custInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null">
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null">
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_collection.PlmsLnCollectCustInfo">
+    update PLMS_LN_COLLECT_CUST_INFO T
+    set
+      T.APPL_ID = #{applId,jdbcType=BIGINT},
+      T.PERIOD_NUM = #{periodNum,jdbcType=INTEGER},
+      T.COLLECTOR = #{collector,jdbcType=VARCHAR},
+      T.CUST_INFO = #{custInfo,jdbcType=VARCHAR},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

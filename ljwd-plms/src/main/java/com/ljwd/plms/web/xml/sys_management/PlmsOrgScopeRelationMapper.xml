@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.PlmsOrgScopeRelationMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+    <result column="COLLECTION_RULE_ID" property="collectionRuleId" jdbcType="BIGINT" />
+    <result column="IS_ACTIVE" property="isActive" jdbcType="CHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    	<where>
+    	<if test='orgId !=null and orgId !=""'>
+    		and ORG_ID = #{orgId}
+    	</if>
+    	</where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, ORG_ID, COLLECTION_RULE_ID, IS_ACTIVE, CREATED_BY, CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+    REC_VER, TAG_SEQ
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_ORG_SCOPE_RELATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_ORG_SCOPE_RELATION
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_ORG_SCOPE_RELATION
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelationExample" >
+    delete from PLMS_ORG_SCOPE_RELATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" >
+    insert into PLMS_ORG_SCOPE_RELATION (ID, ORG_ID, COLLECTION_RULE_ID, 
+      IS_ACTIVE, CREATED_BY, CREATE_TIME, 
+      UPDATED_BY, UPDATE_TIME, REC_VER, 
+      TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{collectionRuleId,jdbcType=BIGINT}, 
+      #{isActive,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{recVer,jdbcType=BIGINT}, 
+      #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" >
+    <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">  
+	       SELECT SEQ_PLMS_ORG_SCOPE_RELATION.Nextval as ID from DUAL  
+	</selectKey>     
+    insert into PLMS_ORG_SCOPE_RELATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="collectionRuleId != null" >
+        COLLECTION_RULE_ID,
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+        REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="collectionRuleId != null" >
+        #{collectionRuleId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelationExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_ORG_SCOPE_RELATION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_ORG_SCOPE_RELATION
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.orgId != null" >
+        ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      </if>
+      <if test="record.collectionRuleId != null" >
+        COLLECTION_RULE_ID = #{record.collectionRuleId,jdbcType=BIGINT},
+      </if>
+      <if test="record.isActive != null" >
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_ORG_SCOPE_RELATION
+    set ID = #{record.id,jdbcType=BIGINT},
+      ORG_ID = #{record.orgId,jdbcType=BIGINT},
+      COLLECTION_RULE_ID = #{record.collectionRuleId,jdbcType=BIGINT},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" >
+    update PLMS_ORG_SCOPE_RELATION
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="collectionRuleId != null" >
+        COLLECTION_RULE_ID = #{collectionRuleId,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null" >
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" >
+    update PLMS_ORG_SCOPE_RELATION
+    set ORG_ID = #{orgId,jdbcType=BIGINT},
+      COLLECTION_RULE_ID = #{collectionRuleId,jdbcType=BIGINT},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelation" extends="BaseResultMap">
+        <result column="orgName" property="orgName" jdbcType="VARCHAR"/>
+        <result column="collectionrulenames" property="collectionRuleNames" jdbcType="VARCHAR"/>       
+        <result column="collectionruleIds" property="collectionruleIds" jdbcType="VARCHAR"/>              
+   </resultMap>
+  
+  <!-- 机构_区间分页查询 -->
+  <select id="selectByExampleAndPage" parameterType="com.ljwd.plms.web.model.sys_management.PlmsOrgScopeRelationExample" resultMap="BaseResultMap_Ext">
+  	select 
+        relation.org_id as orgId,
+        to_char(wm_concat(relation.COLLECTION_RULE_ID)) as collectionRuleIds,
+        max(relation.is_active) as isActive,
+        max(relation.updated_by) as updatedBy,
+        max(relation.update_time) as updateTime,
+        max(sysorg.org_name) as orgname,
+        to_char(wm_concat(rset.name )) as collectionrulenames,
+        max(sysuser.user_name)	as  updatedUserName
+        from plms_org_scope_relation relation 
+        left join sys_org sysorg on sysorg.id = relation.org_id
+        left join plms_collection_rule_set rset on rset.is_active = 'Y' and rset.id = relation.collection_rule_id 
+        left join sys_user sysuser on sysuser.user_id = relation.updated_by
+        <if test='collectionRuleId !=null and collectionRuleId !="" '>
+        inner join ( select org_id from plms_org_scope_relation  where collection_rule_id = #{collectionRuleId} )temp on temp.org_id = relation.org_id
+        </if>       
+  	<where>
+  		<if test='orgId !=null and orgId !=""'>
+  			and relation.ORG_ID = #{orgId}
+  		</if>  		 	
+  	</where>
+  	group by relation.org_id
+	<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                ORDER BY updateTime desc
+            </otherwise>
+        </choose> 
+  </select>
+  
+  <!-- 批量添加 机构_区间-->
+   <insert id="insertBatch" parameterType="java.util.List">
+        insert into PLMS_ORG_SCOPE_RELATION T ( <include refid="Base_Column_List"/> )
+        SELECT SEQ_PLMS_ORG_SCOPE_RELATION.nextval , TT.* from (
+        <foreach collection="list" item="item" index="index" separator="union all">
+            select 
+            #{item.orgId,jdbcType=BIGINT},
+            #{item.collectionRuleId,jdbcType=BIGINT},
+            #{item.isActive,jdbcType=CHAR},
+            #{item.createdBy,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updatedBy,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.recVer,jdbcType=BIGINT},
+            #{item.tagSeq,jdbcType=BIGINT}
+            from dual
+        </foreach>
+        ) TT
+    </insert>
+</mapper>

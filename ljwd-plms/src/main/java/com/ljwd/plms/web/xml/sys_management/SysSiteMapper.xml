@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljwd.plms.web.dao.sys_management.SysSiteMapper">
+  
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.sys_management.SysSite">
+    <id column="SITE_CODE" jdbcType="VARCHAR" property="siteCode" />
+    <result column="SITE_NAME" jdbcType="VARCHAR" property="siteName" />
+    <result column="SITE_ADDR" jdbcType="VARCHAR" property="siteAddr" />
+    <result column="SITE_TEL" jdbcType="VARCHAR" property="siteTel" />
+    <result column="IS_ACTIVE" jdbcType="CHAR" property="isActive" />
+    <result column="CREATED_BY" jdbcType="VARCHAR" property="createdBy" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATED_BY" jdbcType="VARCHAR" property="updatedBy" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="REC_VER" jdbcType="DECIMAL" property="recVer" />
+    <result column="TAG_SEQ" jdbcType="DECIMAL" property="tagSeq" />
+    <result column="CITY_CODE" jdbcType="VARCHAR" property="cityCode" />
+    <result column="SITE_CATEGORY" jdbcType="VARCHAR" property="siteCategory" />
+    <result column="AREA_ID" jdbcType="DECIMAL" property="areaId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+    	<if test='isActive !=null and isActive !=""'>
+    			and IS_ACTIVE = #{isActive}
+    	</if>
+    	<if test='siteCodes !=null and siteCodes !=""'>
+    		and site_code in 
+			<foreach item="item" index="index" collection="siteCodes" open="(" separator="," close=")">  
+			  			#{item}  
+			</foreach>
+    	</if>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    SITE_CODE, SITE_NAME, SITE_ADDR, SITE_TEL, IS_ACTIVE, CREATED_BY, CREATE_TIME, UPDATED_BY, 
+    UPDATE_TIME, REC_VER, TAG_SEQ, CITY_CODE, SITE_CATEGORY, AREA_ID, REMARK
+  </sql>
+  <select id="selectByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysSiteExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from SYS_SITE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_SITE
+    where SITE_CODE = #{siteCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_SITE
+    where SITE_CODE = #{siteCode,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysSiteExample">
+    delete from SYS_SITE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.sys_management.SysSite">
+    insert into SYS_SITE (SITE_CODE, SITE_NAME, SITE_ADDR, 
+      SITE_TEL, IS_ACTIVE, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ, CITY_CODE, 
+      SITE_CATEGORY, AREA_ID, REMARK
+      )
+    values (#{siteCode,jdbcType=VARCHAR}, #{siteName,jdbcType=VARCHAR}, #{siteAddr,jdbcType=VARCHAR}, 
+      #{siteTel,jdbcType=VARCHAR}, #{isActive,jdbcType=CHAR}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=DECIMAL}, #{tagSeq,jdbcType=DECIMAL}, #{cityCode,jdbcType=VARCHAR}, 
+      #{siteCategory,jdbcType=VARCHAR}, #{areaId,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.sys_management.SysSite">
+    insert into SYS_SITE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="siteCode != null">
+        SITE_CODE,
+      </if>
+      <if test="siteName != null">
+        SITE_NAME,
+      </if>
+      <if test="siteAddr != null">
+        SITE_ADDR,
+      </if>
+      <if test="siteTel != null">
+        SITE_TEL,
+      </if>
+      <if test="isActive != null">
+        IS_ACTIVE,
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null">
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="recVer != null">
+        REC_VER,
+      </if>
+      <if test="tagSeq != null">
+        TAG_SEQ,
+      </if>
+      <if test="cityCode != null">
+        CITY_CODE,
+      </if>
+      <if test="siteCategory != null">
+        SITE_CATEGORY,
+      </if>
+      <if test="areaId != null">
+        AREA_ID,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="siteCode != null">
+        #{siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="siteName != null">
+        #{siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="siteAddr != null">
+        #{siteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="siteTel != null">
+        #{siteTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        #{recVer,jdbcType=DECIMAL},
+      </if>
+      <if test="tagSeq != null">
+        #{tagSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="cityCode != null">
+        #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCategory != null">
+        #{siteCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        #{areaId,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.sys_management.SysSiteExample" resultType="java.lang.Integer">
+    select count(*) from SYS_SITE
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update SYS_SITE
+    <set>
+      <if test="record.siteCode != null">
+        SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteName != null">
+        SITE_NAME = #{record.siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteAddr != null">
+        SITE_ADDR = #{record.siteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteTel != null">
+        SITE_TEL = #{record.siteTel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isActive != null">
+        IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      </if>
+      <if test="record.createdBy != null">
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null">
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null">
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null">
+        REC_VER = #{record.recVer,jdbcType=DECIMAL},
+      </if>
+      <if test="record.tagSeq != null">
+        TAG_SEQ = #{record.tagSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cityCode != null">
+        CITY_CODE = #{record.cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.siteCategory != null">
+        SITE_CATEGORY = #{record.siteCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.areaId != null">
+        AREA_ID = #{record.areaId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.remark != null">
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update SYS_SITE
+    set SITE_CODE = #{record.siteCode,jdbcType=VARCHAR},
+      SITE_NAME = #{record.siteName,jdbcType=VARCHAR},
+      SITE_ADDR = #{record.siteAddr,jdbcType=VARCHAR},
+      SITE_TEL = #{record.siteTel,jdbcType=VARCHAR},
+      IS_ACTIVE = #{record.isActive,jdbcType=CHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=DECIMAL},
+      TAG_SEQ = #{record.tagSeq,jdbcType=DECIMAL},
+      CITY_CODE = #{record.cityCode,jdbcType=VARCHAR},
+      SITE_CATEGORY = #{record.siteCategory,jdbcType=VARCHAR},
+      AREA_ID = #{record.areaId,jdbcType=DECIMAL},
+      REMARK = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.sys_management.SysSite">
+    update SYS_SITE
+    <set>
+      <if test="siteName != null">
+        SITE_NAME = #{siteName,jdbcType=VARCHAR},
+      </if>
+      <if test="siteAddr != null">
+        SITE_ADDR = #{siteAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="siteTel != null">
+        SITE_TEL = #{siteTel,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      </if>
+      <if test="createdBy != null">
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null">
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null">
+        REC_VER = #{recVer,jdbcType=DECIMAL},
+      </if>
+      <if test="tagSeq != null">
+        TAG_SEQ = #{tagSeq,jdbcType=DECIMAL},
+      </if>
+      <if test="cityCode != null">
+        CITY_CODE = #{cityCode,jdbcType=VARCHAR},
+      </if>
+      <if test="siteCategory != null">
+        SITE_CATEGORY = #{siteCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null">
+        AREA_ID = #{areaId,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where SITE_CODE = #{siteCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.sys_management.SysSite">
+    update SYS_SITE
+    set SITE_NAME = #{siteName,jdbcType=VARCHAR},
+      SITE_ADDR = #{siteAddr,jdbcType=VARCHAR},
+      SITE_TEL = #{siteTel,jdbcType=VARCHAR},
+      IS_ACTIVE = #{isActive,jdbcType=CHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=DECIMAL},
+      TAG_SEQ = #{tagSeq,jdbcType=DECIMAL},
+      CITY_CODE = #{cityCode,jdbcType=VARCHAR},
+      SITE_CATEGORY = #{siteCategory,jdbcType=VARCHAR},
+      AREA_ID = #{areaId,jdbcType=DECIMAL},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where SITE_CODE = #{siteCode,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 查询此机构下对应的所有网点 -->
+  <select id="selectSiteByOrgId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  		select distinct(orgSite.site_code) as siteCode,
+  			   syssite.SITE_NAME as siteName
+  		 from 
+		(select
+		sysorg.site_code from 
+		sys_org sysorg  start with id = #{orgId} connect by sysorg.pid = prior id)orgsite
+		inner join sys_site syssite on syssite.site_code = orgsite.site_code and orgsite.site_code is not null
+  </select>
+</mapper>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_collection.LfOfferExemptMapper" >
+    
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_collection.LfOfferExempt" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="PAYMENT_ID" property="paymentId" jdbcType="BIGINT" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="REQ_BY" property="reqBy" jdbcType="VARCHAR" />
+    <result column="REQ_TIME" property="reqTime" jdbcType="TIMESTAMP" />
+    <result column="CANCELLED_BY" property="cancelledBy" jdbcType="VARCHAR" />
+    <result column="CANCEL_TIME" property="cancelTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+
+    <sql id="Where_Clause">
+        <if test="endDateMax != null">
+            and TRUNC(T.END_DATE) &lt;= TRUNC(#{endDateMax})
+        </if>
+        <if test="endDateMin != null">
+            and TRUNC(T.END_DATE) &gt;= TRUNC(#{endDateMin})
+        </if>
+        <if test="status != null and status != ''">
+            and T.STATUS = #{status}
+        </if>
+        <if test="paymentId != null">
+            and T.PAYMENT_ID = #{paymentId}
+        </if>
+        <if test="id != null">
+            and T.ID = #{id}
+        </if>
+    </sql>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <if test="example.paymentId != null">
+                and T.PAYMENT_ID = #{example.paymentId}
+            </if>
+            <if test="example.id != null">
+                and T.ID = #{example.id}
+            </if>
+        </where>
+    </sql>
+
+  <sql id="Base_Column_List" >
+    T.ID,
+    T.PAYMENT_ID,
+    T.STATUS,
+    T.END_DATE,
+    T.REQ_BY,
+    T.REQ_TIME,
+    T.CANCELLED_BY,
+    T.CANCEL_TIME,
+    T.CREATED_BY,
+    T.CREATE_TIME,
+    T.UPDATED_BY,
+    T.UPDATE_TIME,
+    T.REC_VER,
+    T.TAG_SEQ
+  </sql>
+
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExemptExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from LF_OFFER_EXEMPT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from LF_OFFER_EXEMPT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from LF_OFFER_EXEMPT T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExemptExample" >
+    delete from LF_OFFER_EXEMPT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExempt" >
+    <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+        SELECT seq_lf_offer_exempt.nextval FROM dual
+    </selectKey>
+    insert into LF_OFFER_EXEMPT T (<include refid="Base_Column_List"/>)
+    values (
+      #{id,jdbcType=BIGINT},
+      #{paymentId,jdbcType=BIGINT},
+      #{status,jdbcType=VARCHAR},
+      #{endDate,jdbcType=TIMESTAMP},
+      #{reqBy,jdbcType=VARCHAR},
+      #{reqTime,jdbcType=TIMESTAMP},
+      #{cancelledBy,jdbcType=VARCHAR},
+      #{cancelTime,jdbcType=TIMESTAMP},
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      0,
+      1
+    )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExempt" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_lf_offer_exempt.nextval FROM dual
+      </selectKey>
+    insert into LF_OFFER_EXEMPT T
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+          T.ID,
+      </if>
+      <if test="paymentId != null" >
+          T.PAYMENT_ID,
+      </if>
+      <if test="status != null" >
+          T.STATUS,
+      </if>
+      <if test="endDate != null" >
+          T.END_DATE,
+      </if>
+      <if test="reqBy != null" >
+          T.REQ_BY,
+      </if>
+      <if test="reqTime != null" >
+          T.REQ_TIME,
+      </if>
+      <if test="cancelledBy != null" >
+          T.CANCELLED_BY,
+      </if>
+      <if test="cancelTime != null" >
+          T.CANCEL_TIME,
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME,
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null" >
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqBy != null" >
+        #{reqBy,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTime != null" >
+        #{reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelledBy != null" >
+        #{cancelledBy,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null" >
+        #{cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExemptExample" resultType="java.lang.Integer" >
+    select count(*) from LF_OFFER_EXEMPT T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map" >
+    update LF_OFFER_EXEMPT T
+    <set >
+      <if test="record.id != null" >
+          T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.paymentId != null" >
+          T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+          T.STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endDate != null" >
+          T.END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.reqBy != null" >
+          T.REQ_BY = #{record.reqBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.reqTime != null" >
+          T.REQ_TIME = #{record.reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.cancelledBy != null" >
+          T.CANCELLED_BY = #{record.cancelledBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cancelTime != null" >
+          T.CANCEL_TIME = #{record.cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+          T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+          T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+          T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+          T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+          T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+          T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByExample" parameterType="map" >
+    update LF_OFFER_EXEMPT T
+    set
+      T.ID = #{record.id,jdbcType=BIGINT},
+      T.PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      T.STATUS = #{record.status,jdbcType=VARCHAR},
+      T.END_DATE = #{record.endDate,jdbcType=TIMESTAMP},
+      T.REQ_BY = #{record.reqBy,jdbcType=VARCHAR},
+      T.REQ_TIME = #{record.reqTime,jdbcType=TIMESTAMP},
+      T.CANCELLED_BY = #{record.cancelledBy,jdbcType=VARCHAR},
+      T.CANCEL_TIME = #{record.cancelTime,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExempt" >
+    update LF_OFFER_EXEMPT T
+    <set >
+      <if test="paymentId != null" >
+          T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+          T.STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+          T.END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reqBy != null" >
+          T.REQ_BY = #{reqBy,jdbcType=VARCHAR},
+      </if>
+      <if test="reqTime != null" >
+          T.REQ_TIME = #{reqTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelledBy != null" >
+          T.CANCELLED_BY = #{cancelledBy,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null" >
+          T.CANCEL_TIME = #{cancelTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+          T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+          T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+          T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+          T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+          T.REC_VER = #{recVer,jdbcType=BIGINT} + 1,
+      </if>
+      <if test="tagSeq != null" >
+          T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where T.ID = #{id,jdbcType=BIGINT} and T.REC_VER = #{recVer,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExempt" >
+    update LF_OFFER_EXEMPT T
+    set
+      T.PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      T.STATUS = #{status,jdbcType=VARCHAR},
+      T.END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      T.REQ_BY = #{reqBy,jdbcType=VARCHAR},
+      T.REQ_TIME = #{reqTime,jdbcType=TIMESTAMP},
+      T.CANCELLED_BY = #{cancelledBy,jdbcType=VARCHAR},
+      T.CANCEL_TIME = #{cancelTime,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where T.ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <resultMap id="BaseResultMap_Ext" type="com.ljwd.plms.web.model.case_collection.LfOfferExempt" extends="BaseResultMap">
+    </resultMap>
+
+    <sql id="Base_Column_List_Ext">
+        <include refid="Base_Column_List"/>,
+        payment.appl_id as applId,
+        cust.cust_name as custName,
+        cust.id_card_no as idCardNo,
+        cntrct.cntrct_no as cntrctNo,
+        overReciv.overduePeriod as overduePeriod,
+        overReciv.maxOverduePeriod as maxOverduePeriod,
+        reqUser.user_name as reqByName
+    </sql>
+
+    <sql id="Example_Where_Clause_Ext">
+        <where >
+            <if test="reqByName != null and reqByName != ''">
+                and reqUser.user_name = #{reqByName}
+            </if>
+            <if test="orgId != null">
+                AND T.req_by in (
+                    select usr.user_id
+                    from ( select id from SYS_ORG start with id = #{orgId,jdbcType=BIGINT} connect by prior id = pid ) sub
+                    inner join SYS_EMP emp on sub.id=emp.org_id
+                    inner join SYS_USER usr on emp.id=usr.emp_id
+                )
+            </if>
+            <if test="custName != null and custName != ''">
+                and cust.cust_name = #{custName}
+            </if>
+            <if test="idCardNo != null and idCardNo != ''">
+                and cust.id_card_no = #{idCardNo}
+            </if>
+            <if test="cntrctNo != null and cntrctNo != ''">
+                and cntrct.cntrct_no = #{cntrctNo}
+            </if>
+            <if test="applId != null">
+                and payment.appl_id = #{applId}
+            </if>
+            <include refid="Where_Clause"/>
+        </where>
+    </sql>
+
+    <!-- 分页条件查询 -->
+    <select id="selectByExampleAndPage" resultMap="BaseResultMap_Ext" parameterType="com.ljwd.plms.web.model.case_collection.LfOfferExemptExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List_Ext"/>
+        from LF_OFFER_EXEMPT T
+        inner join ln_payment payment on payment.id = T.payment_id
+        inner join ln_cntrct cntrct on cntrct.id = payment.cntrct_id
+        inner join cl_cust cust on cust.appl_id = payment.appl_id
+        left join sys_user reqUser on reqUser.User_Id = T.req_by
+        LEFT JOIN ( SELECT RECIV.PAYMENT_ID AS PAYMENT_ID,
+                           MIN(RECIV.PERIOD_NUM) AS overduePeriod,
+                           MAX(RECIV.PERIOD_NUM) AS maxOverduePeriod
+                    FROM LF_RECIV RECIV
+                    WHERE RECIV.MAX_RPMNT_DATE &lt;= (SYSDATE - 1) AND RECIV.IS_DELETED = 'N' AND RECIV.STATUS != 'PAID'
+                    group by RECIV.PAYMENT_ID
+        ) overReciv On T.PAYMENT_ID = overReciv.PAYMENT_ID
+        <include refid="Example_Where_Clause_Ext"/>
+        <choose>
+            <when test="orderByClause != null">
+                order by ${orderByClause}
+            </when>
+            <otherwise>
+                order by T.END_DATE DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--根据主贷人或者合同编号查找合同-->
+    <select id="selectApplyExempt" resultType="com.ljwd.plms.web.vo.case_collection.ApplyExemptDto" parameterType="map">
+        SELECT
+            payment.ID as paymentId,
+            cntrct.CNTRCT_NO as cntrctNo,
+            cust.CUST_NAME as custName
+        FROM LN_PAYMENT payment
+        INNER JOIN LN_CNTRCT cntrct ON cntrct.ID = payment.CNTRCT_ID
+        INNER JOIN CL_CUST cust ON cntrct.APPL_ID = cust.APPL_ID
+        WHERE 1=1
+        <if test="custName != null and custName != ''">
+            AND cust.CUST_NAME = #{custName}
+        </if>
+        <if test="cntrctNo != null and cntrctNo != ''">
+            AND cntrct.CNTRCT_NO = #{cntrctNo}
+        </if>
+    </select>
+
+</mapper>

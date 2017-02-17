@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.outVisit.PlmsOvmOutDelayMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="INFO_ID" property="infoId" jdbcType="BIGINT" />
+    <result column="DELAY_TIMES" property="delayTimes" jdbcType="BIGINT" />
+    <result column="OV_FINISH_TIMES" property="ovFinishTimes" jdbcType="BIGINT" />
+    <result column="LAST_FOLLOW_TIME" property="lastFollowTime" jdbcType="TIMESTAMP" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+  </resultMap>
+ 
+  <sql id="Example_Where_Clause" >
+    <where >
+      <if test="infoId !=null">
+      	and T.INFO_ID = #{infoId}
+      </if>
+    </where>
+  </sql>
+  
+  
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List" >
+    T.ID, T.INFO_ID, T.DELAY_TIMES, T.OV_FINISH_TIMES, T.LAST_FOLLOW_TIME, T.CREATED_BY, T.CREATE_TIME, 
+    T.UPDATED_BY, T.UPDATE_TIME, T.REC_VER, T.TAG_SEQ
+  </sql>
+  
+  <resultMap type="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" id="BaseResultMap_01">
+  		<result column="applId" property="applId" jdbcType="BIGINT"/>
+  		<result column="expectCloseTime" property="expectCloseTime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+  <select id="selectByExample" resultMap="BaseResultMap_01" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />,
+    info.appl_id as applId
+    from PLMS_OVM_OUT_DELAY T
+    inner join PLMS_OVM_OUT_VISIT_INFO info on info.id = T.INFO_ID
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_OVM_OUT_DELAY T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from PLMS_OVM_OUT_DELAY T
+    where T.ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayExample" >
+    delete from PLMS_OVM_OUT_DELAY T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" >
+  	  <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_OVM_OUT_DELAY.nextval FROM dual
+      </selectKey>
+    insert into PLMS_OVM_OUT_DELAY  (ID, INFO_ID, DELAY_TIMES, 
+      OV_FINISH_TIMES, LAST_FOLLOW_TIME, CREATED_BY, 
+      CREATE_TIME, UPDATED_BY, UPDATE_TIME, 
+      REC_VER, TAG_SEQ)
+    values (#{id,jdbcType=BIGINT}, #{infoId,jdbcType=BIGINT}, #{delayTimes,jdbcType=BIGINT}, 
+      #{ovFinishTimes,jdbcType=BIGINT}, #{lastFollowTime,jdbcType=TIMESTAMP}, #{createdBy,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updatedBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{recVer,jdbcType=BIGINT}, #{tagSeq,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" >
+  	  <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_PLMS_OVM_OUT_DELAY.nextval FROM dual
+      </selectKey>
+    insert into PLMS_OVM_OUT_DELAY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="infoId != null" >
+        INFO_ID,
+      </if>
+      <if test="delayTimes != null" >
+        DELAY_TIMES,
+      </if>
+      <if test="ovFinishTimes != null" >
+        OV_FINISH_TIMES,
+      </if>
+      <if test="lastFollowTime != null" >
+        LAST_FOLLOW_TIME,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="infoId != null" >
+        #{infoId,jdbcType=BIGINT},
+      </if>
+      <if test="delayTimes != null" >
+        #{delayTimes,jdbcType=BIGINT},
+      </if>
+      <if test="ovFinishTimes != null" >
+        #{ovFinishTimes,jdbcType=BIGINT},
+      </if>
+      <if test="lastFollowTime != null" >
+        #{lastFollowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      1,0
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelayExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_OVM_OUT_DELAY T
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_OVM_OUT_DELAY T
+    <set >
+      <if test="record.id != null" >
+        T.ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.infoId != null" >
+        T.INFO_ID = #{record.infoId,jdbcType=BIGINT},
+      </if>
+      <if test="record.delayTimes != null" >
+        T.DELAY_TIMES = #{record.delayTimes,jdbcType=BIGINT},
+      </if>
+      <if test="record.ovFinishTimes != null" >
+        T.OV_FINISH_TIMES = #{record.ovFinishTimes,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastFollowTime != null" >
+        T.LAST_FOLLOW_TIME = #{record.lastFollowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdBy != null" >
+        T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_OVM_OUT_DELAY T
+    set T.ID = #{record.id,jdbcType=BIGINT},
+      T.INFO_ID = #{record.infoId,jdbcType=BIGINT},
+      T.DELAY_TIMES = #{record.delayTimes,jdbcType=BIGINT},
+      T.OV_FINISH_TIMES = #{record.ovFinishTimes,jdbcType=BIGINT},
+      T.LAST_FOLLOW_TIME = #{record.lastFollowTime,jdbcType=TIMESTAMP},
+      T.CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      T.CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      T.UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      T.UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      T.REC_VER = #{record.recVer,jdbcType=BIGINT},
+      T.TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" >
+    update PLMS_OVM_OUT_DELAY 
+    <set >
+      <if test="infoId != null" >
+        INFO_ID = #{infoId,jdbcType=BIGINT},
+      </if>
+      <if test="delayTimes != null" >
+        DELAY_TIMES = #{delayTimes,jdbcType=BIGINT},
+      </if>
+      <if test="ovFinishTimes != null" >
+        OV_FINISH_TIMES = #{ovFinishTimes,jdbcType=BIGINT},
+      </if>
+      <if test="lastFollowTime != null" >
+        LAST_FOLLOW_TIME = #{lastFollowTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT}+1,
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.outVisit.PlmsOvmOutDelay" >
+    update PLMS_OVM_OUT_DELAY
+    set INFO_ID = #{infoId,jdbcType=BIGINT},
+      DELAY_TIMES = #{delayTimes,jdbcType=BIGINT},
+      OV_FINISH_TIMES = #{ovFinishTimes,jdbcType=BIGINT},
+      LAST_FOLLOW_TIME = #{lastFollowTime,jdbcType=TIMESTAMP},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 根据info_id 查询延期表信息 -->
+  <select id="searchDelayByInfoId" parameterType="map" resultMap="BaseResultMap_01">
+  		select delay.*,info.EXPECT_CLOSE_TIME from plms_ovm_out_delay  delay
+			inner join plms_ovm_out_visit_info info on info.id = delay.info_id
+			where delay.info_id = #{infoId}
+			order by delay.id desc
+  </select>
+  <!-- 外访延期分页 -->
+  <select id="selectDelayByExampleAndPage" parameterType="com.ljwd.plms.web.vo.outVisit.OutVisitDelayParamDto" resultType="com.ljwd.plms.web.vo.outVisit.OutVisitDelayResult">
+  	select 
+	    ainfo.id as applid,
+	    outinfo.id as infoId,
+	    outdelay.id as delayId,
+	    outvisitdelaydtl.id as id,
+	    area.areaid as areaId,
+	    area.areaname as areaname,
+	    lncntrct.cntrct_no as cntrctno,
+	    clcust.cust_name			as			custname,
+	    clcust.id_card_no			as			docno,
+	    outinfo.assign_date   as    assigndate,
+	    outinfo.expect_close_time as expectclosetime,
+	    outvisitdelaydtl.DELAY_SUBMIT_TIME as delaySubmitTime,
+	    outvisitdelaydtl.delay_submit_by			as			delaysubmitby,
+	    sysuser.user_name			as			delaysubmitname,
+	    decode(outvisitdelaydtl.delay_duration,'weekend','一周') as delayduration,
+	    nvl(outdelay.delay_times,0) as delaytimes,
+	    nvl(outinfo.visit_over_num,0)      as visitovernum,
+	    outvisitdelaydtl.delay_audit_result			as			delayauditresult,
+	    decode(outvisitdelaydtl.delay_audit_result,'NOT_APPROVED','待审批','PASS','审批通过','REJECT','审批拒绝') as delayauditresultName,
+	    outvisitdelaydtl.delay_audit_time			as			delayaudittime,
+	    outVisitDelayDtl.DELAY_AUDIT_BY			AS			delayAuditBy,
+	    sysuser1.user_name			as			delayauditname,
+	    outvisitdelaydtl.delay_reason as delayreason,
+	    outvisitdelaydtl.delay_audit_refuse			as			delayauditrefuse,
+	    reciv.overduePeriod as overduePeriod
+	from plms_ovm_out_delay outdelay
+	left join plms_ovm_out_visit_info  outinfo on outdelay.info_id = outinfo.id
+	left join( 
+	      	select applinfo.id as applId,vinfo.id as infoId,area.AREA_NAME as areaName,area.id as areaId from
+            ln_appl_info applinfo 
+            inner join plms_ovm_out_visit_info vinfo on  applinfo.id = vinfo.appl_id
+            inner join sys_site syssite on syssite.site_code = applinfo.input_site_code
+            inner join sys_administrative_region adminregion on adminregion.id = syssite.area_id
+            inner join plms_ovm_out_visit_area area on area.area_id = adminregion.id
+	        )area on area.infoId = outinfo.id
+	left join plms_ovm_out_delay_dtl outvisitdelaydtl on outvisitdelaydtl.delay_id = outdelay.id
+	left join sys_user sysuser on sysuser.user_id = outvisitdelaydtl.delay_submit_by
+	left join sys_user sysuser1 on sysuser1.user_id = outvisitdelaydtl.delay_audit_by
+	left join ln_cntrct lncntrct on lncntrct.appl_id = outinfo.appl_id
+	left join cl_cust clcust on clcust.appl_id = outinfo.appl_id
+	inner join ln_appl_info ainfo on ainfo.id = outinfo.appl_id
+	left join (
+	  select lfreciv.appl_id,min(period_num) as overdueperiod from lf_reciv lfreciv 
+	  where lfreciv.status !='PAID' and trunc(max_rpmnt_date) &lt;trunc(sysdate)And lfreciv.Is_Deleted='N'
+	  group by lfreciv.appl_id
+	)reciv on reciv.appl_id = outinfo.appl_id
+	<where>
+		<if test='areaId !=null and areaId !=""'>
+			and area.areaId = #{areaId}
+		</if>
+		<if test='auditeStatus !=null and auditeStatus !=""'>
+			and outvisitdelaydtl.DELAY_AUDIT_RESULT = #{auditeStatus}
+		</if>
+		<if test='delaySubmitBy !=null and delaySubmitBy !=""'>
+			and outvisitdelaydtl.delay_submit_by = 
+				(select user_id from sys_user sus where sus.is_active = 'Y' and sus.user_name=#{delaySubmitBy})
+		</if>
+		<if test='cntrctNo !=null and cntrctNo !=""'>
+			and lnCntrct.CNTRCT_NO = #{cntrctNo}
+		</if>
+		<if test='custName !=null and custName !=""'>
+			and  clcust.CUST_NAME = #{custName}
+		</if>
+		<if test='docno !=null and docno !=""'>
+		     AND clCust.ID_CARD_NO = #{docno}
+		</if>
+		<if test='delayAuditTimeStart !=null and delayAuditTimeStart !=""'>
+			and trunc(outvisitdelaydtl.DELAY_AUDIT_TIME) >= trunc(#{delayAuditTimeStart})
+		</if>
+		<if test='delayAuditTimeEnd !=null and delayAuditTimeEnd !=""'>
+			and trunc(outvisitdelaydtl.DELAY_AUDIT_TIME) &lt;= trunc(#{delayAuditTimeEnd})
+		</if>
+		<if test='submitDateStart !=null and submitDateStart !=""'>
+			and trunc(outvisitdelaydtl.DELAY_SUBMIT_TIME) >= trunc(#{submitDateStart})
+		</if>
+		<if test='submitDateEnd !=null and submitDateEnd !=""'>
+			and trunc(outvisitdelaydtl.DELAY_SUBMIT_TIME) &lt;= trunc(#{submitDateEnd})
+		</if>
+		<if test='delayTimesMin !=null and delayTimesMin !=""'>
+			and outdelay.DELAY_TIMES >= #{delayTimesMin}
+		</if>
+		<if test='delayTimesMax !=null and delayTimesMax !=""'>
+			and outdelay.DELAY_TIMES &lt;= #{delayTimesMax}
+		</if>
+	</where>
+		<choose>
+            <when test="orderByClause != null">
+                ORDER BY ${orderByClause}
+            </when>
+            <otherwise>
+                order by outvisitdelaydtl.id desc  
+            </otherwise>
+        </choose>
+	
+  		
+  </select>
+</mapper>

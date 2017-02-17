@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljwd.plms.web.dao.case_management.PlmsWorkOrderPoolLogMapper" >
+  <resultMap id="BaseResultMap" type="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLog" >
+    <id column="ID" property="id" jdbcType="BIGINT" />
+    <result column="APPL_ID" property="applId" jdbcType="BIGINT" />
+    <result column="PAYMENT_ID" property="paymentId" jdbcType="BIGINT" />
+    <result column="OVERDUE_DAYS" property="overdueDays" jdbcType="BIGINT" />
+    <result column="REMAINING_PRINCIPAL" property="remainingPrincipal" jdbcType="DECIMAL" />
+    <result column="OVERDUE_PERIOD" property="overduePeriod" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="HANDLE_DATE" property="handleDate" jdbcType="TIMESTAMP" />
+    <result column="ACTION_TYPE" property="actionType" jdbcType="VARCHAR" />
+    <result column="ACTION" property="action" jdbcType="VARCHAR" />
+    <result column="ACTION_DATE" property="actionDate" jdbcType="TIMESTAMP" />
+    <result column="ACTION_BY" property="actionBy" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATED_BY" property="updatedBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="REC_VER" property="recVer" jdbcType="BIGINT" />
+    <result column="TAG_SEQ" property="tagSeq" jdbcType="BIGINT" />
+    <result column="DEFEND_STATUS" property="defendStatus" jdbcType="VARCHAR" />
+    <result column="PROTECT_END_DATE" property="protectEndDate" jdbcType="TIMESTAMP" />
+    <result column="WAIVED_STATUS" property="waivdeStatus" jdbcType="VARCHAR" />
+    
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, APPL_ID,PAYMENT_ID, OVERDUE_DAYS, REMAINING_PRINCIPAL, OVERDUE_PERIOD, STATUS, HANDLE_DATE, 
+    ACTION_TYPE, ACTION, ACTION_DATE, ACTION_BY, REMARK, CREATED_BY, CREATE_TIME, UPDATED_BY, 
+    UPDATE_TIME, REC_VER, TAG_SEQ, DEFEND_STATUS, PROTECT_END_DATE,WAIVED_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from PLMS_WORK_ORDER_POOL_LOG
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 
+    <include refid="Base_Column_List" />
+    from PLMS_WORK_ORDER_POOL_LOG
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.math.BigDecimal" >
+    delete from PLMS_WORK_ORDER_POOL_LOG
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLogExample" >
+    delete from PLMS_WORK_ORDER_POOL_LOG
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+
+  <insert id="insert" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLog" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_work_order_pool_log.nextval FROM dual
+      </selectKey>
+    insert into PLMS_WORK_ORDER_POOL_LOG (ID, APPL_ID,PAYMENT_ID, OVERDUE_DAYS, 
+      REMAINING_PRINCIPAL, OVERDUE_PERIOD, STATUS, 
+      HANDLE_DATE, ACTION_TYPE, ACTION, 
+      ACTION_DATE, ACTION_BY, REMARK, 
+      CREATED_BY, CREATE_TIME, UPDATED_BY, 
+      UPDATE_TIME, REC_VER, TAG_SEQ, 
+      DEFEND_STATUS, PROTECT_END_DATE,WAIVED_STATUS)
+    values (#{id,jdbcType=BIGINT}, #{applId,jdbcType=BIGINT},#{paymentId,jdbcType=BIGINT}, #{overdueDays,jdbcType=BIGINT}, 
+      #{remainingPrincipal,jdbcType=DECIMAL}, #{overduePeriod,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, 
+      #{handleDate,jdbcType=TIMESTAMP}, #{actionType,jdbcType=VARCHAR}, #{action,jdbcType=VARCHAR}, 
+      #{actionDate,jdbcType=TIMESTAMP}, #{actionBy,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{createdBy,jdbcType=VARCHAR},
+      sysdate,
+      #{updatedBy,jdbcType=VARCHAR},
+      sysdate,
+      1,
+      0,
+      #{defendStatus,jdbcType=VARCHAR},
+      #{protectEndDate,jdbcType=TIMESTAMP},
+      #{waivdeStatus,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLog" >
+      <selectKey resultType="long" keyProperty="id" order="BEFORE" >
+          SELECT seq_plms_work_order_pool_log.nextval FROM dual
+      </selectKey>
+    insert into PLMS_WORK_ORDER_POOL_LOG
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applId != null" >
+        APPL_ID,
+      </if>
+       <if test="paymentId != null" >
+        PAYMENT_ID,
+      </if>
+      <if test="overdueDays != null" >
+        OVERDUE_DAYS,
+      </if>
+      <if test="remainingPrincipal != null" >
+        REMAINING_PRINCIPAL,
+      </if>
+      <if test="overduePeriod != null" >
+        OVERDUE_PERIOD,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="handleDate != null" >
+        HANDLE_DATE,
+      </if>
+      <if test="actionType != null" >
+        ACTION_TYPE,
+      </if>
+      <if test="action != null" >
+        ACTION,
+      </if>
+      <if test="actionDate != null" >
+        ACTION_DATE,
+      </if>
+      <if test="actionBy != null" >
+        ACTION_BY,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+        REC_VER,
+        TAG_SEQ,
+      <if test="defendStatus != null" >
+        DEFEND_STATUS,
+      </if>
+      <if test="protectEndDate != null" >
+        PROTECT_END_DATE,
+      </if>
+      <if test="waivdeStatus != null" >
+        WAIVED_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="applId != null" >
+        #{applId,jdbcType=BIGINT},
+      </if>
+       <if test="paymentId != null" >
+        #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null" >
+        #{overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="remainingPrincipal != null" >
+        #{remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="overduePeriod != null" >
+        #{overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="handleDate != null" >
+        #{handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null" >
+        #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="actionDate != null" >
+        #{actionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionBy != null" >
+        #{actionBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+     1,0,
+      <if test="defendStatus != null" >
+        #{defendStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="protectEndDate != null" >
+        #{protectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="waivdeStatus != null" >
+        #{waivdeStatus,jdbcType=VARCHAR},
+      </if>
+      
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLogExample" resultType="java.lang.Integer" >
+    select count(*) from PLMS_WORK_ORDER_POOL_LOG
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update PLMS_WORK_ORDER_POOL_LOG
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.applId != null" >
+        APPL_ID = #{record.applId,jdbcType=BIGINT},
+      </if>
+       <if test="record.paymentId != null" >
+        PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="record.overdueDays != null" >
+        OVERDUE_DAYS = #{record.overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="record.remainingPrincipal != null" >
+        REMAINING_PRINCIPAL = #{record.remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="record.overduePeriod != null" >
+        OVERDUE_PERIOD = #{record.overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleDate != null" >
+        HANDLE_DATE = #{record.handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.actionType != null" >
+        ACTION_TYPE = #{record.actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.action != null" >
+        ACTION = #{record.action,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actionDate != null" >
+        ACTION_DATE = #{record.actionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.actionBy != null" >
+        ACTION_BY = #{record.actionBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        REMARK = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdBy != null" >
+        CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedBy != null" >
+        UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.recVer != null" >
+        REC_VER = #{record.recVer,jdbcType=BIGINT},
+      </if>
+      <if test="record.tagSeq != null" >
+        TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="record.defendStatus != null" >
+        DEFEND_STATUS = #{record.defendStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.protectEndDate != null" >
+        PROTECT_END_DATE = #{record.protectEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.waivdeStatus != null" >
+        WAIVED_STATUS = #{record.waivdeStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update PLMS_WORK_ORDER_POOL_LOG
+    set ID = #{record.id,jdbcType=BIGINT},
+      APPL_ID = #{record.applId,jdbcType=BIGINT},
+      PAYMENT_ID = #{record.paymentId,jdbcType=BIGINT},
+      OVERDUE_DAYS = #{record.overdueDays,jdbcType=BIGINT},
+      REMAINING_PRINCIPAL = #{record.remainingPrincipal,jdbcType=DECIMAL},
+      OVERDUE_PERIOD = #{record.overduePeriod,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=VARCHAR},
+      HANDLE_DATE = #{record.handleDate,jdbcType=TIMESTAMP},
+      ACTION_TYPE = #{record.actionType,jdbcType=VARCHAR},
+      ACTION = #{record.action,jdbcType=VARCHAR},
+      ACTION_DATE = #{record.actionDate,jdbcType=TIMESTAMP},
+      ACTION_BY = #{record.actionBy,jdbcType=VARCHAR},
+      REMARK = #{record.remark,jdbcType=VARCHAR},
+      CREATED_BY = #{record.createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{record.updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{record.recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{record.tagSeq,jdbcType=BIGINT},
+      DEFEND_STATUS = #{record.defendStatus,jdbcType=VARCHAR},
+      PROTECT_END_DATE = #{record.protectEndDate,jdbcType=TIMESTAMP},
+      WAIVED_STATUS = #{record.waivdeStatus,jdbcType=VARCHAR}
+      
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLog" >
+    update PLMS_WORK_ORDER_POOL_LOG
+    <set >
+      <if test="applId != null" >
+        APPL_ID = #{applId,jdbcType=BIGINT},
+      </if>
+      <if test="paymentId != null" >
+        PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      </if>
+      <if test="overdueDays != null" >
+        OVERDUE_DAYS = #{overdueDays,jdbcType=BIGINT},
+      </if>
+      <if test="remainingPrincipal != null" >
+        REMAINING_PRINCIPAL = #{remainingPrincipal,jdbcType=DECIMAL},
+      </if>
+      <if test="overduePeriod != null" >
+        OVERDUE_PERIOD = #{overduePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="handleDate != null" >
+        HANDLE_DATE = #{handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionType != null" >
+        ACTION_TYPE = #{actionType,jdbcType=VARCHAR},
+      </if>
+      <if test="action != null" >
+        ACTION = #{action,jdbcType=VARCHAR},
+      </if>
+      <if test="actionDate != null" >
+        ACTION_DATE = #{actionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actionBy != null" >
+        ACTION_BY = #{actionBy,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createdBy != null" >
+        CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedBy != null" >
+        UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recVer != null" >
+        REC_VER = #{recVer,jdbcType=BIGINT},
+      </if>
+      <if test="tagSeq != null" >
+        TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      </if>
+      <if test="defendStatus != null" >
+        DEFEND_STATUS = #{defendStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="protectEndDate != null" >
+        PROTECT_END_DATE = #{protectEndDate,jdbcType=TIMESTAMP},
+      </if>
+       <if test="waivdeStatus != null" >
+        WAIVED_STATUS = #{waivdeStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ljwd.plms.web.model.case_management.PlmsWorkOrderPoolLog" >
+    update PLMS_WORK_ORDER_POOL_LOG
+    set APPL_ID = #{applId,jdbcType=BIGINT},
+    	PAYMENT_ID = #{paymentId,jdbcType=BIGINT},
+      OVERDUE_DAYS = #{overdueDays,jdbcType=BIGINT},
+      REMAINING_PRINCIPAL = #{remainingPrincipal,jdbcType=DECIMAL},
+      OVERDUE_PERIOD = #{overduePeriod,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=VARCHAR},
+      HANDLE_DATE = #{handleDate,jdbcType=TIMESTAMP},
+      ACTION_TYPE = #{actionType,jdbcType=VARCHAR},
+      ACTION = #{action,jdbcType=VARCHAR},
+      ACTION_DATE = #{actionDate,jdbcType=TIMESTAMP},
+      ACTION_BY = #{actionBy,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATED_BY = #{createdBy,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATED_BY = #{updatedBy,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      REC_VER = #{recVer,jdbcType=BIGINT},
+      TAG_SEQ = #{tagSeq,jdbcType=BIGINT},
+      DEFEND_STATUS = #{defendStatus,jdbcType=VARCHAR},
+      PROTECT_END_DATE = #{protectEndDate,jdbcType=TIMESTAMP},
+      WAIVED_STATUS = #{waivdeStatus,jdbcType=VARCHAR}
+      
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量插入工单日志表 -->
+    <insert id="insertBatch" parameterType="java.util.List">
+  	 insert into PLMS_WORK_ORDER_POOL_LOG log ( <include refid="Base_Column_List"/> )
+        SELECT SEQ_PLMS_WORK_ORDER_POOL_LOG.nextval , poolLog.* from (
+            <foreach collection="list" item="item" index="index" separator="union all">
+                select 
+                	   #{item.applId,jdbcType=BIGINT},
+                	   #{item.paymentId,jdbcType=BIGINT},
+                       #{item.overdueDays,jdbcType=BIGINT},
+                       #{item.remainingPrincipal,jdbcType=DECIMAL},
+                       #{item.overduePeriod,jdbcType=INTEGER},
+                       #{item.status,jdbcType=VARCHAR},
+                       #{item.handleDate,jdbcType=TIMESTAMP},
+                       #{item.actionType,jdbcType=VARCHAR},
+                       #{item.action,jdbcType=VARCHAR},
+                       #{item.actionDate,jdbcType=TIMESTAMP},
+                       #{item.actionBy,jdbcType=VARCHAR},
+                       #{item.remark,jdbcType=VARCHAR},
+                       #{item.createdBy,jdbcType=VARCHAR},
+                       #{item.createTime,jdbcType=TIMESTAMP},
+                       #{item.updatedBy,jdbcType=VARCHAR},
+                       #{item.updateTime,jdbcType=TIMESTAMP},
+                      	0,1,
+                       #{item.defendStatus,jdbcType=VARCHAR},
+                       #{item.protectEndDate,jdbcType=TIMESTAMP},
+                       #{item.waivdeStatus,jdbcType=VARCHAR}
+                       
+                from dual
+            </foreach>
+        ) poolLog
+  </insert>
+  
+  <!-- 查询案件最新的日志 -->
+  <select id="searchTheLogMaxDate" parameterType="map" resultMap="BaseResultMap">
+  	Select Poollog.*
+  	From Plms_Work_Order_Pool_Log Poollog
+  	inner join (
+  		select max(log.create_time) createtime,
+               log.appl_id
+        from plms_work_order_pool_log log
+  		group by log.appl_id
+    ) temp on Poollog.appl_id = temp.appl_id and temp.createtime = Poollog.create_time
+  	where 1=1
+  	<if test="applId !=null and applId !=''">
+        and Poollog.appl_id=#{applId}
+  	</if>
+  	<if test="applIds !=null and applIds !=''">
+  	    and Poollog.appl_id in <foreach item="item" index="index" collection="applIds" open="(" separator="," close=")">#{item}</foreach>
+  	</if>
+  	<if test="defendStatus !=null and defendStatus !=''">	
+	  	and Poollog.Defend_Status=#{defendStatus}
+  	</if>
+  </select>
+
+  <!-- 根据借款IDS查询案件最新的日志 -->
+  <select id="selectMaxLogByApplIds" parameterType="java.util.List" resultMap="BaseResultMap">
+  	Select Poollog.*,cntrct.CNTRCT_NO as cntrctNo
+  	From Plms_Work_Order_Pool_Log Poollog
+  	inner join ( select max(log.id) id,
+                        log.appl_id
+                 from plms_work_order_pool_log log
+                 where log.appl_id in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+                 group by log.appl_id
+    ) temp on Poollog.id = temp.id
+    inner join LN_CNTRCT cntrct on Poollog.APPL_ID = cntrct.APPL_ID and cntrct.appl_id in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+  	where Poollog.appl_id in <foreach collection="list" item="item" open="(" close=")" separator=",">#{item,jdbcType=BIGINT}</foreach>
+  </select>
+
+  <!--根据借款ID判断案件是否在委外保留中-->
+  <select id="countOutsrcKeepByApplId" parameterType="long" resultType="java.lang.Integer" >
+      select count(LOG.ID)
+      from PLMS_WORK_ORDER_POOL_LOG LOG
+      where TRUNC(LOG.PROTECT_END_DATE) &gt;= TRUNC(sysdate) and LOG.DEFEND_STATUS = '5' and LOG.APPL_ID = #{applId,jdbcType=BIGINT}
+  </select>
+
+  <!--查询在委外保留流程中的借款ID-->
+  <select id="selectOutsrcKeepApplId" resultType="long" >
+      select distinct LOG.APPL_ID
+      from PLMS_WORK_ORDER_POOL_LOG LOG
+      where TRUNC(LOG.PROTECT_END_DATE) &gt;= TRUNC(sysdate) and LOG.DEFEND_STATUS = '5'
+  </select>
+
+</mapper>
